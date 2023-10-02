@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Playlist</title>
+</head>
+<body>
+    <h1>Create Playlist</h1>
+
+    <!-- flash message section -->
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="alert alert-{{ messages[0][1] }}">
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    {% endwith %}<hr>
+    
+
+    <form method="POST" action="{{ url_for('music.create_playlist') }}">
+
+        <div>
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" placeholder="Title">
+        </div>
+
+        genre
+
+        
+
+        <div>
+            <label>Songs:</label>
+            <br>
+            {% for song in songs %}
+                <input type="checkbox" id="song_{{ song.id }}" name="songs[]" value="{{ song.id }}">
+                <label for="song_{{ song.id }}">{{ song.title }}</label><br>
+            {% endfor %}
+        </div>
+
+        <input type="submit" value="Add">
+    </form>
+</body>
+</html>

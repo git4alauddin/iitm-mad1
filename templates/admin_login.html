@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>login</title>
+</head>
+<body>
+    <h1>ADMIN-LOGIN</h1>
+    <a href="{{ url_for('index.home')}}">home</a>
+    <hr><hr>
+
+    <!-- flash message section -->
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="alert alert-{{ messages[0][1] }}">
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    {% endwith %}<hr>
+
+
+    <form id=login_form action="{{url_for('auth.admin_login')}}" method="POST">
+        {{form.hidden_tag()}}
+        {{form.email}}
+        {{form.password}}
+        {{form.submit}}
+        <br><br>
+
+        <a href="{{ url_for('auth.user_login')}}">not an admin? user_login</a>
+    </form>
+
+</body>
+</html>

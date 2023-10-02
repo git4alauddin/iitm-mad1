@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>play</title>
+</head>
+<body>
+    <h3>now playing: {{ song.title }}
+        <h4>by {{ song.artist }}</h4>
+    </h3>
+    {% set song_path = 'songs/' + song_file.file_name %}
+    <div class ="audio-containser">
+        <audio controls autoplay>
+            <source src="{{ url_for('static', filename=song_path)}}" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <a href="{{ url_for('music.songs_list') }}">songs</a>
+</body>
+</html>

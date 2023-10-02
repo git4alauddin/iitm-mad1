@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>add_music</title>
+</head>
+<body>
+    <h3>UPLOAD-SONG</h3>
+    <hr><hr>
+
+    <!-- flash message section -->
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="alert alert-{{ messages[0][1] }}">
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    {% endwith %}<hr>
+
+
+    <form action="{{ url_for('music.upload_song') }}" method="POST" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        {{ form.title }}
+        {{ form.artist }}
+        {{ form.genre }}<br>
+        {{ form.lyrics }}<br><hr>
+        {{ form.audio_file.lable}}
+        {{ form.audio_file }}
+        {{ form.submit }}
+    </form>
+
+    <br><br><a href="{{ url_for('user.dashboard') }}">back</a>
+
+
+</body>
+</html>

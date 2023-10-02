@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dashboard</title>
+</head>
+<body>
+
+
+        <!-- flash message section -->
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="alert alert-{{ messages[0][1] }}">
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    {% endwith %}<hr>
+
+    <!----------------------common------------------------------>
+    <h1>{{current_user.role}}-dashboard<br>
+        <h3>@{{current_user.username}}</h3>
+    </h1><hr><hr>
+
+
+    <!-----------------------admin------------------------------->
+    {% if current_user.role == 'admin' %}
+        <ul>
+            <li>
+                <a href="{{ url_for('users_users_list_api')}}">Users-Api</a>
+            </li>
+            <li>
+                <a href="{{ url_for('admin.users')}}">Users</a>
+            </li>
+            <h4>-------------------------------</h4>
+            <li>
+                <a href="{{ url_for('songs_songs_list_api')}}">Songs-Api</a>
+            </li>
+        </ul>
+    {% endif %}
+
+
+    <!-----------------------user------------------------------->
+    {% if current_user.role == 'user' %}
+        <ul>
+            <li>
+                {# for api hit -> namespace_class_name #}
+                <a href="{{ url_for('user_user_api', id=current_user.id)}}">Register-as-creator [put]</a>
+
+            </li>
+        </ul>
+
+    {% endif %}
+
+
+
+    <!-----------------------creator------------------------------->
+    {% if current_user.role == 'creator' %}
+        <ul>
+            <li>
+                <a href="/upload_song">Upload song</a><br>
+            </li>
+            <li>
+                <a href="/songs_list">Songs list</a>
+            </li>
+            <li>
+                <a href="/create_playlist">create-playlist</a>
+            </li>
+            
+        </ul>
+    {% endif %}
+    
+
+    <!-----------------------common------------------------------->
+    <hr>
+    <h4><a href="{{url_for('user.logout')}}">Logout</a></h4>
+</body>
+</html>

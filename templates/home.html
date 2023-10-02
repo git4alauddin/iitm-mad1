@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>index</title>
+</head>
+<body>
+    <h1>HOME</h1>
+    <hr><hr>
+
+    <!-- flash message section -->
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="alert alert-{{ messages[0][1] }}">
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    {% endwith %}<hr>
+
+    <ul>
+        <li>
+           <a href="/user_login">user_login</a> 
+        </li>
+        <li>
+            <a href="/admin_login">admin_login</a>
+        </li>
+        <li>
+            <a href="/register">register</a>
+        </li>
+    </ul>
+</body>
+</html>
