@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="C:\Users\Admin\Desktop\proj-copy\vir-env"
+VIRTUAL_ENV="C:\Users\Admin\Desktop\proj_mad1\iitm-mad1\vir-env"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
