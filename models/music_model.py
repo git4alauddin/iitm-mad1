@@ -39,12 +39,6 @@ class Playlist(db.Model):
     id = db.Column(db.String(36), primary_key=True, default=generate_uuid, unique=True)
     title = db.Column(db.String(100), nullable=False)
     user_id = db.Column(db.String(36), db.ForeignKey('user.id'), nullable=False)
-    songs = db.relationship('Song', secondary='playlist_song_association', backref='playlists')
-
-playlist_song_association = db.Table('playlist_song_association',
-    db.Column('playlist_id', db.String(36), db.ForeignKey('playlist.id')),
-    db.Column('song_id', db.String(36), db.ForeignKey('song.id'))
-)
 
 # flagged_contents
 class FlaggedContent(db.Model):
@@ -52,12 +46,6 @@ class FlaggedContent(db.Model):
     song_id = db.Column(db.String(36), db.ForeignKey('song.id'), nullable=False)
     reason = db.Column(db.String(200))
     admin_id = db.Column(db.String(36), db.ForeignKey('admin.id'), nullable=False)
-
-# user-creator_switches
-class UserCreatorRelation(db.Model):
-    id = db.Column(db.String(36), primary_key=True, default=generate_uuid, unique=True)
-    user_id = db.Column(db.String(36), db.ForeignKey('user.id'), nullable=False)
-    creator_id = db.Column(db.String(36), db.ForeignKey('user.id'), nullable=False)
 
 # subscriptions
 class Subscription(db.Model):

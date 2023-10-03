@@ -1,6 +1,6 @@
 # imports
 from flask import Flask 
-from extensions.extension import api, db, bcrypt, login_manager 
+from extensions.extension import api, db, bcrypt, migrate, login_manager 
 from configs.config import DevelopmentConfig
 
 # import views
@@ -23,6 +23,7 @@ app.config.from_object(DevelopmentConfig)
 db.init_app(app)
 bcrypt.init_app(app)
 api.init_app(app)
+migrate.init_app(app, db)
 
 login_manager.init_app(app)
 login_manager.login_view = 'index.home'
