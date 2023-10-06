@@ -19,14 +19,9 @@ song_model = api.model("Song", {
 })
 
 
-#-----------------------album---------------#
-album_model = api.model("Album", {
-    "id": fields.String,
-    "creator_id": fields.String
-})
-
 #-----------------------playlist---------------#
 playlist_model = api.model("Playlist", {
     "id": fields.String,
+    "title": fields.String,
     "user_id": fields.String
 })
