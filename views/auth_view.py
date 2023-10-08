@@ -76,4 +76,3 @@ class AdminLoginView(MethodView):
 
         return redirect(url_for('auth.admin_login'))   
 bp_auth.add_url_rule('/admin_login', view_func=AdminLoginView.as_view('admin_login'))
-

@@ -25,3 +25,10 @@ playlist_model = api.model("Playlist", {
     "title": fields.String,
     "user_id": fields.String
 })
+
+#-----------------------album---------------#
+album_model = api.model("Album", {
+    "id": fields.String,
+    "title": fields.String,
+    "user_iud": fields.String
+})
