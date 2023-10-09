@@ -31,8 +31,7 @@ class SongFile(db.Model):
 class Album(db.Model):
     id = db.Column(db.String(36), primary_key=True, default=generate_uuid, unique=True)
     title = db.Column(db.String(100), nullable=False)
-    artist = db.Column(db.String(100), nullable=False)
-    genre = db.Column(db.String(50))
+    user_id = db.Column(db.String(36), db.ForeignKey('user.id'), nullable=False)
 
 # playlists
 class Playlist(db.Model):

@@ -30,5 +30,5 @@ playlist_model = api.model("Playlist", {
 album_model = api.model("Album", {
     "id": fields.String,
     "title": fields.String,
-    "user_iud": fields.String
+    "user_id": fields.String
 })

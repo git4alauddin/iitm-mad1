@@ -14,6 +14,7 @@ from views.admin_view import bp_admin
 from api.user_resource import ns_user, ns_users
 from api.song_resource import ns_song, ns_songs
 from api.playlist_resource import ns_playlist, ns_playlists
+from api.album_resource import ns_album, ns_albums
 
 
 # initialize app
@@ -43,6 +44,8 @@ api.add_namespace(ns_song)
 api.add_namespace(ns_songs)
 api.add_namespace(ns_playlist)
 api.add_namespace(ns_playlists)
+api.add_namespace(ns_album)
+api.add_namespace(ns_albums)
 
 
 if __name__ == '__main__':
