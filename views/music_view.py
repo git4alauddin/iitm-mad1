@@ -1,7 +1,6 @@
 from flask import Blueprint, render_template,redirect,url_for,flash,request, current_app
 from flask.views import MethodView
 from forms.music_form import MusicForm
-from forms.playlist_form import PlaylistForm
 from flask_login import current_user
 from extensions.extension import db 
 from decorators.role_decorator import creator_required
@@ -122,10 +121,4 @@ class CreatePlaylistView(MethodView):
             flash('Playlist created successfully!', 'success')
             return redirect(url_for('user.dashboard'))
 
-        # Fetch the list of songs created by the current user for the checkboxes
-        songs = Song.query.filter_by(creator_id=current_user.id).all()
-
-        return render_template('create_playlist.html', songs=songs)
-
-# Register the class-based view with the app
 bp_music.add_url_rule('/create_playlist', view_func=CreatePlaylistView.as_view('create_playlist'))
