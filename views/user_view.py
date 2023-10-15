@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template,redirect,url_for,flash,request
-from flask_login import logout_user,login_required
+from flask_login import logout_user,login_required, current_user
 from flask.views import MethodView
+import requests
 
 #------------------------------------blueprint_user---------------------------------------#
 bp_user = Blueprint('user', __name__)
@@ -19,3 +20,17 @@ class LogoutView(MethodView):
         flash('logged out!', 'success')
         return redirect(url_for('index.home'))
 bp_user.add_url_rule('/logout', view_func=LogoutView.as_view('logout'))
+
+# view register as creator
+class CreatorRegisterView(MethodView):
+    def get(self):
+        api_url = request.url_root + 'user/users/' + str(current_user.id)
+        response = requests.put(api_url, json={'id': current_user.id})
+
+        if response.status_code == 201:
+            flash('Successfully registered as creator!', 'success')
+            return redirect(url_for('user.dashboard'))
+        else:
+            flash('Error registering as creator!', 'danger')
+            return redirect(url_for('user.dashboard'))
+bp_user.add_url_rule('/register/creator', view_func=CreatorRegisterView.as_view('creator_register'))

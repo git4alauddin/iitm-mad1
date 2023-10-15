@@ -77,6 +77,8 @@ class PlaySongView(MethodView):
     def get(self, id):
         song = Song.query.get(id)
         song_file = SongFile.query.filter_by(song_id=id).first()
+        song.hits += 1
+        db.session.commit()
         return render_template('play_song.html', song=song, song_file=song_file)
 bp_music.add_url_rule('/play_song/<string:id>', view_func=PlaySongView.as_view('play_song'))
 
@@ -115,7 +117,8 @@ class CreatePlaylistView(MethodView):
             # Add selected songs to the playlist
             songs_to_update = Song.query.filter(Song.id.in_(selected_song_ids)).all()
             for song in songs_to_update:
-                song.playlist_id = playlist.id
+                playlist.songs.append(song)
+
             db.session.commit()
 
             flash('Playlist created successfully!', 'success')

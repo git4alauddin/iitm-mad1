@@ -20,7 +20,7 @@ class UserApi(Resource):
         user = User.query.get(id)
         user.role = 'creator'
         db.session.commit()
-        return user 
+        return user, 201
     
     @ns_user.marshal_with(user_model)
     def delete(self, id):
