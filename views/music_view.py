@@ -95,7 +95,7 @@ class CreatePlaylistView(MethodView):
     def get(self, page=1):
         # Fetch the list of songs created by the  users for the checkboxes
         # trying pagination 
-        per_page = 2
+        per_page = 3
         songs = Song.query.paginate(page=page, per_page=per_page)
         return render_template('create_playlist.html', songs=songs)
 
@@ -108,7 +108,7 @@ class CreatePlaylistView(MethodView):
             return redirect(url_for('music.create_playlist', page=1))
         elif not selected_song_ids:
             flash('Please select at least one song.', 'danger')
-            return redirect(url_for('music.create_playlist'))
+            return redirect(url_for('music.create_playlist', page=1))
         else:
             # Create a new playlist and add it to the database
             playlist = Playlist(title=title, user_id=current_user.id)
