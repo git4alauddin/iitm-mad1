@@ -105,7 +105,7 @@ class CreatePlaylistView(MethodView):
 
         if not title:
             flash('Title is required.', 'danger')
-            return redirect(url_for('music.create_playlist'))
+            return redirect(url_for('music.create_playlist', page=1))
         elif not selected_song_ids:
             flash('Please select at least one song.', 'danger')
             return redirect(url_for('music.create_playlist'))
