@@ -92,13 +92,14 @@ bp_music.add_url_rule('/songs_list', view_func=SongsListView.as_view('songs_list
 
 # view create_playlist
 class CreatePlaylistView(MethodView):
-    def get(self):
+    def get(self, page=1):
         # Fetch the list of songs created by the  users for the checkboxes
-        # trying pagination
-        songs = Song.query.all()
+        # trying pagination 
+        per_page = 2
+        songs = Song.query.paginate(page=page, per_page=per_page)
         return render_template('create_playlist.html', songs=songs)
 
-    def post(self):
+    def post(self, page):
         title = request.form.get('title')
         selected_song_ids = request.form.getlist('songs[]')  # Get selected song IDs
 
@@ -124,4 +125,4 @@ class CreatePlaylistView(MethodView):
             flash('Playlist created successfully!', 'success')
             return redirect(url_for('user.dashboard'))
 
-bp_music.add_url_rule('/create_playlist', view_func=CreatePlaylistView.as_view('create_playlist'))
+bp_music.add_url_rule('/create_playlist/<int:page>', view_func=CreatePlaylistView.as_view('create_playlist'))
