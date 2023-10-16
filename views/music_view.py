@@ -93,9 +93,9 @@ bp_music.add_url_rule('/songs_list', view_func=SongsListView.as_view('songs_list
 # view create_playlist
 class CreatePlaylistView(MethodView):
     def get(self):
-        # Fetch the list of songs created by the current user for the checkboxes
-        songs = Song.query.filter_by(creator_id=current_user.id).all()
-
+        # Fetch the list of songs created by the  users for the checkboxes
+        # trying pagination
+        songs = Song.query.all()
         return render_template('create_playlist.html', songs=songs)
 
     def post(self):

@@ -1,0 +1,25 @@
+/* Add this in your CSS to customize the icon */
+.fas.fa-play {
+    /* Change the color of the icon */
+    color: rgb(232, 182, 42);
+  
+    /* Adjust the size of the icon */
+    font-size: 1rem;
+  
+    /* Add text shadow to the icon */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  
+    /* Apply a scale transformation and rotation on hover */
+    transition: transform 0.2s;
+  }
+  
+  /* Define the hover effect */
+  .fas.fa-play:hover {
+    transform: scale(1.2) rotate(10deg); /* Rotate 10 degrees on hover */
+  }
+
+
+.fas.fa-tachometer-alt {
+    /* Change the color of the icon */
+    color: rgb(232, 182, 42);
+}
