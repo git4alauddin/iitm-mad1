@@ -11,7 +11,7 @@ class CreatePlaylistView(MethodView):
     def get(self, page=1):
         # Fetch the list of songs created by the  users for the checkboxes
         # trying pagination 
-        per_page = 3
+        per_page = 5
         songs = Song.query.paginate(page=page, per_page=per_page)
         return render_template('create_playlist.html', songs=songs)
 

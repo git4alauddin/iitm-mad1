@@ -30,6 +30,7 @@ class SongFile(db.Model):
 class Album(db.Model):
     id = db.Column(db.String(36), primary_key=True, default=generate_uuid, unique=True)
     title = db.Column(db.String(100), nullable=False)
+    release_date = db.Column(db.Date, nullable=False)
     user_id = db.Column(db.String(36), db.ForeignKey('user.id'), nullable=False)
     hits = db.Column(db.Integer, default=0)
     songs = db.relationship('Song', secondary='album_songs', backref='albums')

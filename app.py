@@ -12,10 +12,10 @@ from views.song_view import bp_song
 from views.playlist_view import bp_playlist
 
 # import resources
-from api.user_resource import ns_user, ns_users
-from api.song_resource import ns_song, ns_songs
-from api.playlist_resource import ns_playlist, ns_playlists
-from api.album_resource import ns_album, ns_albums
+from api.user_resource import ns_users
+from api.song_resource import ns_songs
+from api.playlist_resource import ns_playlists
+from api.album_resource import ns_albums
 
 
 # initialize app
@@ -40,13 +40,9 @@ app.register_blueprint(bp_song)
 app.register_blueprint(bp_playlist)
 
 # register namespaces
-api.add_namespace(ns_user)
 api.add_namespace(ns_users)
-api.add_namespace(ns_song)
 api.add_namespace(ns_songs)
-api.add_namespace(ns_playlist)
 api.add_namespace(ns_playlists)
-api.add_namespace(ns_album)
 api.add_namespace(ns_albums)
 
 

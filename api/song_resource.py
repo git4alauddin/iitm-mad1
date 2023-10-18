@@ -6,11 +6,11 @@ from decorators.role_decorator import admin_required
 import os
 from flask import current_app
 
-ns_song = Namespace('song')
+ns_songs = Namespace('songs')
 
-@ns_song.route('/songs/<string:id>')
+@ns_songs.route('/songs/<string:id>')
 class SongApi(Resource):
-    @ns_song.marshal_with(song_model)
+    @ns_songs.marshal_with(song_model)
     def get(self, id):
         song = Song.query.get(id)
         return song
@@ -31,17 +31,8 @@ class SongApi(Resource):
         db.session.commit()
         return {'message': 'Song deleted'}, 204
 
-@ns_song.route('/songs')
-class SongsListApi(Resource):
-    @ns_song.marshal_with(song_model)
-    def get(self):
-        song = Song.query.all()
-        return song
-    
-ns_songs = Namespace('songs')
 @ns_songs.route('/songs')
 class SongsListApi(Resource):
-    # @admin_required
     @ns_songs.marshal_with(song_model)
     def get(self):
         song = Song.query.all()
