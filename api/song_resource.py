@@ -31,6 +31,13 @@ class SongApi(Resource):
         db.session.commit()
         return {'message': 'Song deleted'}, 204
 
+@ns_song.route('/songs')
+class SongsListApi(Resource):
+    @ns_song.marshal_with(song_model)
+    def get(self):
+        song = Song.query.all()
+        return song
+    
 ns_songs = Namespace('songs')
 @ns_songs.route('/songs')
 class SongsListApi(Resource):

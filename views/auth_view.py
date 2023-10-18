@@ -1,5 +1,5 @@
 # imports
-from sqlite3 import IntegrityError
+from sqlalchemy.exc import IntegrityError
 from flask import Blueprint, render_template, redirect, url_for, flash
 from flask.views import MethodView
 
@@ -33,7 +33,9 @@ class RegisterView(MethodView):
                 flash('Account created! Please login', 'success')
                 return redirect(url_for('auth.user_login'))
             except IntegrityError:
+                db.session.rollback()
                 flash('That email is already in use. Please choose a different one.', 'danger')
+                return redirect(url_for('auth.register'))
         return redirect(url_for('auth.register'))
 bp_auth.add_url_rule('/register', view_func=RegisterView.as_view('register'))
 
