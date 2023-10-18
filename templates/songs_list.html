@@ -17,7 +17,7 @@
         <ul>
             <li>
                 <h3>{{ song.title }} by: {{ song.artist }}
-                    <a href="{{ url_for('music.play_song', id=song.id) }}"><i class="fas fa-play"></i>
+                    <a href="{{ url_for('song.play_song', id=song.id) }}"><i class="fas fa-play"></i>
                     </a><hr>
                 </h3>
             </li>

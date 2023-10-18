@@ -8,10 +8,10 @@ from werkzeug.utils import secure_filename
 from datetime import datetime
 import os
 import random
-from models.music_model import Song, SongFile, Playlist
+from models.music_model import Song, SongFile
 
 
-bp_music = Blueprint('music', __name__)
+bp_song = Blueprint('song', __name__)
 # view song_upload
 class UploadSongView(MethodView):
     def get(self):
@@ -70,7 +70,7 @@ class UploadSongView(MethodView):
         else:
             flash('All fields are required', 'danger')
             return redirect(url_for('music.upload_song'))
-bp_music.add_url_rule('/upload_song', view_func=UploadSongView.as_view('upload_song'))
+bp_song.add_url_rule('/upload_song', view_func=UploadSongView.as_view('upload_song'))
 
 # view play_song
 class PlaySongView(MethodView):
@@ -80,49 +80,11 @@ class PlaySongView(MethodView):
         song.hits += 1
         db.session.commit()
         return render_template('play_song.html', song=song, song_file=song_file)
-bp_music.add_url_rule('/play_song/<string:id>', view_func=PlaySongView.as_view('play_song'))
+bp_song.add_url_rule('/play_song/<string:id>', view_func=PlaySongView.as_view('play_song'))
 
 # view songs_list
 class SongsListView(MethodView):
     def get(self):
         songs = Song.query.filter_by(creator_id=current_user.id)
         return render_template('songs_list.html', songs=songs)
-bp_music.add_url_rule('/songs_list', view_func=SongsListView.as_view('songs_list'))
-
-
-# view create_playlist
-class CreatePlaylistView(MethodView):
-    def get(self, page=1):
-        # Fetch the list of songs created by the  users for the checkboxes
-        # trying pagination 
-        per_page = 3
-        songs = Song.query.paginate(page=page, per_page=per_page)
-        return render_template('create_playlist.html', songs=songs)
-
-    def post(self, page):
-        title = request.form.get('title')
-        selected_song_ids = request.form.getlist('songs[]')  # Get selected song IDs
-
-        if not title:
-            flash('Title is required.', 'danger')
-            return redirect(url_for('music.create_playlist', page=1))
-        elif not selected_song_ids:
-            flash('Please select at least one song.', 'danger')
-            return redirect(url_for('music.create_playlist', page=1))
-        else:
-            # Create a new playlist and add it to the database
-            playlist = Playlist(title=title, user_id=current_user.id)
-            db.session.add(playlist)
-            db.session.commit()
-
-            # Add selected songs to the playlist
-            songs_to_update = Song.query.filter(Song.id.in_(selected_song_ids)).all()
-            for song in songs_to_update:
-                playlist.songs.append(song)
-
-            db.session.commit()
-
-            flash('Playlist created successfully!', 'success')
-            return redirect(url_for('user.dashboard'))
-
-bp_music.add_url_rule('/create_playlist/<int:page>', view_func=CreatePlaylistView.as_view('create_playlist'))
+bp_song.add_url_rule('/songs_list', view_func=SongsListView.as_view('songs_list'))

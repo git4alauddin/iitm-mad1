@@ -7,8 +7,9 @@ from configs.config import DevelopmentConfig
 from views.index_view import bp_index
 from views.auth_view import bp_auth
 from views.user_view import bp_user
-from views.music_view import bp_music
 from views.admin_view import bp_admin
+from views.song_view import bp_song
+from views.playlist_view import bp_playlist
 
 # import resources
 from api.user_resource import ns_user, ns_users
@@ -34,8 +35,9 @@ login_manager.login_view = 'index.home'
 app.register_blueprint(bp_index)
 app.register_blueprint(bp_auth)
 app.register_blueprint(bp_user)
-app.register_blueprint(bp_music)
 app.register_blueprint(bp_admin)
+app.register_blueprint(bp_song)
+app.register_blueprint(bp_playlist)
 
 # register namespaces
 api.add_namespace(ns_user)
