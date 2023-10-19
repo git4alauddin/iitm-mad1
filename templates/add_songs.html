@@ -26,6 +26,11 @@
         <ul>
             <li>
                 <a href="{{ url_for('song.play_song', id=song.id) }}">{{ song.title }} by: {{ song.artist }}</a>
+
+                <form action="{{ url_for('playlist.remove_songs', id=playlist.id) }}" method="POST" style="display: inline">
+                    <input type="hidden" name="song_id" value="{{ song.id }}">
+                    <button type="submit">Delete</button>
+                </form>
             </li>
         </ul>
     {% endfor %}
@@ -38,7 +43,7 @@
             <li>
                 <a href="{{ url_for('song.play_song', id=song.id) }}">{{ song.title }} by: {{ song.artist }}</a>
 
-                <form action="{{ url_for('playlist.add_songs', id=playlist.id) }}" method="POST">
+                <form action="{{ url_for('playlist.add_songs', id=playlist.id) }}" method="POST" style="display: inline">
                     <input type="hidden" name="song_id" value="{{ song.id }}">
                     <button type="submit">Add</button>
                 </form>

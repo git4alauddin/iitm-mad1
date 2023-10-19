@@ -32,7 +32,8 @@ class CreatePlaylistView(MethodView):
         
 bp_playlist.add_url_rule('/create_playlist/', view_func=CreatePlaylistView.as_view('create_playlist'))
 
-class PlaylistSongsView(MethodView):
+# view add_songs_to_playlist
+class PlaylistAddSongsView(MethodView):
     def get(self, id):
         api_url = request.url_root + 'playlists/playlists/' + str(id) + '/songs'
         playlist_song_res = requests.get(api_url)
@@ -61,9 +62,25 @@ class PlaylistSongsView(MethodView):
 
         if response.status_code == 201:
             flash('Successfully added song to playlist!', 'success')
-            return redirect(url_for('playlist.add_songs', id=id))
         else:
             # temporarily
             flash('Song is already in the playlist!', 'danger')
-            return redirect(url_for('playlist.add_songs', id=id))
-bp_playlist.add_url_rule('/add_songs/<string:id>', view_func=PlaylistSongsView.as_view('add_songs'))
+        return redirect(url_for('playlist.add_songs', id=id))
+bp_playlist.add_url_rule('/add_songs/<string:id>', view_func=PlaylistAddSongsView.as_view('add_songs'))
+
+# view remove songs of a playlist
+class PlaylistRemoveSongsView(MethodView):
+    def post(self, id):
+        song_id = request.form.get('song_id')
+        api_url = request.url_root + 'playlists/playlists/' + str(id) + '/songs/' + str(song_id)
+
+        response = requests.delete(api_url)
+
+        if response.status_code == 204:
+            flash('Successfully removed song from playlist!', 'success')
+        else:
+            flash('Error removing song from playlist!', 'danger')
+
+        return redirect(url_for('playlist.add_songs', id=id))
+
+bp_playlist.add_url_rule('/remove_songs/<string:id>', view_func=PlaylistRemoveSongsView.as_view('remove_songs'))

@@ -92,7 +92,8 @@ class PlaylistSongApi(Resource):
             if s.id == song_id:
                 song = s
         if song:
-            db.session.delete(song)
+            playlist.songs.remove(song)
+            # db.session.delete(song) pura song object ko hi delete kr deta h bhaii... bach k
             db.session.commit()
             return {"message": "Song deleted"}, 204
         else:
