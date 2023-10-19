@@ -23,7 +23,7 @@
 
     <!----------------------common------------------------------>
     <h1>{{current_user.role}}-dashboard<br>
-        <h3>@{{current_user.username}}</h3>
+        <h3 style="color: rgb(176, 128, 6);">@[ {{current_user.username}} ]</h3>
     </h1><hr><hr>
 
 
@@ -62,20 +62,28 @@
     {% if current_user.role == 'creator' %}
         <ul>
             <li>
-                <a href="/upload_song">Upload song</a><br>
+                <a style="color: #034577; text-decoration: none;" href="/upload_song">Upload song</a><br>
             </li>
             <li>
-                <a href="/songs_list">Songs list</a>
+                <a style="color: #034577; text-decoration: none;" href="/songs_list">Songs list</a>
             </li>
             <li>
-                <a href="{{ url_for('playlist.create_playlist') }}">create-playlist</a>
+                <a style="color: #034577; text-decoration: none;" href="{{ url_for('playlist.create_playlist') }}">create-playlist</a>
             </li>
             <br><hr>
             <h4>CREATED-PLAYLISTS</h4>
+            {% if not playlists %}
+                <h5 style="color: red;">No playlists! Create now from the option above!!</h5>
+            {% endif %}
+
             {% for playlist in playlists %}
                 <ul>
                     <li>
-                        <a href="{{ url_for('playlist.add_songs', id=playlist.id) }}">{{ playlist.title }}</a>
+                        <a style="color: #034577; text-decoration: none;" href="{{ url_for('playlist.add_songs', id=playlist.id) }}" contenteditable="true">{{ playlist.title }}</a>
+
+                        <a style="color: #a40303; text-decoration: none;" href="{{ url_for('playlist.remove_playlist', id=playlist.id) }}">[ Delete ]</a>
+
+                        <a style="color: #042cbf; text-decoration: none;" href="#">[ Rename ]</a>
                     </li>
                 </ul>  
             {% endfor %}
@@ -86,7 +94,7 @@
     
 
     <!-----------------------common------------------------------->
-    <hr>
-    <h4><a href="{{url_for('user.logout')}}">Logout</a></h4>
+    <hr><hr>
+    <h4><a style="color: rgb(5, 138, 205); text-decoration: none;" href="{{url_for('user.logout')}}">Logout</a></h4>
 </body>
 </html>

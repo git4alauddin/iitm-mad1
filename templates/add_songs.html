@@ -22,14 +22,18 @@
     <hr>
 
     <h3>Playlist: {{playlist.title}}</h3>
+    {% if not songs %}
+        <h5 style="color: red;">No songs! Add from the suggestions below!!</h5>
+    {% endif %}
+
     {% for song in songs %}
         <ul>
             <li>
-                <a href="{{ url_for('song.play_song', id=song.id) }}">{{ song.title }} by: {{ song.artist }}</a>
+                <a style="color: #048ae9; text-decoration: none;" href="{{ url_for('song.play_song', id=song.id) }}">{{ song.title }} by: {{ song.artist }}</a>
 
                 <form action="{{ url_for('playlist.remove_songs', id=playlist.id) }}" method="POST" style="display: inline">
                     <input type="hidden" name="song_id" value="{{ song.id }}">
-                    <button type="submit">Delete</button>
+                    <button style="border-color: rgb(255, 162, 95);" type="submit">Delete</button>
                 </form>
             </li>
         </ul>
@@ -41,11 +45,11 @@
     {% for song in suggested_songs %}
         <ul>
             <li>
-                <a href="{{ url_for('song.play_song', id=song.id) }}">{{ song.title }} by: {{ song.artist }}</a>
+                <a style="color: #bd4f05; text-decoration: none;" href="{{ url_for('song.play_song', id=song.id) }}">{{ song.title }} by: {{ song.artist }}</a>
 
                 <form action="{{ url_for('playlist.add_songs', id=playlist.id) }}" method="POST" style="display: inline">
                     <input type="hidden" name="song_id" value="{{ song.id }}">
-                    <button type="submit">Add</button>
+                    <button style="border-color: rgb(255, 162, 95);" type="submit">Add</button>
                 </form>
             </li>
         </ul>

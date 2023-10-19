@@ -25,12 +25,26 @@ class CreatePlaylistView(MethodView):
 
             if response.status_code == 201:
                 flash('Successfully created playlist!', 'success')
-                return redirect(url_for('user.dashboard'))
             else:
                 flash('Error creating playlist!', 'danger')
-                return redirect(url_for('user.dashboard'))
+            return redirect(url_for('user.dashboard'))
         
 bp_playlist.add_url_rule('/create_playlist/', view_func=CreatePlaylistView.as_view('create_playlist'))
+
+# view remove playlist
+class RemovePlaylistView(MethodView):
+    def get(self, id):
+        api_url = request.url_root + 'playlists/playlists/' + str(id)
+        response = requests.delete(api_url)
+
+        if response.status_code == 204:
+            flash('Successfully removed playlist!', 'success')
+        else:
+            flash('Error removing playlist!', 'danger')
+
+        return redirect(url_for('user.dashboard'))
+
+bp_playlist.add_url_rule('/remove_playlist/<string:id>/', view_func=RemovePlaylistView.as_view('remove_playlist'))
 
 # view add_songs_to_playlist
 class PlaylistAddSongsView(MethodView):

@@ -25,6 +25,14 @@ class PlaylistApi(Resource):
         db.session.add(playlist)
         db.session.commit()
         return playlist, 201
+    
+    ns_playlists.expect(playlist_input_model)
+    @ns_playlists.marshal_with(playlist_model)
+    def put(self, id):
+        playlist = Playlist.query.get(id)
+        playlist.title = request.json.get('title')
+        db.session.commit()
+        return playlist, 200
 
     
     @ns_playlists.marshal_with(playlist_model)
