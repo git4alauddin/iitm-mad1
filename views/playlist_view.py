@@ -7,10 +7,12 @@ import requests
 
 
 bp_playlist = Blueprint('playlist', __name__)
-# view create_playlist
+
 class CreatePlaylistView(MethodView):
     def get(self):
-        playlists = Playlist.query.filter_by(user_id=current_user.id).all()
+        api_url = request.url_root + '/users/users/' + str(current_user.id) + '/playlists'
+        response = requests.get(api_url)
+        playlists = response.json()
         return render_template('create_playlist.html', playlists=playlists)
 
     def post(self):
@@ -77,7 +79,7 @@ class PlaylistAddSongsView(MethodView):
         if response.status_code == 201:
             flash('Successfully added song to playlist!', 'success')
         else:
-            # temporarily
+            # temporarily handled the unique constrain error
             flash('Song is already in the playlist!', 'danger')
         return redirect(url_for('playlist.add_songs', id=id))
 bp_playlist.add_url_rule('/add_songs/<string:id>', view_func=PlaylistAddSongsView.as_view('add_songs'))

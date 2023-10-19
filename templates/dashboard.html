@@ -79,11 +79,9 @@
             {% for playlist in playlists %}
                 <ul>
                     <li>
-                        <a style="color: #034577; text-decoration: none;" href="{{ url_for('playlist.add_songs', id=playlist.id) }}" contenteditable="true">{{ playlist.title }}</a>
+                        <a style="color: #034577; text-decoration: none;" href="{{ url_for('playlist.add_songs', id=playlist.id) }}"><b>{{ playlist.title }}</b></a>
 
                         <a style="color: #a40303; text-decoration: none;" href="{{ url_for('playlist.remove_playlist', id=playlist.id) }}">[ Delete ]</a>
-
-                        <a style="color: #042cbf; text-decoration: none;" href="#">[ Rename ]</a>
                     </li>
                 </ul>  
             {% endfor %}
