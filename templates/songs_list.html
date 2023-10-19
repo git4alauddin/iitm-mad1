@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>songs-list</title>
@@ -16,8 +14,8 @@
     {% for song in songs %}
         <ul>
             <li>
-                <h3>{{ song.title }} by: {{ song.artist }}
-                    <a href="{{ url_for('song.play_song', id=song.id) }}"><i class="fas fa-play"></i>
+                <h3>
+                    <a href="{{ url_for('song.play_song', id=song.id) }}">{{ song.title }} by: {{ song.artist }}
                     </a><hr>
                 </h3>
             </li>

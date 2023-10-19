@@ -75,8 +75,7 @@
             {% for playlist in playlists %}
                 <ul>
                     <li>
-                        {{ playlist.title }}
-                        <a href="#">show</a>
+                        <a href="{{ url_for('playlist.add_songs', id=playlist.id) }}">{{ playlist.title }}</a>
                     </li>
                 </ul>  
             {% endfor %}

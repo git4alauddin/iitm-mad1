@@ -66,6 +66,22 @@ class PlaylistSongApi(Resource):
         else:
             return {"message": "Song not found"}, 404
         
+    @ns_playlists.marshal_with(song_model)
+    def post(self, id, song_id):
+        playlist = Playlist.query.get(id)
+        if not playlist:
+            return {'error': 'Playlist not found'}, 404
+        # now append the song to the playlist
+        song = Song.query.get(song_id)
+        if not song:
+            return {'error': 'Song not found'}, 404
+
+        playlist.songs.append(song)
+        db.session.commit()
+
+        return song, 201
+        
+        
     def delete(self, id, song_id):
         playlist = Playlist.query.get(id)
         if not playlist:

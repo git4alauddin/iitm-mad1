@@ -15,7 +15,9 @@ user_input_model = api.model("UserInput", {
 #-----------------------song---------------#
 song_model = api.model("Song", {
     "id": fields.String,
-    "creator_id": fields.String
+    "creator_id": fields.String,
+    "title": fields.String,
+    "artist": fields.String
 })
 
 

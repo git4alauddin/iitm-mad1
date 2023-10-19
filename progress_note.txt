@@ -3,3 +3,7 @@ working on playlists and albums
 
 to do
 - while adding songs to the playlist handle the pagination with maintaing the checkboxex
+
+
+in the playlist_songs_view
+post method handle if the song is alredy in the playlist 

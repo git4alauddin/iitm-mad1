@@ -50,7 +50,8 @@ class Playlist(db.Model):
 
 playlist_songs = db.Table('playlist_songs',
     db.Column('playlist_id', db.String(36), db.ForeignKey('playlist.id'), primary_key=True),
-    db.Column('song_id', db.String(36), db.ForeignKey('song.id'), primary_key=True)
+    db.Column('song_id', db.String(36), db.ForeignKey('song.id'), 
+    primary_key=True)
 )
 
 # flagged_contents
