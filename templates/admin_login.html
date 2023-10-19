@@ -19,9 +19,9 @@
                     <li>{{ message }}</li>
                 {% endfor %}
             </ul>
-        </div>
+        </div><hr>
     {% endif %}
-    {% endwith %}<hr>
+    {% endwith %}
 
 
     <form id=login_form action="{{url_for('auth.admin_login')}}" method="POST">

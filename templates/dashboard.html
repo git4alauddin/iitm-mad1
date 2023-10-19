@@ -31,18 +31,12 @@
     {% if current_user.role == 'admin' %}
         <ul>
             <li>
-                <a href="{{ url_for('users_users_list_api')}}">Users-Api</a>
-            </li>
-            <li>
-                <a href="{{ url_for('admin.users')}}">Users</a>
-            </li>
-            <h4>-------------------------------</h4>
-            <li>
-                <a href="{{ url_for('songs_uploaded_songs_api')}}">Songs-Api</a>
+                <h1>
+                    STATISTICS
+                </h1>
             </li>
         </ul>
     {% endif %}
-
 
     <!-----------------------user------------------------------->
     {% if current_user.role == 'user' %}
