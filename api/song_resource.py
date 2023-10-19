@@ -36,4 +36,4 @@ class SongsListApi(Resource):
     @ns_songs.marshal_with(song_model)
     def get(self):
         song = Song.query.all()
-        return song
+        return song, 200

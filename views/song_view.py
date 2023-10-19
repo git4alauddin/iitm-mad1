@@ -9,6 +9,7 @@ from datetime import datetime
 import os
 import random
 from models.music_model import Song, SongFile
+import requests
 
 
 bp_song = Blueprint('song', __name__)
@@ -82,9 +83,24 @@ class PlaySongView(MethodView):
         return render_template('play_song.html', song=song, song_file=song_file)
 bp_song.add_url_rule('/play_song/<string:id>', view_func=PlaySongView.as_view('play_song'))
 
-# view songs_list
-class SongsListView(MethodView):
+# view uploaded_songs
+class UploadedSongsView(MethodView):
     def get(self):
-        songs = Song.query.filter_by(creator_id=current_user.id)
-        return render_template('songs_list.html', songs=songs)
-bp_song.add_url_rule('/songs_list', view_func=SongsListView.as_view('songs_list'))
+        api_url = request.url_root + 'users/users/' + str(current_user.id) + '/songs'
+        songs = requests.get(api_url)
+        songs = songs.json()
+        
+        return render_template('uploaded_songs.html', songs=songs)
+bp_song.add_url_rule('/uploaded_songs', view_func=UploadedSongsView.as_view('uploaded_songs'))
+
+# view delete a song
+class DeleteSongView(MethodView):
+    def get(self, id):
+        api_url = request.url_root + 'songs/songs/' + str(id)
+        response = requests.delete(api_url)
+        if response.status_code == 204:
+            flash('Successfully deleted song!', 'success')
+        else:
+            flash('Error deleting song!', 'danger')
+        return redirect(url_for('song.uploaded_songs'))
+bp_song.add_url_rule('/delete_song/<string:id>', view_func=DeleteSongView.as_view('delete_song'))

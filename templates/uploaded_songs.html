@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>uploaded_songs</title>
+</head>
+<body>
+
+    <!-- flash message section -->
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="alert alert-{{ messages[0][1] }}">
+            <ul>
+                {% for message in messages %}
+                    <li style="color: green;">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    {% endwith %}<hr>
+
+
+    <div>
+       <h1>UPLOADED-SONGS</h1>
+    <hr><hr>
+    </div>
+
+    {% if not songs %}
+        <h5 style="color: red;">No songs added.. Add from the dashboard!!</h5>
+    {% endif %}
+
+    {% for song in songs %}
+        <ul>
+            <li>
+                <a style="color: #034577; text-decoration: none;" href="{{ url_for('song.play_song', id=song.id) }}"><b>{{ song.title }} by: {{ song.artist }}</b>
+                </a>
+
+                <a style="color: #a40303; text-decoration: none;" href="{{ url_for('song.delete_song', id=song.id) }}">[ Delete ]</a>
+                
+            </li>
+        </ul>
+    {% endfor %}
+
+    <br><hr>
+    <a href="{{ url_for('user.dashboard') }}">dashboard</a>
+</body>
+</html>

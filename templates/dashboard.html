@@ -38,7 +38,7 @@
             </li>
             <h4>-------------------------------</h4>
             <li>
-                <a href="{{ url_for('songs_songs_list_api')}}">Songs-Api</a>
+                <a href="{{ url_for('songs_uploaded_songs_api')}}">Songs-Api</a>
             </li>
         </ul>
     {% endif %}
@@ -62,14 +62,17 @@
     {% if current_user.role == 'creator' %}
         <ul>
             <li>
-                <a style="color: #034577; text-decoration: none;" href="/upload_song">Upload song</a><br>
+                <a style="color: #034577; text-decoration: none;" href="/upload_song">upload-song</a><br>
             </li>
-            <li>
-                <a style="color: #034577; text-decoration: none;" href="/songs_list">Songs list</a>
-            </li>
-            <li>
+             <li>
                 <a style="color: #034577; text-decoration: none;" href="{{ url_for('playlist.create_playlist') }}">create-playlist</a>
             </li>
+
+            <br><hr>
+            <li>
+                <a style="color: #034577; text-decoration: none;" href="{{ url_for('song.uploaded_songs') }}"><b>UPLOADED-SONG</b>S</a>
+            </li>
+           
             <br><hr>
             <h4>CREATED-PLAYLISTS</h4>
             {% if not playlists %}
