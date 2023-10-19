@@ -20,36 +20,17 @@
         </div>
     {% endif %}
     {% endwith %}<hr>
-    
 
-    <form method="POST" action="{{ url_for('playlist.create_playlist', page=1) }}">
+    <h3>CREATE-PLAYLIST</h3>
+
+    <form method="POST" action="{{ url_for('playlist.create_playlist') }}">
 
         <div>
             <label for="title">Title:</label>
             <input type="text" id="title" name="title" placeholder="Title">
-        </div>
+        </div><br>
 
-        <div>
-            <label>Songs:</label>
-            <br>
-            {% for song in songs.items %}
-                <input type="checkbox" id="song_{{ song.id }}" name="songs[]" value="{{ song.id }}">
-                <label for="song_{{ song.id }}">{{ song.title }}</label><br>
-            {% endfor %}
-        </div>
-
-        <div class="pagination">
-            <ul class="pagination">
-              {% if songs.has_prev %}
-                <li class="page-item"><a class="page-link" href="{{ url_for('playlist.create_playlist', page=songs.prev_num) }}">Previous</a></li>
-              {% endif %}
-              {% if songs.has_next %}
-                <li class="page-item"><a class="page-link" href="{{ url_for('playlist.create_playlist', page=songs.next_num) }}">Next</a></li>
-              {% endif %}
-            </ul>
-          </div>
-
-        <input type="submit" value="Add">
+        <input type="submit" value="Create">
     </form>
 
     <hr>

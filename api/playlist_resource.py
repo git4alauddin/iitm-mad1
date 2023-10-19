@@ -3,7 +3,7 @@ from models.music_model import Playlist, Song
 from flask import request, redirect, url_for, flash, render_template
 from flask_login import current_user
 from extensions.extension import db
-from api.api_models import playlist_model, song_model
+from api.api_models import playlist_model, song_model, playlist_input_model
 
 #----------------------namespace_playlist---------------#
 ns_playlists = Namespace('playlists')
@@ -15,6 +15,17 @@ class PlaylistApi(Resource):
     def get(self, id):
         playlist = Playlist.query.get(id)
         return playlist, 200
+    
+    # create playlist with the given title for the current user
+    @ns_playlists.expect(playlist_input_model)
+    @ns_playlists.marshal_with(playlist_model)
+    def post(self, id):
+        title = request.json.get('title')
+        playlist = Playlist(title=title, user_id=id)
+        db.session.add(playlist)
+        db.session.commit()
+        return playlist, 201
+
     
     @ns_playlists.marshal_with(playlist_model)
     def delete(self, id):

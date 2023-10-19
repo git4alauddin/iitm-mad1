@@ -68,9 +68,19 @@
                 <a href="/songs_list">Songs list</a>
             </li>
             <li>
-                {% set page = 1 %}
-                <a href="{{ url_for('playlist.create_playlist', page=1) }}">create-playlist</a>
+                <a href="{{ url_for('playlist.create_playlist') }}">create-playlist</a>
             </li>
+            <br><hr>
+            <h4>CREATED-PLAYLISTS</h4>
+            {% for playlist in playlists %}
+                <ul>
+                    <li>
+                        {{ playlist.title }}
+                        <a href="#">show</a>
+                    </li>
+                </ul>  
+            {% endfor %}
+            <hr><br>
             
         </ul>
     {% endif %}

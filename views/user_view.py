@@ -2,6 +2,7 @@ from flask import Blueprint, render_template,redirect,url_for,flash,request
 from flask_login import logout_user,login_required, current_user
 from flask.views import MethodView
 import requests
+from models.music_model import Playlist
 
 #------------------------------------blueprint_user---------------------------------------#
 bp_user = Blueprint('user', __name__)
@@ -10,7 +11,11 @@ bp_user = Blueprint('user', __name__)
 class DashboardView(MethodView):
     @login_required
     def get(self):
-        return render_template('dashboard.html')
+        api_url = request.url_root + 'users/users/' + str(current_user.id) + '/playlists'
+        response = requests.get(api_url)
+        if response.status_code == 200:
+            playlists = response.json()
+            return render_template('dashboard.html', playlists=playlists)
 bp_user.add_url_rule('/dashboard', view_func=DashboardView.as_view('dashboard'))
 
 # view logout
@@ -24,7 +29,7 @@ bp_user.add_url_rule('/logout', view_func=LogoutView.as_view('logout'))
 # view register as creator
 class CreatorRegisterView(MethodView):
     def get(self):
-        api_url = request.url_root + 'user/users/' + str(current_user.id)
+        api_url = request.url_root + 'users/users/' + str(current_user.id)
         response = requests.put(api_url, json={'id': current_user.id})
 
         if response.status_code == 201:
