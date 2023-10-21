@@ -54,6 +54,7 @@ class PlaylistAddSongsView(MethodView):
         api_url = request.url_root + 'playlists/playlists/' + str(id) + '/songs'
         playlist_song_res = requests.get(api_url)
 
+        # temporarily handling song suggestion to add to the playlist
         api_url = request.url_root + 'songs/songs'
         suggested_song_res = requests.get(api_url)
 
@@ -61,7 +62,6 @@ class PlaylistAddSongsView(MethodView):
             songs = playlist_song_res.json()
             playlist = Playlist.query.get(id)
 
-            # suggest songs to add to the playlist
             suggested_songs = suggested_song_res.json()
 
             return render_template('add_songs.html', songs=songs, playlist=playlist, suggested_songs=suggested_songs)
