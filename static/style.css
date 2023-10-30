@@ -1,0 +1,55 @@
+.container {
+    
+    display: inline block;
+    text-align: center;
+    margin: 10px;
+    width: 18%;
+    padding: 10px;
+    /* border: 2px solid green; */
+    border-radius: 22px;
+
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px, rgba(17, 17, 26, 0.1) 0px 24px 80px;
+}
+#info1 {
+    font-size: 35px;
+    font-family: cursive;
+    color: rgb(5, 138, 205);
+    margin: 2px;
+    padding: 2px;
+}
+#info2 {
+    font-size: 15px;
+    font-family:cursive;
+    color: rgb(5, 138, 205);
+    margin: 2px;
+    padding: 2px;
+    
+}
+#headphone {
+    width: 109px;
+    height: 109px;
+    margin-bottom: 35px;
+}
+#register_button {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    position: absolute;
+    font-size: 23px;
+    text-decoration: none;
+    border-radius: 20px;
+    margin: 135px 0px 0px -102px;
+    padding: 5px;
+    background-color: rgb(228, 189, 17);
+    color: black;
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px, rgba(17, 17, 26, 0.1) 0px 24px 80px;
+
+    
+}
+
+.container:hover #register_button {
+    opacity: 1;
+    border: 3px solid rgb(228, 189, 17);
+    
+}
+
+

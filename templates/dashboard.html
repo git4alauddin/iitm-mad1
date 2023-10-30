@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+</head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>dashboard</title>
@@ -40,13 +46,31 @@
 
     <!-----------------------user------------------------------->
     {% if current_user.role == 'user' %}
-        <ul>
+        <!-- <ul>
             <li>
                 {# for api hit -> namespace_class_name #}
                 <a href="{{ url_for('user.creator_register')}}">Register-as-creator</a>
 
             </li>
-        </ul>
+        </ul> -->
+
+        <div class="container">
+
+            <div id="info1">
+                Register as Creator 
+            </div>
+
+            <div id="info2">
+                Create new songs, albums and much more... 
+            </div>
+
+            <img id="headphone" src="{{ url_for('static', filename='images/headphone.svg') }}" alt="headphone">
+            
+            <a id="register_button" href="{{ url_for('user.creator_register')}}">Register</a>
+            
+        </div>
+        
+        
 
     {% endif %}
 
@@ -89,7 +113,7 @@
     
 
     <!-----------------------common------------------------------->
-    <hr><hr>
+    <br><br><hr>
     <h4><a style="color: rgb(5, 138, 205); text-decoration: none;" href="{{url_for('user.logout')}}">Logout</a></h4>
 </body>
 </html>

@@ -6,15 +6,17 @@
     <title>Create Playlist</title>
 </head>
 <body>
-    <h1>Create Playlist</h1>
+    <h1>PLAYLIST</h1>
 
     <!-- flash message section -->
-    {% with messages = get_flashed_messages() %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
-        <div class="alert alert-{{ messages[0][1] }}">
+        <div class="container">
             <ul>
-                {% for message in messages %}
-                    <li>{{ message }}</li>
+                {% for category, message in messages %}
+                    <div class="alert-{{ category }}">
+                        <li>{{ message }}</li>
+                    </div>
                 {% endfor %}
             </ul>
         </div>
@@ -23,14 +25,14 @@
 
     <h3>CREATE-PLAYLIST</h3>
 
-    <form method="POST" action="{{ url_for('playlist.create_playlist') }}">
+    <form class="container" method="POST" action="{{ url_for('playlist.create_playlist') }}">
 
         <div>
             <label for="title">Title:</label>
             <input type="text" id="title" name="title" placeholder="Title">
         </div><br>
 
-        <input type="submit" value="Create">
+        <input type="submit" value="Create" class="btn btn-primary">
     </form>
 
     <hr>

@@ -9,18 +9,18 @@
     <h1>HOME</h1>
     <hr><hr>
 
-   <!-- flash message section -->
+       <!-- flash message section -->
     {% with messages = get_flashed_messages() %}
     {% if messages %}
-    < class="alert alert-{{ messages[0][1] }}">
-        <ul>
-        {% for message in messages %}
-            <li>{{ message }}</li>
-        {% endfor %}
-        </ul>
-    </div>
+        <div class="alert alert-{{ messages[0][1] }}">
+            <ul>
+                {% for message in messages %}
+                    <li style="color: green;">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        </div>
     {% endif %}
-    {% endwith %}
+    {% endwith %}<hr>
 
 
     <ul>
