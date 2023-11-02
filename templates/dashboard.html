@@ -25,7 +25,7 @@
             <div class="right">
                 <a id="user_name" href="#">{{current_user.email}}</a>
                 {% if current_user.role == 'creator' %}
-                <a id="uploaded_songs" href="#">uploaded-songs</a>
+                <a id="uploaded_songs" href="{{ url_for('song.uploaded_songs') }}">uploaded-songs</a>
                 {% endif %}
                 <a id="profile" href="#">profile</a>
                 <a id="logout" href="{{url_for('user.logout')}}">logout</a>
@@ -38,6 +38,34 @@
     <!-- ---------------------contents ------------------------------>
     <div class="content">
         <div class="column left-column">
+            <div class="registration_card">
+                {% if current_user.role == 'user' %}
+                <!-- <ul>
+                    <li>
+                        {# for api hit -> namespace_class_name #}
+                        <a href="{{ url_for('user.creator_register')}}">Register-as-creator</a>
+        
+                    </li>
+                </ul> -->
+        
+                <div class="container">
+        
+                    <div class="info"id="info1">
+                        Register as Creator 
+                    </div>
+        
+                    <div class="info" id="info2">
+                        Create new songs, albums and much more... 
+                    </div>
+        
+                    <img id="headphone" src="{{ url_for('static', filename='images/headphone.svg') }}" alt="headphone">
+                    
+                    <a id="register_button" href="{{ url_for('user.creator_register')}}">Register</a>
+                    
+                </div>
+                {% endif %}
+            </div><hr>
+
             <div class="scroll_left">
                 <p>
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi, saepe? Doloremque, repudiandae ex esse recusandae quo rerum voluptatum deserunt neque nihil repellendus reiciendis similique aperiam excepturi totam ratione voluptas porro.
@@ -74,32 +102,25 @@
         </ul>
         {% endif %}
 
-        <!-------user----->
-        {% if current_user.role == 'user' %}
-        <!-- <ul>
-            <li>
-                {# for api hit -> namespace_class_name #}
-                <a href="{{ url_for('user.creator_register')}}">Register-as-creator</a>
+        <!-------------user----------------------->
+        <!---suggested_songs -->
+        <div class="playlists">
+            <h4>SONGS-4-U</h4>
+            <div class="playlist-container">
+                {% for suggested_song in suggested_songs %}
+                    <div class="playlist">
+                        
+                        <a id="playlist_title" href="{{ url_for('song.play_song', id=suggested_song.id) }}"><b>{{ suggested_song.title }}</b></a>
 
-            </li>
-        </ul> -->
-
-        <div class="container">
-
-            <div class="info"id="info1">
-                Register as Creator 
+                        <img id="playlist_img" src="{{ url_for('static', filename='images/music_node_2.svg') }}" alt="headphone">
+                    
+                        <a id="playlist_title" href="#"><b>by: {{ suggested_song.artist }}</b></a>
+                    </div>
+                {% endfor %}
             </div>
-
-            <div class="info" id="info2">
-                Create new songs, albums and much more... 
-            </div>
-
-            <img id="headphone" src="{{ url_for('static', filename='images/headphone.svg') }}" alt="headphone">
-            
-            <a id="register_button" href="{{ url_for('user.creator_register')}}">Register</a>
-            
         </div>
-        {% endif %}
+
+    
 
 
         <!-----creator--------->
@@ -111,83 +132,29 @@
             <li>
                 <a style="color: #034577; text-decoration: none;" href="{{ url_for('playlist.create_playlist') }}">create-playlist</a>
             </li>
-
-            <br><hr>
-            <li>
-                <a style="color: #034577; text-decoration: none;" href="{{ url_for('song.uploaded_songs') }}"><b>UPLOADED-SONG</b>S</a>
-            </li>
-        
-            <br><hr>
-            <h4>CREATED-PLAYLISTS</h4>
-            {% if not playlists %}
-                <h5 style="color: red;">No playlists! Create now from the option above!!</h5>
-            {% endif %}
-
-            {% for playlist in playlists %}
-                <ul>
-                    <li>
-                        <a style="color: #034577; text-decoration: none;" href="{{ url_for('playlist.add_songs', id=playlist.id) }}"><b>{{ playlist.title }}</b></a>
-
-                        <a style="color: #a40303; text-decoration: none;" href="{{ url_for('playlist.remove_playlist', id=playlist.id) }}">[ Delete ]</a>
-                    </li>
-                </ul>  
-            {% endfor %}
-            <br><br>
             
-        </ul>
-        {% endif %}
 
-        <div class="scroll">
-            <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci odio eius, deserunt rerum officiis cumque est ducimus aut fugit fugiat. Saepe vel quisquam quasi qui libero voluptate fugiat expedita aliquid.
-                Facilis iure sapiente iste eos commodi quam vitae perferendis ipsum! Mollitia ratione deleniti dignissimos doloribus animi illo commodi laborum, quo neque odio illum inventore corrupti quas placeat rerum atque pariatur.
-                Aliquam corporis incidunt alias perspiciatis expedita voluptatum nisi optio delectus, ullam cum, qui nostrum placeat? Voluptatibus, a expedita ipsum minus, nisi voluptas inventore quos quia, at cum asperiores voluptatum dolor.
-                Facilis, explicabo aliquam suscipit debitis praesentium quod perferendis molestiae aspernatur quas. Iusto necessitatibus quibusdam eum expedita ab, minima sint deleniti tempora omnis numquam sapiente modi reiciendis ipsam sequi delectus enim.
-                Soluta illo blanditiis delectus eaque libero, ea impedit quia sint corporis similique non voluptas nihil dolorum facere eius numquam est obcaecati dolore architecto? Nobis atque deleniti exercitationem quo suscipit assumenda.
-                Animi necessitatibus vitae debitis eius veritatis voluptatem maxime at voluptate saepe, quaerat asperiores enim, architecto officiis tempore impedit iure explicabo. Porro alias quis dolor, quia nesciunt excepturi odit voluptatibus ab.
-                Molestiae vel magnam repellendus voluptates dolore! Officiis, iure? Rem atque nam distinctio voluptates voluptatem incidunt, enim corporis maxime corrupti eveniet ipsum nemo quia, placeat cum dicta assumenda mollitia saepe dolores.
-                Ipsa inventore ipsam quas optio? Mollitia, expedita rerum dolorum quas a, qui quaerat praesentium assumenda veritatis possimus ipsa similique laborum corrupti incidunt pariatur. Incidunt provident deleniti, eveniet nam quasi velit!
-                Fuga possimus ad expedita vitae saepe iure illo veniam minus, earum ab consequuntur neque mollitia vel corrupti veritatis reprehenderit quod inventore voluptas exercitationem perferendis odio. Doloribus velit nihil harum animi.
-                Dolor veniam ut iusto quibusdam fugiat nihil pariatur unde porro a animi, excepturi voluptates quam? Deleniti amet maxime, tempore mollitia laboriosam repudiandae. Amet corrupti iure eius accusantium numquam eligendi voluptatem?
-                Quas nobis inventore doloribus vero laboriosam ab eum aliquid reprehenderit excepturi, earum sapiente corporis molestias. Voluptatem laudantium ex dolorem facere, id repellendus odit esse fugit! Ullam repellat eaque quia repudiandae.
-                Assumenda atque quam quod qui rem cupiditate temporibus ducimus laboriosam ut tempore, quidem minima tempora, alias accusamus. Sit tempora dolore, id sapiente, eaque, quia aperiam officiis ipsam animi mollitia labore?
-                Saepe odio sequi inventore possimus corrupti? Molestiae numquam rerum ab recusandae provident laudantium eius quia similique veniam corporis, a mollitia nostrum id sed illo possimus vel placeat rem consectetur odit.
-                Qui, laudantium. Vero repudiandae fugit dicta ex nobis officia illum, ipsam doloremque nostrum, itaque autem tempore, facere possimus mollitia quibusdam dolore eveniet ab libero quidem consectetur deserunt id magnam maxime!
-                Repellat odio distinctio sed iste assumenda, corporis perferendis facere ad nobis. Similique veniam explicabo accusamus consectetur fugit velit impedit commodi, cum ut. A sequi, numquam voluptatum hic deleniti quod quam.
-                Unde minima commodi rerum eius consequuntur! Temporibus veritatis, voluptas laudantium odit fugit repellat mollitia nobis modi nam consequuntur impedit assumenda tenetur illum quaerat officia ullam, facilis nesciunt perspiciatis unde architecto?
-                Atque, saepe ea qui debitis odit tenetur consequuntur mollitia vel necessitatibus, ab reiciendis natus maiores repellendus! Commodi voluptatibus enim perspiciatis suscipit aliquid facilis, aspernatur veritatis sit ipsum, quas dolor! Quisquam.
-                Omnis dignissimos commodi consectetur dolores tempora iusto sequi dolorem animi corrupti nam modi, illum quae corporis impedit provident esse in quisquam accusantium? Dolorum nesciunt ratione quae eum sit, quas repellat?
-                Mollitia dolores sunt quia odit hic magni maiores, cum repudiandae, recusandae officiis tenetur saepe animi deserunt quo minima autem impedit provident enim eius accusantium laboriosam exercitationem. Dignissimos, cupiditate nam. Maiores.
-                Recusandae in, tenetur temporibus illum odit quo animi, ea, voluptatibus aspernatur error mollitia sint aliquam. Velit magni repellat voluptatibus tempore a. Eius ab cupiditate alias doloribus quas maiores asperiores natus?
-                Accusantium, excepturi? Assumenda deserunt tenetur sunt sapiente quaerat consequuntur quos inventore cum iure vero nostrum, aliquid reprehenderit. Asperiores voluptatum neque aliquam rem ea quis magnam, commodi error ut cupiditate voluptatem?
-                Labore vitae ipsa magni inventore illum nulla animi magnam et unde corrupti, voluptate rerum id perferendis eveniet. Similique, perspiciatis voluptas delectus fuga deleniti sint? Officiis magni iste porro ducimus voluptatem.
-                Ex illum perspiciatis omnis doloribus atque. Dolores ut quae incidunt deserunt vero minus magni consectetur hic? Atque, officiis, quos nam sint rem reprehenderit aspernatur, et amet voluptate eum mollitia cumque.
-                Deserunt, voluptate! Veniam incidunt perferendis, tenetur, totam illum commodi nobis ipsum delectus architecto reiciendis animi impedit, sapiente nam assumenda vitae cumque quaerat. Ad, doloribus eos? Illum voluptate dolorum quod quia?
-                Possimus illum placeat nesciunt earum optio error quasi perferendis odit vitae vero, neque, aperiam saepe? A, mollitia consectetur rem quia fugiat officia quod dicta recusandae totam repudiandae fuga impedit enim.
-                Saepe laudantium dolore quas, a voluptas magni omnis facere quaerat fugiat! Id magni ipsa voluptate molestiae magnam soluta commodi provident reiciendis, placeat quia tempore asperiores adipisci, iusto odio dolorum ipsum!
-                Consectetur consequatur suscipit ullam voluptatibus, illum saepe rerum exercitationem ducimus repellat cumque odit recusandae amet. Mollitia culpa inventore obcaecati totam omnis! Vitae repellat saepe rerum obcaecati incidunt blanditiis aperiam eum?
-                Inventore soluta culpa incidunt sunt repellat, quos optio. Ad tempora, aperiam adipisci numquam vitae porro vero excepturi laudantium? Voluptatum asperiores necessitatibus debitis consequuntur atque odio corporis ullam sit quam adipisci.
-                Accusantium veniam soluta neque quam nulla vitae recusandae omnis, atque sequi saepe, dicta reprehenderit fugit modi voluptate explicabo iure magnam, quasi doloribus necessitatibus eligendi perspiciatis amet adipisci! Iure, praesentium temporibus.
-                Quasi laudantium architecto modi est debitis iusto alias ipsa facilis non, mollitia incidunt, iure cupiditate veritatis suscipit in cum rerum quisquam blanditiis eum ab voluptatibus! Doloremque voluptatum nisi sint eos?
-                Dolorem et quae ducimus aut culpa doloremque in! Officiis nobis eligendi, neque ipsa quisquam fugiat quas suscipit impedit sunt perferendis voluptatem error autem, qui minima repudiandae exercitationem cum harum nisi!
-                Facilis error dolore magnam nesciunt unde sint fugiat maiores reprehenderit? Accusamus unde qui neque perspiciatis itaque, commodi consequuntur, sunt earum debitis hic, assumenda enim saepe id similique illum aliquam quibusdam!
-                Totam unde, facere ex error voluptatibus ad impedit maxime eius mollitia natus labore vitae fugiat itaque sequi eaque quod esse provident distinctio adipisci praesentium dolore. Explicabo ducimus iste labore et!
-                Eaque tempora, iste non in iusto ipsa, aspernatur minus ad quae eveniet tenetur vitae dolores adipisci alias quod magni cumque nobis quos sint sed laboriosam accusamus rem aut maxime! Quos!
-                Consequuntur, corrupti molestiae. Illum aliquam unde praesentium deleniti excepturi consequuntur nostrum laudantium, voluptates dolorem dignissimos qui perspiciatis, laborum consequatur, cum beatae voluptatibus at temporibus. Eius expedita magnam dolores repellat unde?
-                Beatae quisquam in, alias quis dolor voluptatem nobis hic qui voluptate nam nulla, sunt ipsa, commodi omnis! Dolor inventore hic earum velit obcaecati tempora eveniet dolore fugiat rerum! Molestias, amet.
-                Dicta sunt commodi accusamus iste, quidem at, possimus assumenda quas praesentium quasi dolorem distinctio natus aliquid sed consectetur incidunt asperiores. Ea illo voluptatem facilis sit inventore maiores at excepturi quae.
-                Nihil ipsam neque autem laudantium quaerat minus nesciunt debitis ullam temporibus delectus, consequatur commodi, maxime unde pariatur iste! Ipsam molestiae exercitationem iure consectetur sunt, voluptatem fuga eius quasi nostrum asperiores?
-                Obcaecati voluptate ab doloribus est omnis consequatur quasi fugit vel ipsa voluptates impedit, excepturi vero itaque officiis molestiae alias quisquam neque dolore atque eaque dicta? Sit ea tempora corporis sunt?
-                Iusto vitae consequatur commodi tempora, sint iste ducimus laboriosam unde veniam totam. Similique vero reiciendis nihil quidem dignissimos expedita architecto velit? Facilis ratione explicabo quasi quaerat ea maxime nisi tenetur!
-                Voluptates, facere minus dicta repellat dolores delectus in, eum vero dolorum pariatur mollitia voluptate quidem cumque ullam accusantium possimus corporis fuga impedit? Quas vel sapiente laudantium, dicta aspernatur officiis quasi?
-                Ea illo ullam quod, deserunt placeat nobis! Mollitia, omnis ad obcaecati corrupti necessitatibus quisquam minima libero in provident, reprehenderit aliquam! Aperiam similique unde sed esse repellat sit molestiae sequi magni?
-                Excepturi, sed tenetur placeat culpa autem quos similique dolorem ipsum minus ad neque. Velit modi ipsum natus earum accusamus vitae quam dolores blanditiis iste, eveniet non accusantium eius maiores nobis!
-                Minima reprehenderit sapiente autem assumenda non inventore vitae, quod doloribus nobis! Ratione ab maiores possimus est excepturi reiciendis velit eveniet tenetur consectetur, nobis autem sint hic necessitatibus alias nihil rem.
-                Doloribus similique, maxime numquam accusamus libero eius possimus, laudantium necessitatibus praesentium at ex quasi, ullam officia sit provident quia voluptatem inventore. Dicta voluptatibus, recusandae ad dolore quis suscipit magnam cupiditate.
-                At hic dicta commodi debitis consequuntur quam suscipit vero libero facilis fugiat perspiciatis, laudantium accusantium! Animi quasi dolorum culpa, corrupti iusto, ab saepe exercitationem minus blanditiis eum, dignissimos ipsa! Recusandae!
-                Aspernatur, voluptatum voluptates ipsa nemo quaerat accusamus rerum odio in molestias animi praesentium, inventore asperiores est earum! Nostrum libero ea architecto suscipit, dolorem voluptatum consequatur 
-            </p>
-        </div>
+            <!-- -----------playlist--------------- -->
+            <hr>
+            <div class="playlists">
+                <h4>MY-PLAYLISTS</h4>
+                <div class="playlist-container">
+                    {% for playlist in playlists %}
+                        <div class="playlist">
+                            
+                            <a id="playlist_title" href="{{ url_for('playlist.add_songs', id=playlist.id) }}"><b>{{ playlist.title }}</b></a>
+
+                            <img id="playlist_img" src="{{ url_for('static', filename='images/music_node.svg') }}" alt="headphone">
+                                        
+                            <a id="delete_playlist" href="{{ url_for('playlist.remove_playlist', id=playlist.id) }}"><i class="fas fa-trash-alt"></i></a>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <!-- -----playlist ended ------------------->
+           
+        </ul>
+        {% endif %}<hr>
 
 
         </div>
@@ -196,7 +163,7 @@
 
     
     <!-- --------------------footer------------------------------ -->
-    <footer>
+    <footer style="background-color: rgb(74, 70, 70);">
         <div class="footer">
             <p>Copyright &copy; 2022. All rights reserved.</p>
             <p>Developed by: <a href="https://github.com/alauddinansari">Alauddin Ansari</a></p>

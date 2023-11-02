@@ -1,11 +1,19 @@
-
+body{
+    background-color: black;
+}
+.registration_card {
+    display: flex;
+    justify-content: center;
+}
 .container {
     background: rgb(251,202,63);
     background: radial-gradient(circle, rgba(251,202,63,1) 18%, rgba(252,146,70,1) 100%);
+
+
     display: inline block;
     text-align: center;
     margin: 50px;
-    width: 18%;
+    width: 37%;
     padding: 10px;
    
     border-radius: 22px;
@@ -83,6 +91,9 @@
 /* ---------------------------css for navbar------------------------ */
 
 .navbar {
+    background: black;
+    background: rgb(33,33,30);
+    background: linear-gradient(291deg, rgba(33,33,30,1) 0%, rgba(82,80,79,1) 82%);
     position: fixed;
     top: 0;
     left: 0;
@@ -91,7 +102,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 17px;
+    padding: 21px;
+    
 }
   
   .navbar .left,
@@ -116,6 +128,8 @@
   #search {
     padding: 8px;
     width: 200px;
+    border-radius: 18px;
+    border: none;
   }
   
   #profile,
@@ -130,6 +144,9 @@
 
 /* --------------------------audio player----------------------- */
 .audio_player {
+    background:black;
+    background: rgb(33,33,30);
+    background: linear-gradient(291deg, rgba(33,33,30,1) 0%, rgba(82,80,79,1) 82%);
     position: fixed;
     bottom: 0;
     left: 0;
@@ -184,20 +201,105 @@
 .content {
     display: flex;
     height: 100vh; /* Set the height of the content container */
+    
   }
   
   .left-column {
+    background: #333333;
+    background: rgb(33,33,30);
+    background: linear-gradient(291deg, rgba(33,33,30,1) 0%, rgba(82,80,79,1) 82%);
+    color:azure;
     flex: 30%;
-    background-color: #f2f2f2;
     overflow: hidden; /* Hide any content that exceeds the column */
     height: 100%; /* Ensure full height of the container */
+    margin-right: 5px;
+    margin-left: -8px;
+    border-radius: 6px;
   }
   
   .right-column {
+    background: rgb(33,33,30);
+    background: linear-gradient(291deg, rgba(33,33,30,1) 0%, rgba(82,80,79,1) 82%);
+    color:azure;
+    background: #333333;
     flex: 70%;
-    background-color: #e6e6e6;
     overflow-y: auto; /* Enable vertical scrollbar if content overflows */
     height: 100%; /* Ensure full height of the container */
+    border-radius: 6px;
+  }
+
+
+
+  /* -----------------css for the playlist----------------------- */
+  
+#playlist_img {
+    width: 109px;
+    height: 109px;
+    margin-bottom: 15px;}
+
+.playlist-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 10px;
+
+
+    }
+      
+.playlist {
+    background: rgb(33,33,30);
+    background: linear-gradient(291deg, rgba(33,33,30,1) 0%, rgba(82,80,79,1) 82%);
+    width: 87%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 50px;
+    margin: 16px;
+
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px, rgba(17, 17, 26, 0.1) 0px 24px 80px;
+
+    box-shadow: 5px 6px 21px -8px rgba(186,189,150,0.8);
+    -webkit-box-shadow: 5px 6px 21px -8px rgba(186,189,150,0.8);
+    -moz-box-shadow: 5px 6px 21px -8px rgba(186,189,150,0.8);
+    }
+#playlist_title {
+    font-size: 23px;
+    font-family: cursive;
+    color: rgb(16 163 140);
+    color: black;
+    border-radius: 17px;
+    margin: 4px;
+    padding: 7px;
+    border: 2px solid #5c635c;
+    text-decoration: none;
+}
+#delete_playlist {
+    
+
+    font-size: 35px;    
+    color: rgb(194, 44, 10);
+    text-decoration: none;
+}
+
+
+  
+/* For WebKit (Safari, Google Chrome, etc.) */
+::-webkit-scrollbar {
+    width: 12px; /* Set the width of the scrollbar */
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Set the color of the track */
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #2d2c13; /* Set the color of the scrollbar handle */
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Set the color when the scrollbar handle is hovered */
   }
   
   
