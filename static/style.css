@@ -1,19 +1,30 @@
+
 .container {
-    
+    background: rgb(251,202,63);
+    background: radial-gradient(circle, rgba(251,202,63,1) 18%, rgba(252,146,70,1) 100%);
     display: inline block;
     text-align: center;
-    margin: 10px;
+    margin: 50px;
     width: 18%;
     padding: 10px;
-    /* border: 2px solid green; */
+   
     border-radius: 22px;
 
     box-shadow: rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px, rgba(17, 17, 26, 0.1) 0px 24px 80px;
+
+    box-shadow: 5px 6px 21px -8px rgba(186,189,150,0.8);
+    -webkit-box-shadow: 5px 6px 21px -8px rgba(186,189,150,0.8);
+    -moz-box-shadow: 5px 6px 21px -8px rgba(186,189,150,0.8);
+
+    transition: opacity 0.5s ease;
+   
+
 }
 #info1 {
     font-size: 35px;
     font-family: cursive;
-    color: rgb(5, 138, 205);
+    color: rgb(16 163 140);
+    color: black;
     margin: 2px;
     padding: 2px;
 }
@@ -21,9 +32,13 @@
     font-size: 15px;
     font-family:cursive;
     color: rgb(5, 138, 205);
+    color: black;
     margin: 2px;
     padding: 2px;
     
+}
+.info {
+    transition: opacity 0.5s ease;
 }
 #headphone {
     width: 109px;
@@ -32,24 +47,157 @@
 }
 #register_button {
     opacity: 0;
-    transition: opacity 0.5s ease;
+    transition: opacity 0.5s ease, border-color 0.5s ease, display 0.5s ease, color 0.5s ease;
     position: absolute;
     font-size: 23px;
     text-decoration: none;
     border-radius: 20px;
-    margin: 135px 0px 0px -102px;
-    padding: 5px;
-    background-color: rgb(228, 189, 17);
+    margin: -46px 0px 0px -102px;
+    padding: 6px;
+    background: rgb(251,202,63);
+    background: orange;
     color: black;
     box-shadow: rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px, rgba(17, 17, 26, 0.1) 0px 24px 80px;
+
+    box-shadow: 5px 6px 21px -8px rgba(186,189,150,0.8);
+-webkit-box-shadow: 5px 6px 21px -8px rgba(186,189,150,0.8);
+-moz-box-shadow: 5px 6px 21px -8px rgba(186,189,150,0.8);
 
     
 }
 
 .container:hover #register_button {
     opacity: 1;
-    border: 3px solid rgb(228, 189, 17);
+    border: 2px solid black; 
+}
+.container:hover .info{
+    /* border: 2px solid black; */
     
+  opacity: 0.1;
 }
 
+#register_button:hover {
+    color:aliceblue;
+}
 
+/* ---------------------------css for navbar------------------------ */
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 17px;
+}
+  
+  .navbar .left,
+  .navbar .middle,
+  .navbar .right {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+  }
+  
+  .navbar a,
+  .navbar input {
+    color: white;
+    text-decoration: none;
+    padding: 8px;
+  }
+  
+  #home {
+    margin-right: 20px;
+  }
+  
+  #search {
+    padding: 8px;
+    width: 200px;
+  }
+  
+  #profile,
+  #user_name,
+  #uploaded_songs,
+  #logout {
+    margin-left: 20px;
+  }
+
+
+
+
+/* --------------------------audio player----------------------- */
+.audio_player {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.audio_player .song_info,
+.audio_player .player,
+.audio_player .add_to_playlist {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.audio_player h2 {
+    margin: 0;
+}
+
+.audio_player .player audio {
+    width: 100%;
+}
+
+.audio_player .add_to_playlist a {
+    padding: 8px 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.audio_player .add_to_playlist a:hover {
+    background-color: #45a049;
+}
+
+/* ----------------------css for the contents----------------------- */
+
+/* CSS for the content */
+.content {
+    display: flex;
+    height: 100vh; /* Set the height of the content container */
+  }
+  
+  .left-column {
+    flex: 30%;
+    background-color: #f2f2f2;
+    overflow: hidden; /* Hide any content that exceeds the column */
+    height: 100%; /* Ensure full height of the container */
+  }
+  
+  .right-column {
+    flex: 70%;
+    background-color: #e6e6e6;
+    overflow-y: auto; /* Enable vertical scrollbar if content overflows */
+    height: 100%; /* Ensure full height of the container */
+  }
+  
+  
