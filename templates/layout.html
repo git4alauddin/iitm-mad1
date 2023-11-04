@@ -3,6 +3,7 @@
 <head>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,7 +14,7 @@
     <nav>
         <div class="navbar">
             <div class="left">
-                <a id="home" href="{{ url_for('user.dashboard') }}">home</a>
+                <a id="home" href="{{ url_for('user.dashboard') }}"><i class="fas fa-home"></i> Home</a>
             </div>
             <div class="middle">
                 <input id="search" type="text" placeholder="search">
@@ -21,20 +22,36 @@
             <div class="right">
                 <a id="user_name" href="#">{{current_user.email}}</a>
                 {% if current_user.role == 'creator' %}
-                <a id="uploaded_songs" href="{{ url_for('song.uploaded_songs') }}">uploaded-songs</a>
+                <a id="uploaded_songs" href="{{ url_for('song.uploaded_songs') }}"><i class="fas fa-music"></i> Uploaded-songs</a>
                 {% endif %}
-                <a id="profile" href="#">profile</a>
-                <a id="logout" href="{{url_for('user.logout')}}">logout</a>
+                <a id="profile" href="#"><i class="fas fa-user"></i> Profile</a>
+                <a id="logout" href="{{url_for('user.logout')}}"><i class="fas fa-sign-out-alt"></i> Logout</a>
             </div>
         </div>
     </nav>
     
    
    <!-- ------------------------------------------------------contents ----------------------------------------------------------------->
-   <div class="content">
+    <div class="content">
     <div class="column left-column">
 
-        
+        <!-- registration_card -->
+        <div class="registration_card">
+            {% if current_user.role == 'user' %}
+            <div class="container">
+                <div class="info"id="info1">
+                    Register as Creator 
+                </div>
+                <div class="info" id="info2">
+                    Create new songs, albums and much more... 
+                </div>
+                <img id="headphone" src="{{ url_for('static', filename='images/headphone.svg') }}" alt="headphone">
+                <a id="register_button" href="{{ url_for('user.creator_register')}}">Register</a>
+            </div>
+            {% endif %}
+            
+            
+        </div>
 
         <ul class="link-list">
             <!-- Common Links -->
@@ -51,32 +68,13 @@
                     <a class="creator-link" href="{{url_for('album.create_album')}}">Create Album</a>
                 </li>
             {% endif %}
-        </ul><hr>
-
-      
-        
-        
-        
-
-        <!-- registration_card -->
-        <div class="registration_card">
-            {% if current_user.role == 'user' %}
-            <div class="container">
-                <div class="info"id="info1">
-                    Register as Creator 
-                </div>
-                <div class="info" id="info2">
-                    Create new songs, albums and much more... 
-                </div>
-                <img id="headphone" src="{{ url_for('static', filename='images/headphone.svg') }}" alt="headphone">
-                <a id="register_button" href="{{ url_for('user.creator_register')}}">Register</a>
-            </div>
-            {% endif %}
-
-            {% block form %}
-            {% endblock %}
+            <hr>
             
-        </div>
+        </ul>
+
+        {% block form %}
+        {% endblock %}
+
     </div>
 
     <div class="column right-column">
@@ -123,7 +121,7 @@
 
                         <a id="card_title" href="{{ url_for('song.play_song', id=suggested_song.id) }}"><b>{{ suggested_song.title }}: {{suggested_song.artist }}</b></a>
 
-                        <a id="card_title" href="#"><b>lyrics</b></a>
+                        <a id="card_title" href="#"><b><i class="fas fa-file-alt"> Lyrics</i></b></a>
 
                         
 
@@ -148,7 +146,7 @@
                     
                     <a id="card_title" href="{{ url_for('playlist.add_songs_to_playlist', id=playlist.id) }}"><b>{{ playlist.title }}</b></a>
                     
-                    <a id="delete_card" href="{{ url_for('playlist.remove_playlist', id=playlist.id) }}"><i class="fas fa-trash-alt"></i></a>
+                    <a id="delete-btn" href="{{ url_for('playlist.remove_playlist', id=playlist.id) }}">Delete <i class="fas fa-trash-alt"></i></a>
                 </div>
                 {% endfor %}
             </div>
@@ -177,7 +175,7 @@
 
                 <a id="card_title" href="{{ url_for('album.add_songs_to_album', id=album.id) }}"><b>{{ album.title }}</b></a>
                 
-                <a id="delete_card" href="{{ url_for('album.remove_album', id=album.id) }}"><i class="fas fa-trash-alt"></i></a>
+                <a id="delete-btn" href="{{ url_for('album.remove_album', id=album.id) }}">Delete <i class="fas fa-trash-alt"></i></a>
             </div>
             {% endfor %}
         </div>
@@ -185,18 +183,66 @@
     {% endif %}
 
 
+    <!-------------------------------------------- footer ---------------------------------------------------------->
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="contact-info">
+                <h4>Contact Us</h4>
+                <p>Email: info@mymusicapp.com</p>
+                <p>Phone: +1-555-123-4567</p>
+                <p>Address: 123 Music Street, City, Country</p>
+            </div>
+    
+            <div class="social-media">
+                <h4>Follow Us</h4>
+                <ul class="social-links">
+                    <li><a href="#"><i class="fab fa-facebook"></i></a></li>
+                    <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                    <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+                    <!-- Add more social media icons as needed -->
+                </ul>
+            </div>
+    
+            <div class="about">
+                <h4>About Us</h4>
+                <p>OurMusicApp is dedicated to providing the best music experience...</p>
+            </div>
+        </div>
+    
+        <div class="site-info">
+            <p>&copy; 2023 OurMusicApp. All rights reserved.</p>
+            <p>Developed by: <a href="https://github.com/alauddinansari">Alauddin Ansari <i class="fas fa-heart"></i></a></p>
+        </div>
+    </footer>
+    
+
     </div>
+
   </div>
 
      
 
-    <!-------------------------------------------- footer ---------------------------------------------------------->
-    <footer style="background-color: rgb(74, 70, 70);">
-        <div class="footer">
-            <p>Copyright &copy; 2022. All rights reserved.</p>
-            <p>Developed by: <a href="https://github.com/alauddinansari">Alauddin Ansari</a></p>
+    
+
+    <!----------------------------------------------virtual_player--------------------------------------------------->
+    {% block player %}
+        <div class="audio_player">
+            <div class="song_info">
+                <h2>----:-----</h2>
+            </div>
+
+            <div class ="player">
+                <audio controls autoplay>
+                    <source src="#" type="audio/mpeg">
+                </audio>
+            </div>
+        
+            <div class="add_to_playlist">
+                <a href="#">Rating</a>
+            </div>
         </div>
-    </footer>
+    {% endblock %}
+    
 
 
 </body>

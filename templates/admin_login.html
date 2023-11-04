@@ -1,38 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>login</title>
+    <title>Login</title>
+   
 </head>
 <body>
-    <h1>ADMIN-LOGIN</h1>
-    <a href="{{ url_for('index.home')}}">home</a>
-    <hr><hr>
+    <div class="logo">
+        <a href="{{ url_for('index.home')}}"><img src="{{ url_for('static', filename='images/logo.svg') }}" alt="logo"></a>
+    </div>
 
-    <!-- flash message section -->
-    {% with messages = get_flashed_messages() %}
+    <div class="form-container">
+
+        <!-- flash message section -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
-        <div class="alert alert-{{ messages[0][1] }}">
+        <div class="flash-container">
             <ul>
-                {% for message in messages %}
-                    <li>{{ message }}</li>
+                {% for category, message in messages %}
+                    <div class="alert-{{ category }}">
+                        <li>{{ message }}</li>
+                    </div>
                 {% endfor %}
             </ul>
-        </div><hr>
+        </div>
     {% endif %}
     {% endwith %}
 
+        
 
-    <form id=login_form action="{{url_for('auth.admin_login')}}" method="POST">
-        {{form.hidden_tag()}}
-        {{form.email}}
-        {{form.password}}
-        {{form.submit}}
-        <br><br>
-
-        <a href="{{ url_for('auth.user_login')}}">not an admin? user_login</a>
-    </form>
-
+        <form id="login_form" action="{{url_for('auth.user_login')}}" method="POST">
+            {{form.hidden_tag()}}
+            {{form.email}}
+            {{form.password}}
+            {{form.submit}}
+            <br><br>
+            <a href="{{ url_for('auth.user_login')}}">Not an admin? login as user</a>
+        </form>
+    </div>
 </body>
 </html>

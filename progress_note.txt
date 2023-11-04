@@ -6,3 +6,6 @@ to do
 post method handle if the song is alredy in the playlist 
 - there will be a suggestion resource for suggesting songs,
 ----------------------------------------------------------
+to do
+- handle the data type for release year of the album
+- handle if no playlist or album is created

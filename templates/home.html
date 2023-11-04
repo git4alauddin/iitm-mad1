@@ -1,38 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>index</title>
+    <title>Home</title>
 </head>
 <body>
-    <h1>HOME</h1>
-    <hr><hr>
+    <div class="logo">
+        <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="logo">
+        <h1>MUZIKA</h1>
+        <hr>
+        <h1 id="heading">Welcome to the New Music Era</h1>
+    </div>
 
-       <!-- flash message section -->
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-        <div class="alert alert-{{ messages[0][1] }}">
-            <ul>
-                {% for message in messages %}
-                    <li style="color: green;">{{ message }}</li>
-                {% endfor %}
+    <div class="full-container">
+
+        <div class="home-container">
+            <ul class="button-list">
+                <li><a href="/user_login">User Login</a></li>
+                <li><a href="/admin_login">Admin Login</a></li>
+                <li><a href="/register">Register</a></li>
             </ul>
         </div>
-    {% endif %}
-    {% endwith %}<hr>
-
-
-    <ul>
-        <li>
-           <a href="/user_login">user_login</a> 
-        </li>
-        <li>
-            <a href="/admin_login">admin_login</a>
-        </li>
-        <li>
-            <a href="/register">register</a>
-        </li>
-    </ul>
+    </div>
 </body>
 </html>

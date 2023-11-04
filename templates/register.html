@@ -1,41 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>register</title>
 </head>
 <body>
-    <h1>REGISTER</h1>
-    <a href="{{ url_for('index.home')}}">home</a>
-    <hr><hr>
+    <div class="logo">
+        <a href="{{ url_for('index.home')}}"><img src="{{ url_for('static', filename='images/logo.svg') }}" alt="logo"></a>
+        <h1>MUZIKA</h1>
+    </div>
 
+    <div id="heading">
+        Sign up to start listening...
+    </div>
 
-    <!-- flash message section -->
-    {% with messages = get_flashed_messages() %}
+    <div class="form-container">
+        
+        <!-- flash message section -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
-        <div class="alert alert-{{ messages[0][1] }}">
+        <div class="flash-container">
             <ul>
-                {% for message in messages %}
-                    <li>{{ message }}</li>
+                {% for category, message in messages %}
+                    <div class="alert-{{ category }}">
+                        <li>{{ message }}</li>
+                    </div>
                 {% endfor %}
             </ul>
-        </div><hr>
+        </div>
     {% endif %}
     {% endwith %}
+        
 
+        <form action="{{url_for('auth.register')}} " method="POST">
+            {{form.hidden_tag()}}
+            {{form.username}}
+            {{form.email}}
+            {{form.password}}
+            {{form.submit}}<br><br>
+        </form>
 
-    <form action="{{url_for('auth.register')}} " method="POST">
-        {{form.hidden_tag()}}
-        {{form.username}}
-        {{form.email}}
-        {{form.password}}
-        {{form.submit}}<br><br>
-
-        <a href="{{ url_for('auth.user_login')}}">alredy have an account?</a>
-    </form>
-    
-    
-
+        <div class="redirect">
+            <a href="{{ url_for('auth.user_login')}}">Alredy have an account?</a>
+        </div>
+    </div>
 </body>
 </html>

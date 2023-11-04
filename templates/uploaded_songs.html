@@ -1,48 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>uploaded_songs</title>
-</head>
-<body>
+{% extends 'layout.html' %}
 
-    <!-- flash message section -->
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-        <div class="alert alert-{{ messages[0][1] }}">
-            <ul>
-                {% for message in messages %}
-                    <li style="color: green;">{{ message }}</li>
-                {% endfor %}
-            </ul>
-        </div>
-    {% endif %}
-    {% endwith %}<hr>
+{% block body %}
 
-
-    <div>
-       <h1>UPLOADED-SONGS</h1>
-    <hr><hr>
-    </div>
-
+    <p id="heading">UPLOADED-SONGS</p>
     {% if not songs %}
-        <h5 style="color: red;">No songs added.. Add from the dashboard!!</h5>
+        <h5 style="color: red;">No songs! You can add from the suggestions below!!</h5>
+    {% else %}
+        <table class="content-table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Artist</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for song in songs %}
+                    <tr>
+                        <td><a class="song-link" href="{{ url_for('song.play_song', id=song.id) }}">{{ song.title }}</a></td>
+                        <td>{{ song.artist }}</td>
+                        <td><a id="delete-btn" href="{{ url_for('song.delete_song', id=song.id) }}">Delete <i class="fas fa-trash-alt"></i></a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     {% endif %}
-
-    {% for song in songs %}
-        <ul>
-            <li>
-                <a style="color: #034577; text-decoration: none;" href="{{ url_for('song.play_song', id=song.id) }}"><b>{{ song.title }} by: {{ song.artist }}</b>
-                </a>
-
-                <a style="color: #a40303; text-decoration: none;" href="{{ url_for('song.delete_song', id=song.id) }}">[ Delete ]</a>
-                
-            </li>
-        </ul>
-    {% endfor %}
-
-    <br><hr>
-    <a href="{{ url_for('user.dashboard') }}">dashboard</a>
-</body>
-</html>
+{% endblock %}
