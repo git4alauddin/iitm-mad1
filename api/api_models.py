@@ -39,3 +39,9 @@ album_model = api.model("Album", {
     "title": fields.String,
     "user_id": fields.String
 })
+
+album_input_model = api.model("AlbumInput", {
+    "id": fields.String,
+    "title": fields.String,
+    "release_year": fields.Integer
+})

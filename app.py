@@ -10,6 +10,7 @@ from views.user_view import bp_user
 from views.admin_view import bp_admin
 from views.song_view import bp_song
 from views.playlist_view import bp_playlist
+from views.album_view import bp_album
 
 # import resources
 from api.user_resource import ns_users
@@ -38,6 +39,7 @@ app.register_blueprint(bp_user)
 app.register_blueprint(bp_admin)
 app.register_blueprint(bp_song)
 app.register_blueprint(bp_playlist)
+app.register_blueprint(bp_album)
 
 # register namespaces
 api.add_namespace(ns_users)

@@ -1,48 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Playlist</title>
-</head>
-<body>
-    <h1>Create Playlist</h1>
+{% extends 'layout.html' %}
 
-    <!-- flash message section -->
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-        <div class="alert alert-{{ messages[0][1] }}">
-            <ul>
-                {% for message in messages %}
-                    <li>{{ message }}</li>
-                {% endfor %}
-            </ul>
+{% block form %}
+
+    <form class="upload-form" method="POST" action="{{ url_for('album.create_album') }}">
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" id="title" name="title" placeholder="Title" class="form-control">
         </div>
-    {% endif %}
-    {% endwith %}<hr>
-    
-
-    <form method="POST" action="{{ url_for('playlist.create_playlist') }}">
-
-        <div>
-            <label for="title">Title:</label>
-            <input type="text" id="title" name="title" placeholder="Title">
+        <div class="form-group">
+            <label for="release_year">Release Year</label>
+            <input type="text" id="release_year" name="release_year" placeholder="Release Year" class="form-control">
         </div>
 
-        genre
-
-        
-
-        <div>
-            <label>Songs:</label>
-            <br>
-            {% for song in songs %}
-                <input type="checkbox" id="song_{{ song.id }}" name="songs[]" value="{{ song.id }}">
-                <label for="song_{{ song.id }}">{{ song.title }}</label><br>
-            {% endfor %}
-        </div>
-
-        <input type="submit" value="Add">
+        <input type="submit" value="Create" class="btn btn-primary">
     </form>
+
+        <!-- player -->
+        <div class="audio_player">
+            <div class="song_info">
+                <h2>----:-----</h2>
+            </div>
+    
+            <div class ="player">
+                <audio controls autoplay>
+                    <source src="#" type="audio/mpeg">
+                </audio>
+            </div>
+            
+            <div class="add_to_playlist">
+                <a href="#">Playlist+</a>
+            </div>
+        </div>
+    
+       {% endblock %}
 </body>
 </html>

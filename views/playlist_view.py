@@ -10,10 +10,21 @@ bp_playlist = Blueprint('playlist', __name__)
 
 class CreatePlaylistView(MethodView):
     def get(self):
-        api_url = request.url_root + '/users/users/' + str(current_user.id) + '/playlists'
-        response = requests.get(api_url)
-        playlists = response.json()
-        return render_template('create_playlist.html', playlists=playlists)
+        #contents
+        api_url = request.url_root + 'users/users/' + str(current_user.id) + '/playlists'
+        p_response = requests.get(api_url)
+        api_url = request.url_root + 'songs/songs'
+        s_response = requests.get(api_url)
+        api_url = request.url_root + 'users/users/' + str(current_user.id) + '/albums'
+        a_response = requests.get(api_url)
+        
+        if s_response.status_code == 200:
+            suggested_songs = s_response.json()
+        if p_response.status_code == 200:
+            playlists = p_response.json()
+        if a_response.status_code == 200:
+            albums = a_response.json()
+        return render_template('create_playlist.html', playlists=playlists, suggested_songs=suggested_songs, albums=albums)
 
     def post(self):
         title = request.form.get('title')
@@ -64,7 +75,7 @@ class PlaylistAddSongsView(MethodView):
 
             suggested_songs = suggested_song_res.json()
 
-            return render_template('add_songs.html', songs=songs, playlist=playlist, suggested_songs=suggested_songs)
+            return render_template('add_songs_to_playlist.html', songs=songs, playlist=playlist, suggested_songs=suggested_songs)
         else:
             flash('Error fetching songs!', 'danger')
             return redirect(url_for('user.dashboard'))
@@ -81,8 +92,8 @@ class PlaylistAddSongsView(MethodView):
         else:
             # temporarily handled the unique constrain error
             flash('Song is already in the playlist!', 'danger')
-        return redirect(url_for('playlist.add_songs', id=id))
-bp_playlist.add_url_rule('/add_songs/<string:id>', view_func=PlaylistAddSongsView.as_view('add_songs'))
+        return redirect(url_for('playlist.add_songs_to_playlist', id=id))
+bp_playlist.add_url_rule('/add_songs_to_playlist/<string:id>', view_func=PlaylistAddSongsView.as_view('add_songs_to_playlist'))
 
 # view remove songs of a playlist
 class PlaylistRemoveSongsView(MethodView):
@@ -97,6 +108,6 @@ class PlaylistRemoveSongsView(MethodView):
         else:
             flash('Error removing song from playlist!', 'danger')
 
-        return redirect(url_for('playlist.add_songs', id=id))
+        return redirect(url_for('playlist.add_songs_to_playlist', id=id))
 
-bp_playlist.add_url_rule('/remove_songs/<string:id>', view_func=PlaylistRemoveSongsView.as_view('remove_songs'))
+bp_playlist.add_url_rule('/playlist_remove_songs/<string:id>', view_func=PlaylistRemoveSongsView.as_view('playlist_remove_songs'))

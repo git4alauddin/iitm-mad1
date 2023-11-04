@@ -17,7 +17,22 @@ bp_song = Blueprint('song', __name__)
 class UploadSongView(MethodView):
     def get(self):
         form = MusicForm()
-        return render_template('upload_song.html', form=form)
+
+        #contents
+        api_url = request.url_root + 'users/users/' + str(current_user.id) + '/playlists'
+        p_response = requests.get(api_url)
+        api_url = request.url_root + 'songs/songs'
+        s_response = requests.get(api_url)
+        api_url = request.url_root + 'users/users/' + str(current_user.id) + '/albums'
+        a_response = requests.get(api_url)
+        
+        if s_response.status_code == 200:
+            suggested_songs = s_response.json()
+        if p_response.status_code == 200:
+            playlists = p_response.json()
+        if a_response.status_code == 200:
+            albums = a_response.json()
+        return render_template('upload_song.html', form=form, playlists=playlists, suggested_songs=suggested_songs, albums=albums)
     @creator_required
     def post(self):
         form = MusicForm()
@@ -37,6 +52,8 @@ class UploadSongView(MethodView):
                 audio_file_path = os.path.join(current_app.config['SONG_UPLOAD_FOLDER'], new_file_name)
                 audio_file.save(audio_file_path)
 
+                
+
                 # extract remaining song info
                 genre = form.genre.data
                 lyrics = form.lyrics.data
@@ -46,6 +63,7 @@ class UploadSongView(MethodView):
                     title=title,
                     artist=artist,
                     genre=genre,  
+                    
                     creator_id=creator_id,  
                     lyrics=lyrics
                     )
@@ -80,7 +98,22 @@ class PlaySongView(MethodView):
         song_file = SongFile.query.filter_by(song_id=id).first()
         song.hits += 1
         db.session.commit()
-        return render_template('play_song.html', song=song, song_file=song_file)
+
+        #contents
+        api_url = request.url_root + 'users/users/' + str(current_user.id) + '/playlists'
+        p_response = requests.get(api_url)
+        api_url = request.url_root + 'songs/songs'
+        s_response = requests.get(api_url)
+        api_url = request.url_root + 'users/users/' + str(current_user.id) + '/albums'
+        a_response = requests.get(api_url)
+        
+        if s_response.status_code == 200:
+            suggested_songs = s_response.json()
+        if p_response.status_code == 200:
+            playlists = p_response.json()
+        if a_response.status_code == 200:
+            albums = a_response.json()
+        return render_template('play_song.html', song=song, song_file=song_file, playlists=playlists, suggested_songs=suggested_songs, albums=albums)
 bp_song.add_url_rule('/play_song/<string:id>', view_func=PlaySongView.as_view('play_song'))
 
 # view uploaded_songs

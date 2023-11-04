@@ -13,7 +13,6 @@ class Song(db.Model):
     id = db.Column(db.String(36), primary_key=True, default=generate_uuid, unique=True)
     title = db.Column(db.String(100), nullable=False)
     artist = db.Column(db.String(100), nullable=False)
-    date_created = db.Column(db.Date, default=generate_date, nullable=False)
     lyrics = db.Column(db.Text)
     genre = db.Column(db.String(50))
     rating = db.Column(db.Float, default=0)
@@ -30,7 +29,7 @@ class SongFile(db.Model):
 class Album(db.Model):
     id = db.Column(db.String(36), primary_key=True, default=generate_uuid, unique=True)
     title = db.Column(db.String(100), nullable=False)
-    release_date = db.Column(db.Date, nullable=False)
+    release_year = db.Column(db.Integer, nullable=False)
     user_id = db.Column(db.String(36), db.ForeignKey('user.id'), nullable=False)
     hits = db.Column(db.Integer, default=0)
     songs = db.relationship('Song', secondary='album_songs', backref='albums')

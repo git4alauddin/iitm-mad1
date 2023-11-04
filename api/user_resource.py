@@ -1,8 +1,8 @@
 from flask_restx import Resource, Namespace
 from models.user_model import User
-from models.music_model import Playlist, Song
+from models.music_model import Playlist, Song, Album
 from flask_login import current_user
-from api.api_models import user_model, user_input_model, playlist_model, song_model
+from api.api_models import user_model, user_input_model, playlist_model, song_model, album_model
 from decorators.role_decorator import admin_required, user_required
 from extensions.extension import db
 
@@ -37,6 +37,13 @@ class UserPlaylistApi(Resource):
     def get(self, id):
         playlists = Playlist.query.filter_by(user_id=id).all()
         return playlists
+
+@ns_users.route('/users/<string:id>/albums')
+class UserAlbumApi(Resource):
+    @ns_users.marshal_with(album_model)
+    def get(self, id):
+        albums = Album.query.filter_by(user_id=id).all()
+        return albums
     
 @ns_users.route('/users/<string:id>/songs')
 class UserSongApi(Resource):

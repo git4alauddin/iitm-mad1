@@ -1,44 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Playlist</title>
-</head>
-<body>
-    <h1>PLAYLIST</h1>
+{% extends 'layout.html' %}
 
-    <!-- flash message section -->
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-        <div class="container">
-            <ul>
-                {% for category, message in messages %}
-                    <div class="alert-{{ category }}">
-                        <li>{{ message }}</li>
-                    </div>
-                {% endfor %}
-            </ul>
+{% block form %}
+
+    <form class="upload-form" method="POST" action="{{ url_for('playlist.create_playlist') }}">
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" id="title" name="title" placeholder="Title" class="form-control">
         </div>
-    {% endif %}
-    {% endwith %}<hr>
-
-    <h3>CREATE-PLAYLIST</h3>
-
-    <form class="container" method="POST" action="{{ url_for('playlist.create_playlist') }}">
-
-        <div>
-            <label for="title">Title:</label>
-            <input type="text" id="title" name="title" placeholder="Title">
-        </div><br>
 
         <input type="submit" value="Create" class="btn btn-primary">
     </form>
 
-    <hr>
-    <a href="{{ url_for('song.upload_song') }}">upload-song</a>
-    <br>
-    <a href="{{ url_for('user.dashboard') }}">dashboard</a>
-
+        <!-- player -->
+        <div class="audio_player">
+            <div class="song_info">
+                <h2>----:-----</h2>
+            </div>
+    
+            <div class ="player">
+                <audio controls autoplay>
+                    <source src="#" type="audio/mpeg">
+                </audio>
+            </div>
+            
+            <div class="add_to_playlist">
+                <a href="#">Playlist+</a>
+            </div>
+        </div>
+    
+       {% endblock %}
 </body>
 </html>

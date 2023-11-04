@@ -15,11 +15,16 @@ class DashboardView(MethodView):
         p_response = requests.get(api_url)
         api_url = request.url_root + 'songs/songs'
         s_response = requests.get(api_url)
+        api_url = request.url_root + 'users/users/' + str(current_user.id) + '/albums'
+        a_response = requests.get(api_url)
+        
         if s_response.status_code == 200:
             suggested_songs = s_response.json()
         if p_response.status_code == 200:
             playlists = p_response.json()
-        return render_template('dashboard.html', playlists=playlists, suggested_songs=suggested_songs)
+        if a_response.status_code == 200:
+            albums = a_response.json()
+        return render_template('dashboard.html', playlists=playlists, suggested_songs=suggested_songs, albums=albums)
 bp_user.add_url_rule('/dashboard', view_func=DashboardView.as_view('dashboard'))
 
 # view logout
