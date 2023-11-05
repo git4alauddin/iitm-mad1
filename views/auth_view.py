@@ -1,14 +1,15 @@
 # imports
 from sqlalchemy.exc import IntegrityError
-from flask import Blueprint, render_template, redirect, url_for, flash
+from flask import Blueprint, render_template, redirect, url_for, flash,request
 from flask.views import MethodView
-
+import requests
 from models.user_model import User, Admin
 from forms.auth_form import RegisterForm, LoginForm
 
 from flask_login import login_user, login_required, logout_user
 
 from extensions.extension import db, bcrypt
+
 
 
 #------------------------------------blueprint_auth---------------------------------------#
@@ -19,7 +20,13 @@ class RegisterView(MethodView):
     
     def get(self):
         form = RegisterForm()
-        return render_template('register.html', form=form)
+
+        # contents
+        api_url = request.url_root + 'songs/songs'
+        s_response = requests.get(api_url)
+        if s_response.status_code == 200:
+            suggested_songs = s_response.json()
+        return render_template('register.html', form=form, suggested_songs=suggested_songs)
     
     def post(self):
         form = RegisterForm()
@@ -43,7 +50,13 @@ bp_auth.add_url_rule('/register', view_func=RegisterView.as_view('register'))
 class UserLoginView(MethodView):
     def get(self):
         form = LoginForm()
-        return render_template('user_login.html', form=form)
+
+        # contents
+        api_url = request.url_root + 'songs/songs'
+        s_response = requests.get(api_url)
+        if s_response.status_code == 200:
+            suggested_songs = s_response.json()
+        return render_template('user_login.html', form=form, suggested_songs=suggested_songs)
     
     def post(self):
         form = LoginForm()
@@ -64,7 +77,13 @@ bp_auth.add_url_rule('/user_login', view_func=UserLoginView.as_view('user_login'
 class AdminLoginView(MethodView):
     def get(self):
         form = LoginForm()
-        return render_template('admin_login.html', form=form)
+
+        # contents
+        api_url = request.url_root + 'songs/songs'
+        s_response = requests.get(api_url)
+        if s_response.status_code == 200:
+            suggested_songs = s_response.json()
+        return render_template('admin_login.html', form=form, suggested_songs=suggested_songs)
     
     def post(self):
         form = LoginForm()

@@ -11,24 +11,42 @@
 </head>
 <body>
     <!----------------------------------------------- navbar ----------------------------------------------------------->
-    <nav>
-        <div class="navbar">
-            <div class="left">
-                <a id="home" href="{{ url_for('user.dashboard') }}"><i class="fas fa-home"></i> Home</a>
+    {% block navbar %}
+        <nav>
+            <div class="navbar">
+                <div class="left">
+                    {% if current_user.is_authenticated %}
+                    <a id="home" href="{{ url_for('user.dashboard') }}"><i class="fas fa-home"></i> Home</a>
+                    {% endif %}
+
+                    {% if not current_user.is_authenticated %}
+                    <a id="home" href="{{ url_for('index.home') }}"><i class="fas fa-home"></i> Home</a>
+                    <a id="login" href="{{ url_for('auth.user_login') }}"><i class="fas fa-sign-in-alt"></i> User_Login</a>
+                    {% endif %}
+                </div>
+                <div class="middle">
+                    <input id="search" type="text" placeholder="search">
+                </div>
+                <div class="right">
+                    <a id="user_name" href="#">{{current_user.email}}</a>
+                    {% if current_user.role == 'creator' %}
+                    <a id="uploaded_songs" href="{{ url_for('song.uploaded_songs') }}"><i class="fas fa-music"></i> Uploaded-songs</a>
+                    {% endif %}
+                    {% if current_user.is_authenticated %}
+                        <a id="profile" href="#"><i class="fas fa-user"></i> Profile</a>
+                        <a id="logout" href="{{url_for('user.logout')}}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    {% endif %}
+
+                    {% if not current_user.is_authenticated %}
+                    <a id="login" href="{{ url_for('auth.admin_login') }}"><i class="fas fa-sign-in-alt"></i> Admin_Login</a>
+                    <a id="signup" href="{{ url_for('auth.register') }}"><i class="fas fa-user-plus"></i> Signup</a>
+                    {% endif %}
+                    
+                </div>
             </div>
-            <div class="middle">
-                <input id="search" type="text" placeholder="search">
-            </div>
-            <div class="right">
-                <a id="user_name" href="#">{{current_user.email}}</a>
-                {% if current_user.role == 'creator' %}
-                <a id="uploaded_songs" href="{{ url_for('song.uploaded_songs') }}"><i class="fas fa-music"></i> Uploaded-songs</a>
-                {% endif %}
-                <a id="profile" href="#"><i class="fas fa-user"></i> Profile</a>
-                <a id="logout" href="{{url_for('user.logout')}}"><i class="fas fa-sign-out-alt"></i> Logout</a>
-            </div>
-        </div>
-    </nav>
+        </nav>
+    {% endblock %}
+   
     
    
    <!-- ------------------------------------------------------contents ----------------------------------------------------------------->
@@ -36,7 +54,8 @@
     <div class="column left-column">
 
         <!-- registration_card -->
-        <div class="registration_card">
+        {% block creator_register_card %}
+           <div class="registration_card">
             {% if current_user.role == 'user' %}
             <div class="container">
                 <div class="info"id="info1">
@@ -48,54 +67,68 @@
                 <img id="headphone" src="{{ url_for('static', filename='images/headphone.svg') }}" alt="headphone">
                 <a id="register_button" href="{{ url_for('user.creator_register')}}">Register</a>
             </div>
-            {% endif %}
+            {% endif %} 
+        {% endblock %}
+        
             
             
         </div>
 
-        <ul class="link-list">
-            <!-- Common Links -->
-            <li class="card common-card">
-                <a class="common-link" href="{{ url_for('playlist.create_playlist') }}">Create Playlist</a>
-            </li>
-        
-            <!-- Creator Links -->
-            {% if current_user.role == 'creator' %}
-                <li class="card creator-card">
-                    <a class="creator-link" href="/upload_song">Upload Song</a>
-                </li>
-                <li class="card creator-card">
-                    <a class="creator-link" href="{{url_for('album.create_album')}}">Create Album</a>
-                </li>
-            {% endif %}
-            <hr>
-            
-        </ul>
 
-        {% block form %}
+        {% block link_card %}
+            <ul class="link-list">
+                <!-- common -->
+                {% if current_user.role == 'user' or current_user.role == 'creator' %}
+                    <li class="card common-card">
+                        <a class="common-link" href="{{ url_for('playlist.create_playlist') }}">Create Playlist</a>
+                    </li>
+                {% endif %}
+            
+                <!--creator -->
+                {% if current_user.role == 'creator' %}
+                    <li class="card creator-card">
+                        <a class="creator-link" href="/upload_song">Upload Song</a>
+                    </li>
+                    <li class="card creator-card">
+                        <a class="creator-link" href="{{url_for('album.create_album')}}">Create Album</a>
+                    </li>
+                {% endif %}
+            </ul>
         {% endblock %}
+        
+
+        {% block post_login_form %}
+        {% endblock %}
+
+        {% block pre_login_form %}
+        {% endblock %}
+
+
 
     </div>
 
     <div class="column right-column">
 
     <!-- flash message section -->
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-        <div class="flash-container">
-            <ul>
-                {% for category, message in messages %}
-                    <div class="alert-{{ category }}">
-                        <li>{{ message }}</li>
-                    </div>
-                {% endfor %}
-            </ul>
-        </div>
-    {% endif %}
-    {% endwith %}<br>
+    {% block flash %}
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-container">
+                    <ul>
+                        {% for category, message in messages %}
+                            <div class="alert-{{ category }}">
+                                <li>{{ message }}</li>
+                            </div>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        {% endwith %}<br>
+    {% endblock %}
+    
 
-    {% block body %}
-        {% endblock %}
+    {% block content %}
+    {% endblock %}
 
     <!---admin------->
     {% if current_user.role == 'admin' %}
@@ -108,9 +141,10 @@
     </ul>
     {% endif %}
 
-    <!-- user and creator common in both -->
+    
     <!---suggested_songs -->
-    {% if current_user.role == 'user' or current_user.role == 'creator' %}
+    {% block suggested_song %}
+        {% if current_user.role != 'admin' %}
         <div class="cards">
             <p id="heading">SONGS-4-U</p>
             <div class="card-container" id="song_card">
@@ -130,29 +164,34 @@
                 {% endfor %}
             </div>
         </div>
+        {% endif %}
+    {% endblock %}
+    
         
         
         
         
         <!-- -----------playlist--------------- -->
-        
-        <div class="cards">
-            <p id="heading">MY-PLAYLIST</p>
-            <div class="card-container">
-                {% for playlist in playlists %}
-                <div class="card">
+        {% block playlist %}
+            {% if current_user.role == 'user' or current_user.role == 'creator' %}  
+                <div class="cards">
+                    <p id="heading">MY-PLAYLIST</p>
+                    <div class="card-container">
+                        {% for playlist in playlists %}
+                        <div class="card">
 
-                    <img id="card_img" src="{{ url_for('static', filename='images/music_node_2.svg') }}" alt="image">
-                    
-                    <a id="card_title" href="{{ url_for('playlist.add_songs_to_playlist', id=playlist.id) }}"><b>{{ playlist.title }}</b></a>
-                    
-                    <a id="delete-btn" href="{{ url_for('playlist.remove_playlist', id=playlist.id) }}">Delete <i class="fas fa-trash-alt"></i></a>
+                            <img id="card_img" src="{{ url_for('static', filename='images/music_node_2.svg') }}" alt="image">
+                            
+                            <a id="card_title" href="{{ url_for('playlist.add_songs_to_playlist', id=playlist.id) }}"><b>{{ playlist.title }}</b></a>
+                            
+                            <a id="delete-btn" href="{{ url_for('playlist.remove_playlist', id=playlist.id) }}">Delete <i class="fas fa-trash-alt"></i></a>
+                        </div>
+                        {% endfor %}
+                    </div>
                 </div>
-                {% endfor %}
-            </div>
-        </div>
+            {% endif %}
+        {% endblock %}
         
-    {% endif %}
     <!-------------user----------------------->
     
     
@@ -162,36 +201,38 @@
 
     <!-----creator--------->
     <!-- album -->
+    {% block album %}
+        {% if current_user.role == 'creator' %}
+            <div class="cards">
+                <p id="heading">MY-ALBUMS</p>
+                <div class="card-container">
+                    {% for album in albums %}
+                    <div class="card">
+                        
+                        <img id="card_img" src="{{ url_for('static', filename='images/music_node_2.svg') }}" alt="image">
 
-    {% if current_user.role == 'creator' %}
-    
-    <div class="cards">
-        <p id="heading">MY-ALBUMS</p>
-        <div class="card-container">
-            {% for album in albums %}
-            <div class="card">
-                
-                <img id="card_img" src="{{ url_for('static', filename='images/music_node_2.svg') }}" alt="image">
-
-                <a id="card_title" href="{{ url_for('album.add_songs_to_album', id=album.id) }}"><b>{{ album.title }}</b></a>
-                
-                <a id="delete-btn" href="{{ url_for('album.remove_album', id=album.id) }}">Delete <i class="fas fa-trash-alt"></i></a>
+                        <a id="card_title" href="{{ url_for('album.add_songs_to_album', id=album.id) }}"><b>{{ album.title }}</b></a>
+                        
+                        <a id="delete-btn" href="{{ url_for('album.remove_album', id=album.id) }}">Delete <i class="fas fa-trash-alt"></i></a>
+                    </div>
+                    {% endfor %}
+                </div>
             </div>
-            {% endfor %}
-        </div>
-    </div>
-    {% endif %}
+        {% endif %}
+    {% endblock %}
+    
 
 
     <!-------------------------------------------- footer ---------------------------------------------------------->
-    <footer class="site-footer">
-        <div class="footer-content">
-            <div class="contact-info">
-                <h4>Contact Us</h4>
-                <p>Email: info@mymusicapp.com</p>
-                <p>Phone: +1-555-123-4567</p>
-                <p>Address: 123 Music Street, City, Country</p>
-            </div>
+    {% block footer %}
+        <footer class="site-footer">
+            <div class="footer-content">
+                <div class="contact-info">
+                    <h4>Contact Us</h4>
+                    <p>Email: info@mymusicapp.com</p>
+                    <p>Phone: +1-555-123-4567</p>
+                    <p>Address: 123 Music Street, City, Country</p>
+                </div>
     
             <div class="social-media">
                 <h4>Follow Us</h4>
@@ -214,6 +255,8 @@
             <p>Developed by: <a href="https://github.com/alauddinansari">Alauddin Ansari <i class="fas fa-heart"></i></a></p>
         </div>
     </footer>
+    {% endblock %}
+    
     
 
     </div>
