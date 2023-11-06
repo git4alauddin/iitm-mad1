@@ -1,0 +1,16 @@
+{% extends 'layout.html' %}
+{% block creator_stats %}
+    <br><br><br>
+    <div class="grid-container">
+        {% for stat in stats_data %}
+            <div class="stat-container">
+                <div class="stat_heading">
+                    <h1>{{ stat['heading'] }}</h1>
+                </div>
+                <div class="stat_data">
+                    <h1>{{ stat['total'] }}</h1>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

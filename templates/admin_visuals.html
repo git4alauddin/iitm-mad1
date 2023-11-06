@@ -1,0 +1,112 @@
+{% extends 'layout.html' %}
+{% block admin_visuals %}
+    <div class="chart-container">
+        <div class="chart">
+            <h2>Statistics Summary</h2>
+            <canvas id="barChart" width="400" height="200"></canvas>
+        </div>
+
+        <div class="chart">
+            <h2>Distribution of Categories</h2>
+            <canvas id="pieChart" width="400" height="200"></canvas>
+        </div>
+    </div>
+
+    <style>
+        .chart-container {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+        
+        .chart {
+            text-align: center;
+            padding: 20px;
+            background: #1f1f1f;
+            color: #FFFFFF;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 45%;
+        }
+        
+        h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+        }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Convert Jinja2 variables into JavaScript variables
+        var labels = JSON.parse('{{ labels | tojson | safe }}');
+        var values = JSON.parse('{{ values | tojson | safe }}');
+
+        var ctxBar = document.getElementById('barChart').getContext('2d');
+        var barChart = new Chart(ctxBar, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Count',
+                    data: values,
+                    backgroundColor: 'rgba(54, 162, 235, 0.7)' // Adjusted bar color for dark theme
+                }]
+            },
+            options: {
+                animation: {
+                    duration: 2000,
+                    easing: 'easeInOutQuart'
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        var ctxPie = document.getElementById('pieChart').getContext('2d');
+        var pieChart = new Chart(ctxPie, {
+            type: 'pie',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: values,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.7)',
+                        'rgba(54, 162, 235, 0.7)',
+                        'rgba(255, 206, 86, 0.7)',
+                        'rgba(142, 94, 162, 0.7)',
+                        'rgba(60, 186, 159, 0.7)'
+                    ],
+                    borderColor: '#ffffff',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                animation: {
+                    duration: 1500,
+                    easing: 'easeInOutCubic'
+                }
+            }
+        });
+    </script>
+{% endblock %}
+
+{% block admin_stats %}
+    <br>
+    <h1 id="heading">STATS GLANCE</h1>
+    <br><br><br>
+    <div class="grid-container">
+        {% for stat in stats_data %}
+            <div class="stat-container">
+                <div class="stat_heading">
+                    <h1>{{ stat['heading'] }}</h1>
+                </div>
+                <div class="stat_data">
+                    <h1>{{ stat['total'] }}</h1>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

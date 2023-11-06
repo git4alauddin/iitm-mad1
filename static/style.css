@@ -387,7 +387,7 @@ label {
   }
 }
 .upload-form {
-  animation: slide-in 1.6s forwards;
+  animation: slide-in 1.3s forwards;
 }
 
 
@@ -523,4 +523,58 @@ a:hover {
 #brand_name .beat {
   display: inline-block;
   animation: beatAnimation 2.5s 2; 
+}
+
+/* ------------------------------------stat_card------------------------------------------------ */
+/* Style for dark theme */
+/* Style for dark theme */
+.grid-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  color: #fff; /* Text color */
+}
+
+.stat-container {
+  width: calc(50% - 20px); /* Adjust width based on the space required, considering margins */
+  background: #333; /* Background color */
+  padding: 20px;
+  margin-bottom: 20px;
+  box-sizing: border-box;
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Box shadow for a raised effect */
+  margin: 10px;
+  margin-top: 9px;
+  transition: all 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.stat-container:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Box shadow on hover */
+  transform: translateY(-5px); /* Lift the card slightly on hover */
+}
+
+.stat_heading h1 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.stat_data h1 {
+  margin: 0;
+  font-size: 36px;
+}
+
+/* Animation for card appearance */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.stat-container {
+  animation: fadeIn 1.3s ease-in-out; /* Apply the fadeIn animation */
 }
