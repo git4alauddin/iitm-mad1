@@ -16,11 +16,11 @@
             <div class="navbar">
                 <div class="left">
                     {% if current_user.is_authenticated %}
-                    <a id="home" href="{{ url_for('user.dashboard') }}"><i class="fas fa-home"></i> Home</a>
+                    <a id="home" href="{{ url_for('user.dashboard') }}"><img id="logo" src="{{ url_for('static', filename='images/beetle_1.svg') }}" style="height: 50px; width: 50px"></a>
                     {% endif %}
 
                     {% if not current_user.is_authenticated %}
-                    <a id="home" href="{{ url_for('index.home') }}"><i class="fas fa-home"></i> Home</a>
+                    <a id="home" href="{{ url_for('index.home') }}"><img id="logo" src="{{ url_for('static', filename='images/beetle_1.svg') }}" style="height: 50px; width: 50px"></a>
                     <a id="login" href="{{ url_for('auth.user_login') }}"><i class="fas fa-sign-in-alt"></i> User_Login</a>
                     {% endif %}
                 </div>
@@ -51,6 +51,7 @@
     <div class="content">
         <!------------------------------------ left col of the content --------------------------------------->
         <div class="column left-column">
+
             <!-- registration card -->
             {% block creator_register_card %}
                 <div class="registration_card">
@@ -177,14 +178,14 @@
                     <div class="cards">
                         <p id="heading">MY-ALBUMS</p>
                         <div class="card-container">
-                            {% if albums %}
+                            {% if albums | length > 0 %}
                                 {% for album in albums %}
                                     <div class="card">                               
                                         <img id="card_img" src="{{ url_for('static', filename='images/music_node_2.svg') }}" alt="image">
                                         <a id="card_title" href="{{ url_for('album.add_songs_to_album', id=album.id) }}"><b>{{ album.title }}</b></a>
                                         <a id="delete-btn" href="{{ url_for('album.remove_album', id=album.id) }}">Delete <i class="fas fa-trash-alt"></i></a>
                                     </div>
-                            {% endfor %}
+                                {% endfor %}
                             {% else %}
                                 <ul class="link-list">
                                     {% if current_user.role == 'creator' %}

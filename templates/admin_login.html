@@ -16,3 +16,19 @@
         <a href="{{ url_for('auth.user_login')}}">Not an admin? login as user</a>
     </form>
 {% endblock %}
+
+{% block branding %}
+    <div class="logo">
+        <h1 id="heading" style="color: rgb(220, 94, 40); font-size: 149px;">
+            <span id="brand_name">
+                <span class="beat">B</span>
+                <span class="beat">E</span>
+                <span class="beat">A</span>
+                <span class="beat">T</span>
+                <span class="beat">T</span>
+            </span>
+            <img id="beetle" src="static/images/beetle_1.svg" alt="beetle">
+        </h1>
+        <img src="static/images/background.svg" alt="logo">
+    </div>
+{% endblock %}

@@ -20,21 +20,23 @@
 .                                                      +--------------------------------+
 .                                                      |[10]-footer                     |
 .                                                      +--------------------------------+
+.                                                      |[11]-logo                       |
+.                                                      +--------------------------------+
 */
 
-/* ------------------------------------------------------------------------[01]navbar---------------------------------------------- */
+/* ------------------------------------------[01]navbar---------------------------------------------- */
 .navbar {
   background: rgb(33,33,30);
   background: linear-gradient(291deg, rgba(33,33,30,1) 0%, rgba(82,80,79,1) 82%);
   position: fixed;
   top: 0;
   left: 0;
-  width: 98%;
+  width: 100%;
   background-color: #333;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 21px;
+  padding: 2px;
 }
   
 .navbar .left,
@@ -65,7 +67,8 @@
 #logout {
     margin-left: 20px;
 }
-/* ------------------------------------------------------------[02]flash_message -----------------------------------------------------------*/
+
+/* ------------------------------------------[02]flash_message -----------------------------------------------------------*/
 .alert-success {
   border: 2px solid green;
   border-radius: 17px;
@@ -98,7 +101,7 @@
   }
 }
 
-/* ----------------------------------------------------------[03]creator_registration_card----------------------------------------------- */
+/* --------------------------------[03]creator_registration_card----------------------------------------------- */
 body{
   background: black;
 }
@@ -177,7 +180,7 @@ body{
 
 
 
-/* -------------------------------------------------------------------------[04]contents--------------------------------------------------------------- */
+/* -----------------------------------[04]contents--------------------------------------------------------------- */
 .content {
   display: flex;
   height: 81vh;
@@ -204,7 +207,7 @@ body{
   border-radius: 6px;
 }
 
-/* ---------------------------------------------------[05]cards->[playlist,album,song]------------------------------------------------------ */
+/* ---------------------------[05]cards->[playlist,album,song]------------------------------------------------------ */
   #card_img {
   width: 218px;
   height: 266px;
@@ -213,16 +216,16 @@ body{
   margin-right: -4px;
 }
   #heading {
-    background: rgb(33,33,30);
-    background: linear-gradient(291deg, rgba(33,33,30,1) 0%, rgba(82,80,79,1) 82%);
-    font-size: 26px;
-    margin: 5px;
-    padding: 5px;
-    border-radius: 0px;
-    text-align: center;
-    color: #ffe376;
-    margin-left: 0px;
-    margin-right: 0px;
+  background: rgb(33,33,30);
+  background: linear-gradient(291deg, rgba(33,33,30,1) 0%, rgba(82,80,79,1) 82%);
+  font-size: 26px;
+  margin: 5px;
+  padding: 5px;
+  border-radius: 0px;
+  text-align: center;
+  color: #ffe376;
+  margin-left: 0px;
+  margin-right: 0px;
 }
 .card-container {
   display: grid;
@@ -275,7 +278,7 @@ body{
   }
   
 
-/* -------------------------------------------------------[06]table_songs_and_actions--------------------------------------------------------------------- */
+/* -----------------------------------[06]table_songs_and_actions--------------------------------------------------------------------- */
 .content-table {
   width: 100%;
   border-collapse: collapse;
@@ -332,32 +335,36 @@ body{
   padding: 2px;
 }
 
-/* ------------------------------------------------------------[07]forms------------------------------------------------------------------------------ */
+/* ------------------------------------------[07]forms------------------------------------------------------------------------------ */
 .upload-form {
   width: 50%;
   margin: 20px auto;
   background: rgb(33, 33, 30);
   background: linear-gradient(291deg, rgba(33, 33, 30, 1) 0%, rgba(82, 80, 79, 1) 82%);
-  color: #ddd; 
+  color: #ddd;
   padding: 20px;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   opacity: 0;
+  transition: box-shadow 0.3s; 
+}
+.upload-form:hover {
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3); 
 }
 label {
   display: block;
   margin-bottom: 5px;
-  color: #ddd; 
+  color: #ddd;
 }
 .form-control,
 .form-control-file {
   width: 96%;
   padding: 8px;
   font-size: 16px;
-  border: 1px solid #777; 
+  border: 1px solid #777;
   border-radius: 5px;
-  background-color: #444; 
-  color: #ddd; 
+  background-color: #444;
+  color: #ddd;
 }
 .btn-primary {
   padding: 10px;
@@ -365,26 +372,26 @@ label {
   font-size: 16px;
   border: none;
   border-radius: 5px;
-  background-color: #1c8adb; 
+  background-color: #1c8adb;
   color: #fff;
   cursor: pointer;
 }
 .btn-primary:hover {
   background-color: #106aa1;
 }
-
 @keyframes slide-in {
   to {
-      display: block;
-      opacity: 1;
-      transform: translateY(0);
+    display: block;
+    opacity: 1;
+    transform: translateY(10px);
   }
 }
 .upload-form {
-  animation: slide-in 0.5s forwards;
+  animation: slide-in 1.6s forwards;
 }
 
-/* -------------------------------------------------------------[08]left-content--------------------------------------------------------------------- */
+
+/* -----------------------------------[08]left-content--------------------------------------------------------------------- */
 ul {
   list-style: none;
   padding: 0;
@@ -413,7 +420,7 @@ a:hover {
   text-decoration: underline;
 }
 
-/* ----------------------------------------------------------------[09]audio player-------------------------------------------- */
+/* --------------------------------[09]audio player-------------------------------------------- */
 .audio_player {
   background: rgb(33,33,30);
   background: linear-gradient(291deg, rgba(33,33,30,1) 0%, rgba(82,80,79,1) 82%);
@@ -460,7 +467,7 @@ a:hover {
   background-color: #45a049;
 }
 
-/* -----------------------------------------------------------------------[10]footer ------------------------------------------------------------*/
+/* -----------------------------------[10]footer ------------------------------------------------------------*/
 .site-footer {
   background-color: rgb(74, 70, 70);
   color: #fff; 
@@ -491,4 +498,29 @@ a:hover {
   text-align: center;
   margin-top: 20px;
   font-size: 14px;
+}
+
+/* ----------------------------------[11]logo------------------------------------------------ */
+@keyframes spiderAnimation {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(100px); }
+  100% { transform: translateY(0); }
+}
+#beetle {
+  height: 100px;
+  width: 100px;
+  display: inline-block;
+  animation: spiderAnimation 4s ease 1; 
+}
+@keyframes beatAnimation {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+#brand_name {
+  display: inline-block;
+}
+#brand_name .beat {
+  display: inline-block;
+  animation: beatAnimation 2.5s 2; 
 }
