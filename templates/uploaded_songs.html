@@ -1,10 +1,8 @@
 {% extends 'layout.html' %}
-
 {% block content %}
-
     <p id="heading">UPLOADED-SONGS</p>
     {% if not songs %}
-        <h5 style="color: red;">No songs! You can add from the suggestions below!!</h5>
+        <h5 style="color: red;">No songs! Upload songs and see them here</h5>
     {% else %}
         <table class="content-table">
             <thead>

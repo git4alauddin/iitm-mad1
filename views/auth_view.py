@@ -5,12 +5,8 @@ from flask.views import MethodView
 import requests
 from models.user_model import User, Admin
 from forms.auth_form import RegisterForm, LoginForm
-
 from flask_login import login_user, login_required, logout_user
-
 from extensions.extension import db, bcrypt
-
-
 
 #------------------------------------blueprint_auth---------------------------------------#
 bp_auth = Blueprint('auth', __name__)

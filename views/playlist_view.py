@@ -5,7 +5,7 @@ from extensions.extension import db
 from models.music_model import Song, Playlist
 import requests
 
-
+# --------------------------------------blueprint playlist--------------------------------------------------------
 bp_playlist = Blueprint('playlist', __name__)
 
 class CreatePlaylistView(MethodView):

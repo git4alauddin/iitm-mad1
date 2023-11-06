@@ -1,7 +1,5 @@
 {% extends 'layout.html' %}
-
 {% block post_login_form %}
-    
     <form class="upload-form" action="{{ url_for('song.upload_song') }}" method="POST" enctype="multipart/form-data">
         {{ form.hidden_tag() }}
         <div class="form-group">
@@ -23,9 +21,4 @@
             {{ form.submit(class="btn btn-primary") }}
         </div>
     </form>
-
-    {% endblock %}
-
-
-</body>
-</html>
+{% endblock %}

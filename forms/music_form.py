@@ -1,12 +1,13 @@
-# form to add_music
+# imports
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, TextAreaField, FileField
 from wtforms.validators import DataRequired
 from flask_wtf.file import FileField, FileAllowed
 
 ALLOWED_EXTENSIONS = {'mp3', 'wav', 'ogg', 'flac', 'm4a', 'aac'}
+
+# form music
 class MusicForm(FlaskForm):
-    # user render_kw
     title = StringField('Title', render_kw={'placeholder': 'Title'})
     artist = StringField('Artist', render_kw={'placeholder': 'Artist'})
     genre = StringField('Genre', render_kw={'placeholder': 'Genre'})

@@ -4,7 +4,7 @@ from flask.views import MethodView
 import requests
 from models.music_model import Playlist
 
-#------------------------------------blueprint_user---------------------------------------#
+#------------------------------------blueprint user---------------------------------------#
 bp_user = Blueprint('user', __name__)
 
 # view dashboard

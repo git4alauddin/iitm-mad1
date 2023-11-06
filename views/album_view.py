@@ -5,7 +5,7 @@ from extensions.extension import db
 from models.music_model import Song, Album
 import requests
 
-
+# -------------------------------------------blueprint album-------------------------------------------------------------
 bp_album = Blueprint('album', __name__)
 
 class CreateAlbumView(MethodView):

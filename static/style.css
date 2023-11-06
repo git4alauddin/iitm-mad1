@@ -1,14 +1,81 @@
-/* ------------------------flash message -------------------------------------*/
+/* 
+.                                                      +--------------------------------+ 
+.                                                      |[01]-navbar                     |             
+.                                                      +--------------------------------+
+.                                                      |[02]-flash_message              |
+.                                                      +--------------------------------+
+.                                                      |[03]-creator_reg_card           |
+.                                                      +--------------------------------+
+.                                                      |[04]-contents                   |
+.                                                      +--------------------------------+
+.                                                      |[05]-cards_[song_album_playlist]|
+.                                                      +--------------------------------+
+.                                                      |[06]-table_[songs_and_action]   |
+.                                                      +--------------------------------+
+.                                                      |[07]-forms                      |
+.                                                      +--------------------------------+
+.                                                      |[08]-left_content               |
+.                                                      +--------------------------------+
+.                                                      |[09]-audio_player               |
+.                                                      +--------------------------------+
+.                                                      |[10]-footer                     |
+.                                                      +--------------------------------+
+*/
+
+/* ------------------------------------------------------------------------[01]navbar---------------------------------------------- */
+.navbar {
+  background: rgb(33,33,30);
+  background: linear-gradient(291deg, rgba(33,33,30,1) 0%, rgba(82,80,79,1) 82%);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 98%;
+  background-color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 21px;
+}
+  
+.navbar .left,
+.navbar .middle,
+.navbar .right {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+}
+.navbar a,
+.navbar input {
+  color: white;
+  text-decoration: none;
+  padding: 8px;
+}
+#home {
+  margin-right: 20px;
+}
+#search {
+  padding: 8px;
+  width: 200px;
+  border-radius: 18px;
+  border: none;
+}
+#profile,
+#user_name,
+#uploaded_songs,
+#logout {
+    margin-left: 20px;
+}
+/* ------------------------------------------------------------[02]flash_message -----------------------------------------------------------*/
 .alert-success {
-    border: 2px solid green;
-    border-radius: 17px;
-    background-color: #baefca;
-    color: #0fa116;
-    margin: 3px;
-    padding: 3px;
-    text-align: center;
-    font-size: 22px;
-    animation: fadeOut 6s forwards;
+  border: 2px solid green;
+  border-radius: 17px;
+  background-color: #baefca;
+  color: #0fa116;
+  margin: 3px;
+  padding: 3px;
+  text-align: center;
+  font-size: 22px;
+  animation: fadeOut 6s forwards;
 }
 .alert-danger {
   border: 2px solid red;
@@ -22,321 +89,178 @@
   animation: fadeOut 6s forwards;
 }
 @keyframes fadeOut {
-    0% {
-        opacity: 1;
-    }
-    100% {
-        opacity: 0;
+  0% {
+      opacity: 1;
+  }
+  100% {
+      opacity: 0;
         
-    }
+  }
 }
 
-/* ----------------------creator registration card---------------------------- */
+/* ----------------------------------------------------------[03]creator_registration_card----------------------------------------------- */
 body{
-    background: black;
+  background: black;
 }
 .registration_card {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 .container {
-    background: rgb(251,202,63);
-    background: radial-gradient(circle, rgba(251,202,63,1) 18%, rgba(252,146,70,1) 100%);
-
-
-    display: inline block;
-    text-align: center;
-    margin: 50px;
-    width: 37%;
-    padding: 10px;
-   
-    border-radius: 22px;
-
-    box-shadow: rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px, rgba(17, 17, 26, 0.1) 0px 24px 80px;
-
-    box-shadow: 5px 6px 21px -8px rgba(186,189,150,0.8);
-    -webkit-box-shadow: 5px 6px 21px -8px rgba(186,189,150,0.8);
-    -moz-box-shadow: 5px 6px 21px -8px rgba(186,189,150,0.8);
-
-    transition: opacity 0.5s ease;
-   
-
+  background: rgb(251,202,63);
+  background: radial-gradient(circle, rgba(251,202,63,1) 18%, rgba(252,146,70,1) 100%);
+  display: inline block;
+  text-align: center;
+  margin: 50px;
+  width: 37%;
+  padding: 10px;
+  border-radius: 22px;
+  box-shadow: rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px, rgba(17, 17, 26, 0.1) 0px 24px 80px;
+  box-shadow: 5px 6px 21px -8px rgba(186,189,150,0.8);
+  -webkit-box-shadow: 5px 6px 21px -8px rgba(186,189,150,0.8);
+  -moz-box-shadow: 5px 6px 21px -8px rgba(186,189,150,0.8);
+  transition: opacity 0.5s ease;
 }
 #info1 {
-    font-size: 35px;
-    font-family: cursive;
-    color: rgb(16 163 140);
-    color: black;
-    margin: 2px;
-    padding: 2px;
+  font-size: 35px;
+  font-family: cursive;
+  color: rgb(16 163 140);
+  color: black;
+  margin: 2px;
+  padding: 2px;
 }
 #info2 {
-    font-size: 15px;
-    font-family:cursive;
-    color: rgb(5, 138, 205);
-    color: black;
-    margin: 2px;
-    padding: 2px;
-    
+  font-size: 15px;
+  font-family:cursive;
+  color: rgb(5, 138, 205);
+  color: black;
+  margin: 2px;
+  padding: 2px;
 }
 .info {
-    transition: opacity 0.5s ease;
+  transition: opacity 0.5s ease;
 }
 #headphone {
-    width: 109px;
-    height: 109px;
-    margin-bottom: 35px;
+  width: 109px;
+  height: 109px;
+  margin-bottom: 35px;
 }
 #register_button {
-    opacity: 0;
-    transition: opacity 0.5s ease, border-color 0.5s ease, display 0.5s ease, color 0.5s ease;
-    position: absolute;
-    font-size: 23px;
-    text-decoration: none;
-    border-radius: 20px;
-    margin: -46px 0px 0px -102px;
-    padding: 6px;
-    background: rgb(251,202,63);
-    background: orange;
-    color: black;
-    box-shadow: rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px, rgba(17, 17, 26, 0.1) 0px 24px 80px;
-
-    box-shadow: 5px 6px 21px -8px rgba(186,189,150,0.8);
--webkit-box-shadow: 5px 6px 21px -8px rgba(186,189,150,0.8);
--moz-box-shadow: 5px 6px 21px -8px rgba(186,189,150,0.8);
-
-    
+  opacity: 0;
+  transition: opacity 0.5s ease, border-color 0.5s ease, display 0.5s ease, color 0.5s ease;
+  position: absolute;
+  font-size: 23px;
+  text-decoration: none;
+  border-radius: 20px;
+  margin: -46px 0px 0px -102px;
+  padding: 6px;
+  background: rgb(251,202,63);
+  background: orange;
+  color: black;
+  box-shadow: rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px, rgba(17, 17, 26, 0.1) 0px 24px 80px;
+  box-shadow: 5px 6px 21px -8px rgba(186,189,150,0.8);
+  -webkit-box-shadow: 5px 6px 21px -8px rgba(186,189,150,0.8);
+  -moz-box-shadow: 5px 6px 21px -8px rgba(186,189,150,0.8); 
 }
-
 .container:hover #register_button {
-    opacity: 1;
-    border: 2px solid black; 
+  opacity: 1;
+  border: 2px solid black; 
 }
 .container:hover .info{
-    /* border: 2px solid black; */
-    
   opacity: 0.1;
 }
-
 #register_button:hover {
-    color:aliceblue;
+  color:aliceblue;
 }
 
-/* ---------------------------css for navbar------------------------ */
-
-.navbar {
-    background: black;
-    background: rgb(33,33,30);
-    background: linear-gradient(291deg, rgba(33,33,30,1) 0%, rgba(82,80,79,1) 82%);
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background-color: #333;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 21px;
-    
-}
-  
-  .navbar .left,
-  .navbar .middle,
-  .navbar .right {
-    display: flex;
-    align-items: center;
-    margin-right: 20px;
-  }
-  
-  .navbar a,
-  .navbar input {
-    color: white;
-    text-decoration: none;
-    padding: 8px;
-  }
-  
-  #home {
-    margin-right: 20px;
-  }
-  
-  #search {
-    padding: 8px;
-    width: 200px;
-    border-radius: 18px;
-    border: none;
-  }
-  
-  #profile,
-  #user_name,
-  #uploaded_songs,
-  #logout {
-    margin-left: 20px;
-  }
 
 
 
 
-/* --------------------------audio player----------------------- */
-.audio_player {
-    background:black;
-    background: rgb(33,33,30);
-    background: linear-gradient(291deg, rgba(33,33,30,1) 0%, rgba(82,80,79,1) 82%);
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: #333;
-    color: white;
-    padding: 20px;
-    box-sizing: border-box;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.audio_player .song_info,
-.audio_player .player,
-.audio_player .add_to_playlist {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.audio_player h2 {
-    margin: 0;
-}
-
-.audio_player .player audio {
-    width: 100%;
-}
-
-.audio_player .add_to_playlist a {
-    padding: 8px 16px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    border-radius: 5px;
-}
-
-.audio_player .add_to_playlist a:hover {
-    background-color: #45a049;
-}
-
-/* ----------------------css for the contents----------------------- */
-
-/* CSS for the content */
+/* -------------------------------------------------------------------------[04]contents--------------------------------------------------------------- */
 .content {
-    display: flex;
-    height: 81vh; /* Set the height of the content container */
-    margin-top:79px;
-    
-  }
-  
-  .left-column {
-    background: #333333;
-    background: rgb(33,33,30);
-    background: linear-gradient(291deg, rgba(33,33,30,1) 0%, rgba(82,80,79,1) 82%);
-    color:azure;
-    flex: 30%;
-    overflow: hidden; /* Hide any content that exceeds the column */
-    height: 100%; /* Ensure full height of the container */
-    margin-right: 5px;
-    margin-left: -8px;
-    border-radius: 6px;
-  }
-  
-  .right-column {
-    background: rgb(33,33,30);
-    background: linear-gradient(291deg, rgba(33,33,30,1) 0%, rgba(82,80,79,1) 82%);
-    color:azure;
-    background: #333333;
-    flex: 70%;
-    overflow-y: auto; /* Enable vertical scrollbar if content overflows */
-    height: 100%; /* Ensure full height of the container */
-    border-radius: 6px;
-  }
-
-
-
-  /* -----------------css for the cards[playlist,album,song]----------------------- */
-  
-  #card_img {
-    width: 218px;
-    height: 266px;
-    margin-bottom: -29px;
-    margin-top: -12px;
-    margin-right: -4px;
+  display: flex;
+  height: 81vh;
+  margin-top:79px;
+}
+.left-column {
+  background: rgb(33,33,30);
+  background: linear-gradient(291deg, rgba(33,33,30,1) 0%, rgba(82,80,79,1) 82%);
+  color:azure;
+  flex: 30%;
+  overflow: hidden;
+  height: 100%; 
+  margin-right: 5px;
+  margin-left: -8px;
+  border-radius: 6px;
+}
+.right-column {
+  background: rgb(33,33,30);
+  background: linear-gradient(291deg, rgba(33,33,30,1) 0%, rgba(82,80,79,1) 82%);
+  color:azure;
+  flex: 70%;
+  overflow-y: auto; 
+  height: 100%; 
+  border-radius: 6px;
 }
 
-    #heading {
-      background: rgb(33,33,30);
-      background: linear-gradient(291deg, rgba(33,33,30,1) 0%, rgba(82,80,79,1) 82%);
-      font-size: 26px;
-      margin: 5px;
-      padding: 5px;
-      border-radius: 0px;
-      text-align: center;
-      color: #ffe376;
-      margin-left: 0px;
-      margin-right: 0px;
-  }
-
-.card-container {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-gap: 5px;
-    margin-bottom: 50px;
-    }
-
-      
-.card {
-    transition: background-color 0.5s ease;
+/* ---------------------------------------------------[05]cards->[playlist,album,song]------------------------------------------------------ */
+  #card_img {
+  width: 218px;
+  height: 266px;
+  margin-bottom: -29px;
+  margin-top: -12px;
+  margin-right: -4px;
+}
+  #heading {
     background: rgb(33,33,30);
     background: linear-gradient(291deg, rgba(33,33,30,1) 0%, rgba(82,80,79,1) 82%);
-    width: 68%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border-radius: 9px;
-    margin: 16px;
-    margin-left: 43px;
-
-    box-shadow: rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px, rgba(17, 17, 26, 0.1) 0px 24px 80px;
-
-    box-shadow: 5px 6px 21px -8px rgba(186,189,150,0.8);
-    -webkit-box-shadow: 5px 6px 21px -8px rgba(186,189,150,0.8);
-    -moz-box-shadow: 5px 6px 21px -8px rgba(186,189,150,0.8);
-    }
-
-
+    font-size: 26px;
+    margin: 5px;
+    padding: 5px;
+    border-radius: 0px;
+    text-align: center;
+    color: #ffe376;
+    margin-left: 0px;
+    margin-right: 0px;
+}
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 5px;
+  margin-bottom: 50px;
+}    
+.card {
+  transition: background-color 0.5s ease;
+  background: rgb(33,33,30);
+  background: linear-gradient(291deg, rgba(33,33,30,1) 0%, rgba(82,80,79,1) 82%);
+  width: 68%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 9px;
+  margin: 16px;
+  margin-left: 43px;
+  box-shadow: rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px, rgba(17, 17, 26, 0.1) 0px 24px 80px;
+  box-shadow: 5px 6px 21px -8px rgba(186,189,150,0.8);
+  -webkit-box-shadow: 5px 6px 21px -8px rgba(186,189,150,0.8);
+  -moz-box-shadow: 5px 6px 21px -8px rgba(186,189,150,0.8);
+}
 #card_title {
-    font-size: 23px;
-    font-family: cursive;
-    color: rgb(16 163 140);
-    color: black;
-  
-    margin: 2px;
-    padding: 3px;
-    border-bottom: 2px solid #5c635c;
-    text-decoration: none;
+  font-size: 23px;
+  font-family: cursive;
+  color: rgb(16 163 140);
+  color: black;
+  margin: 2px;
+  padding: 3px;
+  border-bottom: 2px solid #5c635c;
+  text-decoration: none;
 }
 #delete_card {
-    
-
-    font-size: 35px;    
-    color: rgb(194, 44, 10);
-    text-decoration: none;
+  font-size: 35px;    
+  color: rgb(194, 44, 10);
+  text-decoration: none;
 }
-
- 
-/* For WebKit (Safari, Google Chrome, etc.) */
 ::-webkit-scrollbar {
     width: 12px;
   }
@@ -351,38 +275,31 @@ body{
   }
   
 
-/* ----------lists of songs and actions----------- */
-/* Apply CSS to style the table */
+/* -------------------------------------------------------[06]table_songs_and_actions--------------------------------------------------------------------- */
 .content-table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
   margin-bottom: 20px;
 }
-
 .content-table th,
 .content-table td {
   border: 1px solid #ddd;
   padding: 8px;
   text-align: left;
 }
-
 .content-table th {
   background-color: rgb(64, 66, 55);
 }
-
 .content-table tr:nth-child(even) {
   background-color: #716060;
 }
 .content-table tr:nth-child(odd) {
   background-color: rgb(87, 87, 76);
 }
-
 .content-table tr:hover {
   background-color: #b4aeae;
 }
-
-/* Style the delete button */
 .content-table button {
   background-color: #f44336;
   color: white;
@@ -394,13 +311,11 @@ body{
   border-radius: 4px;
   cursor: pointer;
 }
-
 .song-link {
   color: #048ae9;
   text-decoration: none;
   font-weight: bold;
 }
-
 .song-link:hover {
   text-decoration: underline;
   color: #0466c8; 
@@ -417,125 +332,140 @@ body{
   padding: 2px;
 }
 
-
-/* ---------------------------------forms------------------------------------------ */
-
-/* Form container style */
+/* ------------------------------------------------------------[07]forms------------------------------------------------------------------------------ */
 .upload-form {
   width: 50%;
   margin: 20px auto;
-  background-color: #333; /* Darker background for the form */
   background: rgb(33, 33, 30);
   background: linear-gradient(291deg, rgba(33, 33, 30, 1) 0%, rgba(82, 80, 79, 1) 82%);
-  color: #ddd; /* Lighter text color for better visibility */
+  color: #ddd; 
   padding: 20px;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  opacity: 0; /* Initially set opacity to 0 */
+  opacity: 0;
 }
-
-/* Label style */
 label {
   display: block;
   margin-bottom: 5px;
-  color: #ddd; /* Lighter label text */
+  color: #ddd; 
 }
-
-/* Input field style */
 .form-control,
 .form-control-file {
   width: 96%;
   padding: 8px;
   font-size: 16px;
-  border: 1px solid #777; /* Slightly lighter border */
+  border: 1px solid #777; 
   border-radius: 5px;
-  background-color: #444; /* Darker input background */
-  color: #ddd; /* Lighter text color */
+  background-color: #444; 
+  color: #ddd; 
 }
-
-/* Submit button style */
 .btn-primary {
   padding: 10px;
   margin-top: 11px;
   font-size: 16px;
   border: none;
   border-radius: 5px;
-  background-color: #1c8adb; /* Lighter button color */
+  background-color: #1c8adb; 
   color: #fff;
   cursor: pointer;
 }
-
-/* Submit button hover effect */
 .btn-primary:hover {
-  background-color: #106aa1; /* Darker button color on hover */
+  background-color: #106aa1;
 }
 
-/* Animation keyframes for sliding in effect */
 @keyframes slide-in {
   to {
       display: block;
-      opacity: 1; /* Set opacity to 1 to reveal the form */
+      opacity: 1;
       transform: translateY(0);
   }
 }
-
-/* Apply animation to upload form */
 .upload-form {
   animation: slide-in 0.5s forwards;
 }
 
-
-
-
-/* --------------------------------------------left-content---------------------------------------------------------------- */
-/* Reset default list styles */
+/* -------------------------------------------------------------[08]left-content--------------------------------------------------------------------- */
 ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
-
-/* Card style */
 .card {
   border-radius: 8px;
   padding: 15px;
   text-align: center;
 }
-
-/* Common card style */
 .common-card {
-  background-color: #f0f8ff; /* Light blue background */
-  border: 1px solid #b6d8f2; /* Common card border color */
+  background-color: #f0f8ff; 
+  border: 1px solid #b6d8f2; 
   margin-bottom: 15px;
 }
-
-/* Creator card style */
 .creator-card {
-  background-color: #f5f5f5; /* Light gray background */
-  border: 2px solid rgb(203, 193, 5); /* Creator card border color */
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); /* Creator card box shadow for depth */
+  background-color: #f5f5f5; 
+  border: 2px solid rgb(203, 193, 5); 
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); 
 }
-
-/* Link style */
 a {
   text-decoration: none;
   color: #d9ce34;; /* Default text color */
 }
-
-/* Apply hover effect to links */
 a:hover {
   text-decoration: underline;
 }
 
-
-/* -----------------------------------------------------------------------footer ------------------------------------------------------------*/
-/* Footer styles */
-.site-footer {
-  background-color: rgb(74, 70, 70);
-  color: #fff; /* Text color for the footer */
-  padding: 40px 20px;
+/* ----------------------------------------------------------------[09]audio player-------------------------------------------- */
+.audio_player {
+  background: rgb(33,33,30);
+  background: linear-gradient(291deg, rgba(33,33,30,1) 0%, rgba(82,80,79,1) 82%);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #333;
+  color: white;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.audio_player .song_info,
+.audio_player .player,
+.audio_player .add_to_playlist {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.audio_player h2 {
+  margin: 0;
+}
+.audio_player .player audio {
+    width: 100%;
+}
+.audio_player .add_to_playlist a {
+  padding: 8px 16px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+.audio_player .add_to_playlist a:hover {
+  background-color: #45a049;
 }
 
+/* -----------------------------------------------------------------------[10]footer ------------------------------------------------------------*/
+.site-footer {
+  background-color: rgb(74, 70, 70);
+  color: #fff; 
+  padding: 40px 20px;
+}
 .footer-content {
   display: flex;
   justify-content: space-around;
@@ -543,24 +473,20 @@ a:hover {
   flex-wrap: wrap;
   gap: 20px;
 }
-
 .contact-info, .social-media, .about {
   flex: 1;
   max-width: 300px;
 }
-
 .social-links {
   list-style: none;
   padding: 0;
   display: flex;
   gap: 10px;
 }
-
 .social-links a {
   color: #fff;
   font-size: 20px;
 }
-
 .site-info {
   text-align: center;
   margin-top: 20px;

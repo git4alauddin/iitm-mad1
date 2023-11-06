@@ -2,12 +2,11 @@ from flask import Blueprint, render_template,redirect,url_for,flash,request
 from flask.views import MethodView
 import requests
 
+# --------------------------------------blueprint admin--------------------------------------------------------
 bp_admin = Blueprint('admin', __name__)
 
 class Users(MethodView):
     def get(self):
-        # set the method, ip, and port for the api
-        # now it is default to localhost:5000
         api_url = request.url_root + 'users/users'
         response = requests.get(api_url)
 

@@ -5,8 +5,6 @@ import uuid
 # form defaults
 def generate_uuid():
     return str(uuid.uuid4())
-def generate_date():
-    return datetime.utcnow()
 
 # songs
 class Song(db.Model):

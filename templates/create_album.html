@@ -1,7 +1,5 @@
 {% extends 'layout.html' %}
-
 {% block post_login_form %}
-
     <form class="upload-form" method="POST" action="{{ url_for('album.create_album') }}">
         <div class="form-group">
             <label for="title">Title</label>
@@ -14,7 +12,4 @@
 
         <input type="submit" value="Create" class="btn btn-primary">
     </form>
-    
-       {% endblock %}
-</body>
-</html>
+{% endblock %}

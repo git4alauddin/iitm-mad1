@@ -10,8 +10,6 @@ class DevelopmentConfig(Config):
     SQLALCHEMY_DATABASE_URI = 'sqlite:///music-dev-db.sqlite'
     SECRET_KEY = 'my-very-secret-key'
 
-    # song upload
-    # ALLOWED_EXTENSIONS = {'mp3', 'wav', 'ogg', 'flac', 'm4a', 'aac'}
     SONG_UPLOAD_FOLDER = 'static/songs'
     
 # env_production

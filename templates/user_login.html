@@ -1,20 +1,18 @@
 {% extends 'layout.html' %}
-    {% block pre_login_form %}<br>
-        <h1 id="heading">USER LOGIN</h1><br><br><br><br><br>
-        <form class="upload-form" action="{{ url_for('auth.user_login') }}" method="POST">
-            {{ form.hidden_tag() }}
-            <div class="form-group">
-                {{ form.email.label }} {{ form.email(class="form-control") }}
-            </div>
-            <div class="form-group">
-                {{ form.password.label }} {{ form.password(class="form-control") }}
-            </div>
-            <div class="form-group">
-                {{ form.submit(class="btn btn-primary") }}
-            </div>
-            <br>
-            <a href="{{ url_for('auth.register') }}">Didn't create an account yet?</a>
-        </form>
-    {% endblock %}
-</body>
-</html>
+{% block pre_login_form %}<br>
+    <h1 id="heading">USER LOGIN</h1><br><br><br><br><br>
+    <form class="upload-form" action="{{ url_for('auth.user_login') }}" method="POST">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.email.label }} {{ form.email(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.password.label }} {{ form.password(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.submit(class="btn btn-primary") }}
+        </div>
+        <br>
+        <a href="{{ url_for('auth.register') }}">Didn't create an account yet?</a>
+    </form>
+{% endblock %}
