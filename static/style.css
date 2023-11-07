@@ -10,7 +10,7 @@
 .                                                      +--------------------------------+
 .                                                      |[05]-cards_[song_album_playlist]|
 .                                                      +--------------------------------+
-.                                                      |[06]-table_[songs_and_action]   |
+.                                                      |[06]-table                      |
 .                                                      +--------------------------------+
 .                                                      |[07]-forms                      |
 .                                                      +--------------------------------+
@@ -278,63 +278,32 @@ body{
   }
   
 
-/* -----------------------------------[06]table_songs_and_actions--------------------------------------------------------------------- */
-.content-table {
+/* -----------------------------------[06]table--------------------------------------------------------------------- */
+.data-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-.content-table th,
-.content-table td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: left;
-}
-.content-table th {
-  background-color: rgb(64, 66, 55);
-}
-.content-table tr:nth-child(even) {
-  background-color: #716060;
-}
-.content-table tr:nth-child(odd) {
-  background-color: rgb(87, 87, 76);
-}
-.content-table tr:hover {
-  background-color: #b4aeae;
-}
-.content-table button {
-  background-color: #f44336;
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  border-radius: 4px;
-  cursor: pointer;
-}
-.song-link {
-  color: #048ae9;
-  text-decoration: none;
-  font-weight: bold;
-}
-.song-link:hover {
-  text-decoration: underline;
-  color: #0466c8; 
-}
-#add-btn {
-  background-color: green;
-}
-#delete-btn {
-  background: rgb(248, 191, 191);
-  color: red;
-  border: 2px solid red;
-  border-radius: 6px;
-  margin: 2px;
-  padding: 2px;
+  color: #fff; /* Text color for better visibility on dark background */
+  background: #333; /* Dark background for the table */
 }
 
+.data-table th, .data-table td {
+  padding: 12px 20px;
+  text-align: left;
+  border: 1px solid #666; /* Subtle border for grid lines */
+}
+
+.data-table th {
+  background: #222; /* Darker background for table header */
+}
+
+/* Styling for table rows */
+.data-row {
+  transition: background-color 0.3s; /* Smooth transition on hover */
+}
+
+.data-row:hover {
+  background-color: #444; /* Darker background on hover */
+}
 /* ------------------------------------------[07]forms------------------------------------------------------------------------------ */
 .upload-form {
   width: 50%;
@@ -578,3 +547,10 @@ a:hover {
 .stat-container {
   animation: fadeIn 1.3s ease-in-out; /* Apply the fadeIn animation */
 }
+
+/* ----------------------------------------visuals and tables----------------------------------------- */
+/* Table with dark theme and grid lines */
+
+
+
+

@@ -4,7 +4,7 @@
     {% if not songs %}
         <h5 style="color: red;">No songs! Upload songs and see them here</h5>
     {% else %}
-        <table class="content-table">
+        <table class="data-table">
             <thead>
                 <tr>
                     <th>Title</th>
@@ -14,7 +14,7 @@
             </thead>
             <tbody>
                 {% for song in songs %}
-                    <tr>
+                    <tr class="data-row">
                         <td><a class="song-link" href="{{ url_for('song.play_song', id=song.id) }}">{{ song.title }}</a></td>
                         <td>{{ song.artist }}</td>
                         <td><a id="delete-btn" href="{{ url_for('song.delete_song', id=song.id) }}">Delete <i class="fas fa-trash-alt"></i></a></td>

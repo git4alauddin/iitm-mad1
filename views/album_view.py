@@ -2,7 +2,8 @@ from flask import render_template, redirect, url_for, flash, request, Blueprint
 from flask.views import MethodView
 from flask_login import current_user
 from extensions.extension import db
-from models.music_model import Song, Album
+from models.music_model import Song, Album, Playlist
+from models.user_model import User
 import requests
 
 # -------------------------------------------blueprint album-------------------------------------------------------------
@@ -117,3 +118,22 @@ class AlbumRemoveSongsView(MethodView):
         return redirect(url_for('album.add_songs_to_album', id=id))
 
 bp_album.add_url_rule('/album_remove_songs/<string:id>', view_func=AlbumRemoveSongsView.as_view('album_remove_songs'))
+
+class AllAlbumsView(MethodView):
+    def get(self):
+        api_url = request.url_root + 'albums/albums/' 
+        response = requests.get(api_url)
+        albums = response.json()
+        
+        # stats
+        tot_user = User.query.filter_by(role='user').count()
+        tot_creator = User.query.filter_by(role='creator').count()
+        tot_album = Album.query.count()
+        tot_song = Song.query.count()
+        tot_playlist = Playlist.query.count()
+
+        stats_headings = ['Total Normal Users', 'Total Creators', 'Total Albums', 'Total Songs', 'Total Playlists']
+        stats_data = [{'heading': h, 'total': t} for h, t in zip(stats_headings, [tot_user, tot_creator, tot_album, tot_song, tot_playlist])]
+
+        return render_template('albums.html', albums=albums, stats_data=stats_data)
+bp_album.add_url_rule('/all_albums/', view_func=AllAlbumsView.as_view('all_albums'))

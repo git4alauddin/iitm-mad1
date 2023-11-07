@@ -1,0 +1,43 @@
+{% extends 'layout.html' %}
+{% block admin_visuals %}
+    <table class="data-table">
+        <h1 id="heading">TRACKS</h1>
+        <thead>
+            <tr>
+                <th>Song</th>
+                <th>View</th>
+                <th>Action</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for song in songs %}
+            <tr class="data-row">
+                <td>{{ song.title }}: {{ song.artist }}</td>
+                <td><a href="#"><i class="fas fa-book"></i> Lyrics</a></td>
+                <td><a href="#"><i class="fas fa-flag"></i> Flag</a></td>
+                <td><a href="#"><i class="fas fa-trash-alt"></i> Delete</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block admin_stats %}
+    <br>
+    <h1 id="heading">STATS GLANCE</h1>
+    <br><br><br>
+    <div class="grid-container">
+        {% for stat in stats_data %}
+            <div class="stat-container">
+                <div class="stat_heading">
+                    <h1>{{ stat['heading'] }}</h1>
+                </div>
+                <div class="stat_data">
+                    <h1>{{ stat['total'] }}</h1>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+

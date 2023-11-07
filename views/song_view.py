@@ -7,7 +7,8 @@ from decorators.role_decorator import creator_required
 from werkzeug.utils import secure_filename
 import os
 import random
-from models.music_model import Song, SongFile
+from models.music_model import Song, SongFile, Album, Playlist
+from models.user_model import User
 import requests
 
 # --------------------------------------blueprint song--------------------------------------------------------
@@ -150,3 +151,22 @@ class DeleteSongView(MethodView):
             flash('Error deleting song!', 'danger')
         return redirect(url_for('song.uploaded_songs'))
 bp_song.add_url_rule('/delete_song/<string:id>', view_func=DeleteSongView.as_view('delete_song'))
+class AllSongsView(MethodView):
+    def get(self):
+        api_url = request.url_root + 'songs/songs'
+        songs = requests.get(api_url)
+        songs = songs.json()
+
+        
+
+        # stats
+        tot_user = User.query.filter_by(role='user').count()
+        tot_creator = User.query.filter_by(role='creator').count()
+        tot_album = Album.query.count()
+        tot_song = Song.query.count()
+        tot_playlist = Playlist.query.count()
+
+        stats_headings = ['Total Normal Users', 'Total Creators', 'Total Albums', 'Total Songs', 'Total Playlists']
+        stats_data = [{'heading': h, 'total': t} for h, t in zip(stats_headings, [tot_user, tot_creator, tot_album, tot_song, tot_playlist])]
+        return render_template('songs.html', songs=songs, stats_data=stats_data)
+bp_song.add_url_rule('/all_songs', view_func=AllSongsView.as_view('all_songs'))

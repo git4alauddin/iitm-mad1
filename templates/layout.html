@@ -37,6 +37,10 @@
                     <input id="search" type="text" placeholder="search">
                 </div>
                 <div class="right">
+                    {% if current_user.role == 'admin' %}
+                    <a id="Tracks" href="{{url_for('song.all_songs')}}"><i class="fas fa-music"></i> Tracks</a>
+                    <a id="Albums" href="{{url_for('album.all_albums')}}"><i class="fas fa-compact-disc"></i> Albums</a>
+                    {% endif %}
                     <a id="user_name" href="#">{{current_user.email}}</a>
                     {% if current_user.role == 'creator' %}
                     <a id="uploaded_songs" href="{{ url_for('song.uploaded_songs') }}"><i class="fas fa-music"></i> Uploaded-songs</a>

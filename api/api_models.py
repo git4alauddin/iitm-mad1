@@ -17,7 +17,8 @@ song_model = api.model("Song", {
     "id": fields.String,
     "creator_id": fields.String,
     "title": fields.String,
-    "artist": fields.String
+    "artist": fields.String,
+    "lyrics": fields.String
 })
 
 
@@ -37,7 +38,9 @@ playlist_input_model = api.model("PlaylistInput", {
 album_model = api.model("Album", {
     "id": fields.String,
     "title": fields.String,
-    "user_id": fields.String
+    "user_id": fields.String,
+    "release_year": fields.Integer
+
 })
 
 album_input_model = api.model("AlbumInput", {
