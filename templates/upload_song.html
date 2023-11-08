@@ -9,7 +9,15 @@
             {{ form.artist.label }} {{ form.artist(class="form-control") }}
         </div>
         <div class="form-group">
-            {{ form.genre.label }} {{ form.genre(class="form-control") }}
+            {{ form.genre.label }}
+            <select name="genre" class="form-control">
+                <option value="">Select Genre</option>
+                <option value="romantic">Romantic</option>
+                <option value="rock">Rock</option>
+                <option value="pop">Pop</option>
+                <option value="hip-hop">Hip Hop</option>
+               
+            </select>
         </div>
         <div class="form-group">
             {{ form.lyrics.label }} {{ form.lyrics(class="form-control") }}

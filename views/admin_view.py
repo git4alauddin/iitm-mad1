@@ -22,7 +22,17 @@ class AdminVisualsView(MethodView):
 
         labels = ['Total Normal Users', 'Total Creators', 'Total Albums', 'Total Songs', 'Total Playlists']
         values = [tot_user, tot_creator, tot_album, tot_song, tot_playlist]
-        return render_template('admin_visuals.html', labels=labels, values=values, stats_data=stats_data)
+
+        # songs with different generes: romantic, pop, hip-hop, rock
+        # songs with different genres: romantic, pop, hip-hop, rock
+        genres = ['romantic', 'pop', 'hip-hop', 'rock']
+        genre_counts = [0, 0, 0, 0]
+        for song in Song.query.all():
+            for i, genre in enumerate(genres):
+                if song.genre == genre:
+                    genre_counts[i] += 1
+        
+        return render_template('admin_visuals.html', labels=labels, values=values, stats_data=stats_data, genre_counts=genre_counts, genres=genres)
 bp_admin.add_url_rule('/admin_visuals', view_func=AdminVisualsView.as_view('admin_visuals'))
 
 

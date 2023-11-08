@@ -29,13 +29,18 @@
                     <a id="stats" href="{{url_for('user.creator_stats')}}"><i class="fas fa-chart-line"></i> Stats</a>
                     {% endif %}
                     {% if current_user.role == 'admin' %}
-                    <a id="stats" href="{{url_for('admin.admin_visuals')}}"><i class="fas fa-chart-line"></i> Visuals</a>
+                    <a id="stats" href="{{url_for('admin.admin_visuals')}}"><i class="fas fa-chart-line"></i> Stats</a>
 
                     {% endif %}
                 </div>
                 <div class="middle">
-                    <input id="search" type="text" placeholder="search">
-                </div>
+                    <form action="#" method="GET" class="search-form">
+                        <div class="search-container">
+                            <input id="search" type="text" name="query" placeholder="Search your favorite song">
+                            <button type="submit" id="search-button"><i class="fas fa-search"></i></button>
+                        </div>
+                    </form>
+                </div>                
                 <div class="right">
                     {% if current_user.role == 'admin' %}
                     <a id="Tracks" href="{{url_for('song.all_songs')}}"><i class="fas fa-music"></i> Tracks</a>
@@ -103,6 +108,10 @@
                     {% endif %}
                 </ul>
             {% endblock %}
+
+            <!-- content section -->
+            {% block left_content %}
+            {% endblock %}
             
             <!-- form section -->
             {% block post_login_form %}
@@ -127,13 +136,11 @@
                 {% with messages = get_flashed_messages(with_categories=true) %}
                     {% if messages %}
                         <div class="flash-container">
-                            <ul>
-                                {% for category, message in messages %}
-                                    <div class="alert-{{ category }}">
-                                        <li>{{ message }}</li>
-                                    </div>
-                                {% endfor %}
-                            </ul>
+                            {% for category, message in messages %}
+                                <div class="alert-{{ category }}">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
                         </div>
                     {% endif %}
                 {% endwith %}<br>
@@ -161,7 +168,7 @@
                                 <div class="card">
                                     <img id="card_img" src="{{ url_for('static', filename='images/music_node_2.svg') }}" alt="song_image">
                                     <a id="card_title" href="{{ url_for('song.play_song', id=suggested_song.id) }}"><b>{{ suggested_song.title }}: {{suggested_song.artist }}</b></a>
-                                    <a id="card_title" href="#"><b><i class="fas fa-file-alt"> Lyrics</i></b></a>
+                                    <a id="card_title" href="{{ url_for('song.song_lyrics', id=suggested_song.id) }}"><b><i class="fas fa-file-alt"> Lyrics</i></b></a>
                                 </div>
                             {% endfor %}
                         </div>

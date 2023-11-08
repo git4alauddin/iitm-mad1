@@ -48,7 +48,7 @@ class CreateAlbumView(MethodView):
                 flash('Error creating album!', 'danger')
             return redirect(url_for('user.dashboard'))
         
-bp_album.add_url_rule('/create_album/', view_func=CreateAlbumView.as_view('create_album'))
+bp_album.add_url_rule('/create_album', view_func=CreateAlbumView.as_view('create_album'))
 
 # view remove album
 class RemoveAlbumView(MethodView):
@@ -136,4 +136,4 @@ class AllAlbumsView(MethodView):
         stats_data = [{'heading': h, 'total': t} for h, t in zip(stats_headings, [tot_user, tot_creator, tot_album, tot_song, tot_playlist])]
 
         return render_template('albums.html', albums=albums, stats_data=stats_data)
-bp_album.add_url_rule('/all_albums/', view_func=AllAlbumsView.as_view('all_albums'))
+bp_album.add_url_rule('/all_albums', view_func=AllAlbumsView.as_view('all_albums'))

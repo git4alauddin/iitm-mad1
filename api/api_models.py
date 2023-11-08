@@ -18,7 +18,7 @@ song_model = api.model("Song", {
     "creator_id": fields.String,
     "title": fields.String,
     "artist": fields.String,
-    "lyrics": fields.String
+    "genre": fields.String
 })
 
 

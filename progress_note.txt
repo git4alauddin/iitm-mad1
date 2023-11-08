@@ -1,3 +1,9 @@
+______________________________
+top priority
+- song rating system 
+- searching for songs
+_________________________________
+
 to do
 - review system for songs 
 - hits logic for songs, playlists and albums

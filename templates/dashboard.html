@@ -2,3 +2,41 @@
 {% block content %}
 {% endblock %}
 
+{% block branding %}
+    {% if current_user.role == 'admin' %}
+        <div class="logo">
+            <h1 id="heading" style="color: rgb(220, 94, 40); font-size: 149px;">
+                <span id="brand_name">
+                    <span class="beat">B</span>
+                    <span class="beat">E</span>
+                    <span class="beat">A</span>
+                    <span class="beat">T</span>
+                    <span class="beat">T</span>
+                </span>
+                <img id="beetle" src="static/images/beetle_1.svg" alt="beetle">
+            </h1>
+            <img src="static/images/background.svg" alt="logo">
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block admin_stats %}
+    {% if current_user.role == 'admin' %}
+        <br>
+    <h1 id="heading">STATS GLANCE</h1>
+    <br><br><br>
+    <div class="grid-container">
+        {% for stat in stats_data %}
+            <div class="stat-container">
+                <div class="stat_heading">
+                    <h1>{{ stat['heading'] }}</h1>
+                </div>
+                <div class="stat_data">
+                    <h1>{{ stat['total'] }}</h1>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+{% endblock %}
+

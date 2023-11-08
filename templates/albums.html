@@ -6,7 +6,7 @@
             <tr>
                 <th>Title</th>
                 <th>Release-year</th>
-                <th>Action</th>
+                
                 <th>Action</th>
             </tr>
         </thead>
@@ -15,7 +15,7 @@
             <tr class="data-row">
                 <td>{{ album.title }}</td>
                 <td>{{ album.release_year }}</td>
-                <td><a href="#"><i class="fas fa-flag"> Flag</i></a></td>
+               
                 <td><a href="#"><i class="fas fa-trash-alt"> Delete</i></a></td>
             </tr>
             {% endfor %}
@@ -29,7 +29,7 @@
     <br><br><br>
     <div class="grid-container">
         {% for stat in stats_data %}
-            <div class="stat-container">
+            <div class="stat-container" style="animation: none;">
                 <div class="stat_heading">
                     <h1>{{ stat['heading'] }}</h1>
                 </div>

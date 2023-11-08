@@ -3,6 +3,7 @@ from flask_login import logout_user,login_required, current_user
 from flask.views import MethodView
 import requests
 from models.music_model import Playlist, Song, Album
+from models.user_model import User
 
 #------------------------------------blueprint user---------------------------------------#
 bp_user = Blueprint('user', __name__)
@@ -11,6 +12,7 @@ bp_user = Blueprint('user', __name__)
 class DashboardView(MethodView):
     @login_required
     def get(self):
+        # contents
         api_url = request.url_root + 'users/users/' + str(current_user.id) + '/playlists'
         p_response = requests.get(api_url)
         api_url = request.url_root + 'songs/songs'
@@ -25,8 +27,18 @@ class DashboardView(MethodView):
         if a_response.status_code == 200:
             albums = a_response.json()
 
+        # stats
+        tot_user = User.query.filter_by(role='user').count()
+        tot_creator = User.query.filter_by(role='creator').count()
+        tot_album = Album.query.count()
+        tot_song = Song.query.count()
+        tot_playlist = Playlist.query.count()
 
-        return render_template('dashboard.html', playlists=playlists, suggested_songs=suggested_songs, albums=albums)
+        stats_headings = ['Total Normal Users', 'Total Creators', 'Total Albums', 'Total Songs', 'Total Playlists']
+        stats_data = [{'heading': h, 'total': t} for h, t in zip(stats_headings, [tot_user, tot_creator, tot_album, tot_song, tot_playlist])]
+
+
+        return render_template('dashboard.html', playlists=playlists, suggested_songs=suggested_songs, albums=albums, stats_data=stats_data)
 bp_user.add_url_rule('/dashboard', view_func=DashboardView.as_view('dashboard'))
 
 # view logout

@@ -1,7 +1,7 @@
 # imports
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, TextAreaField, FileField
-from wtforms.validators import DataRequired
+
 from flask_wtf.file import FileField, FileAllowed
 
 ALLOWED_EXTENSIONS = {'mp3', 'wav', 'ogg', 'flac', 'm4a', 'aac'}

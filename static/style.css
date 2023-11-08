@@ -55,51 +55,108 @@
 #home {
   margin-right: 20px;
 }
-#search {
-  padding: 8px;
-  width: 200px;
-  border-radius: 18px;
-  border: none;
-}
 #profile,
 #user_name,
 #uploaded_songs,
 #logout {
     margin-left: 20px;
 }
+/* Updated CSS for the search bar within the navbar */
+#search {
+  padding: 8px;
+  width: 160px; /* Adjust the width as per your design */
+  border-radius: 18px;
+  border: none;
+  color: black;
+}
+
+#search-button {
+  background: #333;
+  color: white;
+  border: none;
+  padding: 8px;
+  margin-left: -12px;
+  border-top-right-radius: 19px;
+  border-bottom-right-radius: 19px;
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.search-form {
+  margin: 0;
+}
+
+/* Additional adjustments for the navbar */
+.navbar .middle {
+  margin-right: 20px; /* Adjust the margin as per your layout */
+}
+
+/* Additional styles for the icon in the search button */
+#search-button i {
+  font-size: 18px;
+}
+/* Navbar hover effects */
+.navbar a:hover {
+  color: #ffd700; /* Change text color on hover to a different color (here, yellow) */
+  transition: color 0.3s; /* Smooth transition effect */
+}
+
+/* Search button hover effect */
+#search-button:hover {
+  background: #444; /* Darken the background color on hover */
+  transition: background 0.3s; /* Smooth transition effect */
+  color: #ffd700; /* Change text color on hover */
+}
+
 
 /* ------------------------------------------[02]flash_message -----------------------------------------------------------*/
+/* Updated flash message CSS */
+
+.alert-success, .alert-danger {
+  border-radius: 10px;
+  padding: 12px;
+  text-align: center;
+  font-size: 18px;
+  animation: fadeOut 4s ease-in-out forwards, fadeIn 1s ease-in-out;
+}
+
 .alert-success {
-  border: 2px solid green;
-  border-radius: 17px;
-  background-color: #baefca;
-  color: #0fa116;
-  margin: 3px;
-  padding: 3px;
-  text-align: center;
-  font-size: 22px;
-  animation: fadeOut 6s forwards;
+  border: 2px solid #4CAF50;
+  background-color: #E7F6E7;
+  color: #4CAF50;
 }
+
 .alert-danger {
-  border: 2px solid red;
-  border-radius: 17px;
-  background-color: rgb(246, 156, 156);
-  color: rgb(228, 57, 57);
-  margin: 3px;
-  padding: 3px;
-  text-align: center;
-  font-size: 22px;
-  animation: fadeOut 6s forwards;
+  border: 2px solid #FF6347;
+  background-color: #F8E0E0;
+  color: #FF6347;
 }
+
 @keyframes fadeOut {
   0% {
-      opacity: 1;
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
   }
   100% {
-      opacity: 0;
-        
+    opacity: 0;
   }
 }
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 
 /* --------------------------------[03]creator_registration_card----------------------------------------------- */
 body{
@@ -232,6 +289,7 @@ body{
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 5px;
   margin-bottom: 50px;
+  justify-content: space-between;
 }    
 .card {
   transition: background-color 0.5s ease;
@@ -284,6 +342,7 @@ body{
   border-collapse: collapse;
   color: #fff; /* Text color for better visibility on dark background */
   background: #333; /* Dark background for the table */
+  animation: fadeIn 1.3s ease-in-out;
 }
 
 .data-table th, .data-table td {
@@ -304,6 +363,20 @@ body{
 .data-row:hover {
   background-color: #444; /* Darker background on hover */
 }
+/* Dropdown styling to match the table */
+.data-table select {
+  padding: 8px;
+  border: 1px solid #666;
+  background: #333;
+  color: #fff;
+}
+
+/* Styling for the dropdown options */
+.data-table select option {
+  background: #333;
+  color: #fff;
+}
+
 /* ------------------------------------------[07]forms------------------------------------------------------------------------------ */
 .upload-form {
   width: 50%;
@@ -361,33 +434,54 @@ label {
 
 
 /* -----------------------------------[08]left-content--------------------------------------------------------------------- */
-ul {
+/* Common styles */
+.link-list {
   list-style: none;
   padding: 0;
   margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
+
 .card {
   border-radius: 8px;
   padding: 15px;
   text-align: center;
+  margin: 10px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
+/* Shared card styles */
 .common-card {
-  background-color: #f0f8ff; 
-  border: 1px solid #b6d8f2; 
-  margin-bottom: 15px;
+  background-color: #f0f8ff;
+  border: 1px solid #b6d8f2;
 }
+
+.common-card:hover,
+.creator-card:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-5px);
+}
+
 .creator-card {
-  background-color: #f5f5f5; 
-  border: 2px solid rgb(203, 193, 5); 
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); 
+  background-color: #f5f5f5;
+  border: 2px solid rgb(203, 193, 5);
 }
-a {
+
+/* Link styles */
+.common-link,
+.creator-link, a{
   text-decoration: none;
-  color: #d9ce34;; /* Default text color */
+  color: #d9ce34; /* Default text color */
 }
-a:hover {
+
+.common-link:hover,
+.creator-link:hover {
   text-decoration: underline;
 }
+
+
 
 /* --------------------------------[09]audio player-------------------------------------------- */
 .audio_player {
@@ -548,9 +642,41 @@ a:hover {
   animation: fadeIn 1.3s ease-in-out; /* Apply the fadeIn animation */
 }
 
-/* ----------------------------------------visuals and tables----------------------------------------- */
-/* Table with dark theme and grid lines */
+/* -----------------------------------------------------lyrics----------------------------------/* 
 
+/* Dark theme styles */
+.dark-theme {
+  color: #fff; /* Text color */
+  background-color: #333; /* Background color */
+  padding: 20px; /* Padding for better readability */
+  border-radius: 10px; /* Rounded corners for a softer look */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  transition: box-shadow 0.3s ease; /* Smooth shadow transition */
+}
 
+/* Container for lyrics */
+.lyrics-container {
+  height: 92%;
+  overflow-y: auto;
+  padding: 37px;
+  animation: fadeIn 1.3s ease-in-out;
+}
+
+/* Header styles */
+.lyrics h1 {
+  font-size: 24px; /* Adjusted font size */
+  margin-bottom: 10px; /* Improved spacing */
+}
+
+/* Lyrics paragraph styles */
+.lyrics p {
+  font-size: 18px; /* Adjusted font size for better readability */
+  line-height: 2.6; /* Enhanced line spacing for smooth reading */
+}
+
+/* Hover effects */
+.lyrics-container:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Slightly elevate the section on hover */
+}
 
 

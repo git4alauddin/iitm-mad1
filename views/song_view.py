@@ -38,10 +38,26 @@ class UploadSongView(MethodView):
         form = MusicForm()
 
         if form.validate_on_submit():
+            title = form.title.data
+            if not title:
+                flash('Title is required', 'danger')
+                return redirect(url_for('song.upload_song'))
+            artist = form.artist.data
+            if not artist:
+                flash('Artist is required', 'danger')
+                return redirect(url_for('song.upload_song'))
+            genre = form.genre.data
+            if not genre:
+                flash('Genre is required', 'danger')
+                return redirect(url_for('song.upload_song'))
+            lyrics = form.lyrics.data
+            if not lyrics:
+                flash('Lyrics is required', 'danger')
+                return redirect(url_for('song.upload_song'))
+
             audio_file = form.audio_file.data
             if audio_file:
-                title = form.title.data
-                artist = form.artist.data
+                
                 random_suffix = random.randint(0, 10000)
                 
                 creator_id = current_user.id
@@ -51,12 +67,6 @@ class UploadSongView(MethodView):
 
                 audio_file_path = os.path.join(current_app.config['SONG_UPLOAD_FOLDER'], new_file_name)
                 audio_file.save(audio_file_path)
-
-                
-
-                # extract remaining song info
-                genre = form.genre.data
-                lyrics = form.lyrics.data
 
                 # create song object to insert into the table
                 song = Song(
@@ -85,15 +95,16 @@ class UploadSongView(MethodView):
                 return redirect(url_for('user.dashboard'))
             else:
                 flash('Please select an audio file', 'danger')
-                return redirect(url_for('music.upload_song'))
+                return redirect(url_for('song.upload_song'))
         else:
             flash('All fields are required', 'danger')
-            return redirect(url_for('music.upload_song'))
+            return redirect(url_for('song.upload_song'))
 bp_song.add_url_rule('/upload_song', view_func=UploadSongView.as_view('upload_song'))
 
 # view play_song
 class PlaySongView(MethodView):
     def get(self, id):
+        # main logic
         song = Song.query.get(id)
         song_file = SongFile.query.filter_by(song_id=id).first()
         song.hits += 1
@@ -115,6 +126,38 @@ class PlaySongView(MethodView):
             albums = a_response.json()
         return render_template('play_song.html', song=song, song_file=song_file, playlists=playlists, suggested_songs=suggested_songs, albums=albums)
 bp_song.add_url_rule('/play_song/<string:id>', view_func=PlaySongView.as_view('play_song'))
+
+# song lyrics view
+class SongLyricsView(MethodView):
+    def get(self, id):
+        # main logic to retrieve song lyrics
+        song = Song.query.get(id)
+        lyrics = song.lyrics
+
+        # admin content
+        api_url = request.url_root + 'songs/songs'
+        songs = requests.get(api_url)
+        songs = songs.json()
+
+        #contents
+        api_url = request.url_root + 'users/users/' + str(current_user.id) + '/playlists'
+        p_response = requests.get(api_url)
+        api_url = request.url_root + 'songs/songs'
+        s_response = requests.get(api_url)
+        api_url = request.url_root + 'users/users/' + str(current_user.id) + '/albums'
+        a_response = requests.get(api_url)
+        
+        if s_response.status_code == 200:
+            suggested_songs = s_response.json()
+        if p_response.status_code == 200:
+            playlists = p_response.json()
+        if a_response.status_code == 200:
+            albums = a_response.json()
+
+        return render_template('song_lyrics.html', song=song, lyrics=lyrics, playlists=playlists, suggested_songs=suggested_songs, albums=albums, songs=songs)
+
+bp_song.add_url_rule('/song_lyrics/<string:id>', view_func=SongLyricsView.as_view('song_lyrics'))
+
 
 # view uploaded_songs
 class UploadedSongsView(MethodView):

@@ -7,7 +7,7 @@
         </div>
 
         <div class="chart">
-            <h2>Distribution of Categories</h2>
+            <h2>Distribution of Generes</h2>
             <canvas id="pieChart" width="400" height="200"></canvas>
         </div>
     </div>
@@ -17,6 +17,11 @@
             display: flex;
             justify-content: space-around;
             margin: 20px 0;
+            animation: fadeIn 1.3s ease-in-out;
+        }
+        .chart:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Box shadow on hover */
+            transform: translateY(-5px); /* Lift the card slightly on hover */
         }
         
         .chart {
@@ -27,6 +32,7 @@
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             width: 45%;
+            transition: all 0.3s ease;
         }
         
         h2 {
@@ -40,6 +46,10 @@
         // Convert Jinja2 variables into JavaScript variables
         var labels = JSON.parse('{{ labels | tojson | safe }}');
         var values = JSON.parse('{{ values | tojson | safe }}');
+
+        var genres = JSON.parse('{{ genres | tojson | safe }}');
+        var genre_counts = JSON.parse('{{ genre_counts | tojson | safe }}');
+
 
         var ctxBar = document.getElementById('barChart').getContext('2d');
         var barChart = new Chart(ctxBar, {
@@ -69,9 +79,9 @@
         var pieChart = new Chart(ctxPie, {
             type: 'pie',
             data: {
-                labels: labels,
+                labels: genres,
                 datasets: [{
-                    data: values,
+                    data: genre_counts,
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.7)',
                         'rgba(54, 162, 235, 0.7)',
@@ -99,7 +109,7 @@
     <br><br><br>
     <div class="grid-container">
         {% for stat in stats_data %}
-            <div class="stat-container">
+            <div class="stat-container" style="animation: none;">
                 <div class="stat_heading">
                     <h1>{{ stat['heading'] }}</h1>
                 </div>

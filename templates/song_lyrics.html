@@ -1,6 +1,23 @@
 {% extends 'layout.html' %}
+
+{% block functionality_card %}
+{% endblock %}
+{% block admin_stats %}
+{% endblock %}
+
+
+{% block left_content %}
+    <div class="lyrics-container">
+        <div class="lyrics dark-theme">
+            <h1 id="heading">{{ song.title }}</h1>
+            <p>{{ song.lyrics }}</p>
+        </div>
+    </div>
+{% endblock %}
+
 {% block admin_visuals %}
-    <table class="data-table">
+{% if current_user.role == 'admin' %}
+        <table class="data-table" style="animation: none;">
         <h1 id="heading">TRACKS</h1>
         <thead>
             <tr>
@@ -33,25 +50,6 @@
             {% endfor %}
         </tbody>
     </table>
+{% endif %}
+
 {% endblock %}
-
-
-
-{% block admin_stats %}
-    <br>
-    <h1 id="heading">STATS GLANCE</h1>
-    <br><br><br>
-    <div class="grid-container">
-        {% for stat in stats_data %}
-            <div class="stat-container" style="animation: none;">
-                <div class="stat_heading">
-                    <h1>{{ stat['heading'] }}</h1>
-                </div>
-                <div class="stat_data">
-                    <h1>{{ stat['total'] }}</h1>
-                </div>
-            </div>
-        {% endfor %}
-    </div>
-{% endblock %}
-
