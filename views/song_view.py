@@ -10,6 +10,7 @@ import random
 from models.music_model import Song, SongFile, Album, Playlist
 from models.user_model import User
 import requests
+from sqlalchemy import or_
 
 # --------------------------------------blueprint song--------------------------------------------------------
 bp_song = Blueprint('song', __name__)
@@ -213,3 +214,35 @@ class AllSongsView(MethodView):
         stats_data = [{'heading': h, 'total': t} for h, t in zip(stats_headings, [tot_user, tot_creator, tot_album, tot_song, tot_playlist])]
         return render_template('songs.html', songs=songs, stats_data=stats_data)
 bp_song.add_url_rule('/all_songs', view_func=AllSongsView.as_view('all_songs'))
+
+class SongSearchView(MethodView):
+    def get(self):
+      
+        query = request.args.get('query')
+        query = f"%{query}%"
+    
+        songs = Song.query.filter(
+                or_(
+                    Song.title.contains(query),
+                    Song.artist.contains(query),
+                    Song.genre.contains(query)
+                )
+            ).all()
+
+        # contents
+        api_url = request.url_root + 'users/users/' + str(current_user.id) + '/playlists'
+        p_response = requests.get(api_url)
+        api_url = request.url_root + 'songs/songs'
+        s_response = requests.get(api_url)
+        api_url = request.url_root + 'users/users/' + str(current_user.id) + '/albums'
+        a_response = requests.get(api_url)
+        
+        if s_response.status_code == 200:
+            suggested_songs = s_response.json()
+        if p_response.status_code == 200:
+            playlists = p_response.json()
+        if a_response.status_code == 200:
+            albums = a_response.json()
+
+        return render_template('song_search.html', songs=songs, playlists=playlists, suggested_songs=suggested_songs, albums=albums)
+bp_song.add_url_rule('/song_search', view_func=SongSearchView.as_view('song_search'))

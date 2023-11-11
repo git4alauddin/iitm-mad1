@@ -34,12 +34,23 @@
                     {% endif %}
                 </div>
                 <div class="middle">
-                    <form action="{{ url_for('song.search_song') }}" method="GET" class="search-form">
-                        <div class="search-container">
-                            <input id="search" type="text" name="query" placeholder="Search your favorite song">
-                            <button type="submit" id="search-button"><i class="fas fa-search"></i></button>
-                        </div>
-                    </form>
+                    {% if current_user.role == 'admin' %}
+                        <form action="{{ url_for('admin.admin_search') }}" method="GET" class="search-form">
+                            <div class="search-container">
+                                <input id="search" type="text" name="query" placeholder="Search your favorite song">
+                                <button type="submit" id="search-button"><i class="fas fa-search"></i></button>
+                            </div>
+                        </form>
+                    {% endif %}
+                    {% if current_user.role == 'user' or current_user.role == 'creator' %}
+                        <form action="{{ url_for('song.song_search') }}" method="GET" class="search-form">
+                            <div class="search-container">
+                                <input id="search" type="text" name="query" placeholder="Search your favorite song">
+                                <button type="submit" id="search-button"><i class="fas fa-search"></i></button>
+                            </div>
+                        </form>
+                    {% endif %}
+                    
                 </div>                
                 <div class="right">
                     {% if current_user.role == 'admin' %}
