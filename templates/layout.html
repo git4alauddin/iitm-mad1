@@ -34,7 +34,7 @@
                     {% endif %}
                 </div>
                 <div class="middle">
-                    <form action="#" method="GET" class="search-form">
+                    <form action="{{ url_for('song.search_song') }}" method="GET" class="search-form">
                         <div class="search-container">
                             <input id="search" type="text" name="query" placeholder="Search your favorite song">
                             <button type="submit" id="search-button"><i class="fas fa-search"></i></button>
@@ -148,6 +148,9 @@
 
     
             <!-- content section -->
+            {%block search_results %}
+            {% endblock %}
+
             {% block content %}
             {% endblock %}
 
@@ -182,7 +185,15 @@
                     <div class="cards">
                         <p id="heading">MY-PLAYLIST</p>
                         <div class="card-container">
-                            {% if playlists %}
+                            {% if not playlists %}
+                                <ul class="link-list">
+                                    {% if current_user.role == 'user' or current_user.role == 'creator' %}
+                                        <li class="card common-card">
+                                            <a class="common-link" href="{{ url_for('playlist.create_playlist') }}">Create Playlist</a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            {% else %}
                                 {% for playlist in playlists %}
                                     <div class="card">
                                         <img id="card_img" src="{{ url_for('static', filename='images/music_node_2.svg') }}" alt="image">                            
@@ -190,14 +201,6 @@
                                         <a id="delete-btn" href="{{ url_for('playlist.remove_playlist', id=playlist.id) }}">Delete <i class="fas fa-trash-alt"></i></a>
                                     </div>
                                 {% endfor %}
-                            {% else %}
-                                    <ul class="link-list">
-                                        {% if current_user.role == 'user' or current_user.role == 'creator' %}
-                                            <li class="card common-card">
-                                                <a class="common-link" href="{{ url_for('playlist.create_playlist') }}">Create Playlist</a>
-                                            </li>
-                                        {% endif %}
-                                    </ul>
                             {% endif %}
                         </div>
                     </div>
@@ -210,7 +213,15 @@
                     <div class="cards">
                         <p id="heading">MY-ALBUMS</p>
                         <div class="card-container">
-                            {% if albums | length > 0 %}
+                            {% if not albums %}
+                                <ul class="link-list">
+                                    {% if current_user.role == 'creator' %}
+                                        <li class="card creator-card">
+                                            <a class="creator-link" href="{{url_for('album.create_album')}}">Create Album</a>
+                                        </li>
+                                    {% endif %}
+                                </ul>   
+                            {% else %}
                                 {% for album in albums %}
                                     <div class="card">                               
                                         <img id="card_img" src="{{ url_for('static', filename='images/music_node_2.svg') }}" alt="image">
@@ -218,14 +229,6 @@
                                         <a id="delete-btn" href="{{ url_for('album.remove_album', id=album.id) }}">Delete <i class="fas fa-trash-alt"></i></a>
                                     </div>
                                 {% endfor %}
-                            {% else %}
-                                <ul class="link-list">
-                                    {% if current_user.role == 'creator' %}
-                                        <li class="card creator-card">
-                                            <a class="creator-link" href="{{url_for('album.create_album')}}">Create Album</a>
-                                        </li>
-                                    {% endif %}
-                                </ul>
                             {% endif %}
                         </div>
                     </div>
@@ -280,8 +283,8 @@
                 </audio>
             </div>
         
-            <div class="add_to_playlist">
-                <a href="#">Rating</a>
+            <div class="song_info">
+                <h2>----:-----</h2>
             </div>
         </div>
     {% endblock %}

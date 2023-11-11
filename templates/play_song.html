@@ -4,7 +4,7 @@
     {% endblock %}
     <div class="audio_player">
         <div class="song_info">
-            <h2>{{ song.title }}</h2>
+            <h2>Playing: {{ song.title }}</h2>
         </div>
 
         {% set song_path = 'songs/' + song_file.file_name %}
@@ -14,8 +14,8 @@
             </audio>
         </div>
 
-        <div class="add_to_playlist">
-            <a href="#">Rating</a>
+        <div class="song_info">
+            <h2>By: {{ song.artist }}</h2>
         </div>
     </div>
 {% endblock %}
