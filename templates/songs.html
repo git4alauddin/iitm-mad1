@@ -7,13 +7,16 @@
                 <th>Song</th>
                 <th>
                     Genre
-                    <select id="genre-filter">
-                        <option value="">All Genres</option>
-                        <option value="romantic">Romantic</option>
-                        <option value="pop">Pop</option>
-                        <option value="rock">Rock</option>
-                        <option value="hip-hop">Hip-Hop</option>
-                    </select>
+                    <div class="dropdown">
+                        <button class="dropbtn">Genre</button>
+                        <div class="dropdown-content">
+                            <a href="{{ url_for('song.all_songs', genre='all') }}">All Genres</a>
+                            <a href="{{ url_for('song.all_songs', genre='romantic') }}">Romantic</a>
+                            <a href="{{ url_for('song.all_songs', genre='pop') }}">Pop</a>
+                            <a href="{{ url_for('song.all_songs', genre='rock') }}">Rock</a>
+                            <a href="{{ url_for('song.all_songs', genre='hip-hop') }}">Hip-Hop</a>
+                        </div>
+                    </div>
                 </th>
                 <th>Lyrics</th>
                 <th>Action</th>
