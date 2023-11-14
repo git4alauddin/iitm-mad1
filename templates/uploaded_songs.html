@@ -17,7 +17,10 @@
                     <tr class="data-row">
                         <td><a class="song-link" href="{{ url_for('song.play_song', id=song.id) }}">{{ song.title }}</a></td>
                         <td>{{ song.artist }}</td>
-                        <td><a id="delete-btn" href="{{ url_for('song.delete_song', id=song.id) }}">Delete <i class="fas fa-trash-alt"></i></a></td>
+                        <td>
+                            {% set action_url = url_for('song.delete_song', id=song.id) %}
+                            <button id="delete-btn" onclick="showConfirmation('{{ action_url }}')">Delete <i class="fas fa-trash-alt"></i></button>
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>

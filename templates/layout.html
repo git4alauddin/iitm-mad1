@@ -75,6 +75,17 @@
             </div>
         </nav>
     {% endblock %}
+
+    <!-----------------------------------------------dialog box ---------------------------------------------->
+    {% block dialog_box %}
+        <div id="confirmation-dialog" class="confirmation-dialog">
+            <div class="confirmation-content">
+                <p>Are you sure? want to perform this action?</p>
+                <button class="confirm-btn" onclick="window.location.href = '{{ action_url }}';">Confirm</button>
+                <button class="cancel-btn" onclick="hideConfirmation();">Cancel</button>
+            </div>
+        </div>
+    {% endblock %}
    
     <!---------------------------------------------------------contents ----------------------------------------------------------------->
     <div class="content">
@@ -93,7 +104,9 @@
                                 Create new songs, albums and much more... 
                             </div>
                             <img id="headphone" src="{{ url_for('static', filename='images/headphone.svg') }}" alt="headphone">
-                            <a id="register_button" href="{{ url_for('user.creator_register')}}">Register</a>
+
+                            {% set action_url = url_for('user.creator_register') %}
+                            <a id="register_button" href="#" onclick="showConfirmation('{{ action_url }}')">Register</a>
                         </div>
                     {% endif %} 
                 </div>
@@ -209,7 +222,9 @@
                                     <div class="card">
                                         <img id="card_img" src="{{ url_for('static', filename='images/music_node_2.svg') }}" alt="image">                            
                                         <a id="card_title" href="{{ url_for('playlist.add_songs_to_playlist', id=playlist.id) }}"><b>{{ playlist.title }}</b></a>
-                                        <a id="delete-btn" href="{{ url_for('playlist.remove_playlist', id=playlist.id) }}">Delete <i class="fas fa-trash-alt"></i></a>
+
+                                        {% set action_url = url_for('playlist.remove_playlist', id=playlist.id) %}
+                                        <button id="delete-btn" onclick="showConfirmation('{{ action_url }}')">Delete <i class="fas fa-trash-alt"></i></button>
                                     </div>
                                 {% endfor %}
                             {% endif %}
@@ -237,7 +252,9 @@
                                     <div class="card">                               
                                         <img id="card_img" src="{{ url_for('static', filename='images/music_node_2.svg') }}" alt="image">
                                         <a id="card_title" href="{{ url_for('album.add_songs_to_album', id=album.id) }}"><b>{{ album.title }}</b></a>
-                                        <a id="delete-btn" href="{{ url_for('album.remove_album', id=album.id) }}">Delete <i class="fas fa-trash-alt"></i></a>
+
+                                        {% set action_url = url_for('album.remove_album', id=album.id) %}
+                                        <button id="delete-btn" onclick="showConfirmation('{{ action_url }}')">Delete <i class="fas fa-trash-alt"></i></button>
                                     </div>
                                 {% endfor %}
                             {% endif %}
@@ -274,7 +291,7 @@
             
                     <div class="site-info">
                         <p>&copy; 2023 OurMusicApp. All rights reserved.</p>
-                        <p>Developed by: <a href="https://github.com/alauddinansari">Alauddin Ansari <i class="fas fa-heart"></i></a></p>
+                        <p>Developed by: <a href="https://github.com/alauddinansari">Alauddin Ansari <i style="color: red" class="fas fa-heart"></i></a></p>
                     </div>
                 </footer>
             {% endblock %}

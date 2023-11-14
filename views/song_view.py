@@ -193,7 +193,10 @@ class DeleteSongView(MethodView):
             flash('Successfully deleted song!', 'success')
         else:
             flash('Error deleting song!', 'danger')
-        return redirect(url_for('song.uploaded_songs'))
+        if current_user.role == 'creator':
+            return redirect(url_for('song.uploaded_songs'))
+        else:
+            return redirect(url_for('song.all_songs', genre='all'))
 bp_song.add_url_rule('/delete_song/<string:id>', view_func=DeleteSongView.as_view('delete_song'))
 class AllSongsView(MethodView):
     def get(self, genre):

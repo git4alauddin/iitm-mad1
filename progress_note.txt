@@ -1,17 +1,9 @@
+to-do
 ______________________________
-top priority
 - song rating system 
 - searching for songs
-_________________________________
-
-to do
-- review system for songs 
-- hits logic for songs, playlists and albums
----------------------------------------------------------
-- in the playlist_songs_view
-post method handle if the song is alredy in the playlist 
-- there will be a suggestion resource for suggesting songs,
-----------------------------------------------------------
-to do
 - handle the data type for release year of the album
-- handle if no playlist or album is created
+________________________________
+
+
+

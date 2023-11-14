@@ -8,7 +8,7 @@
                 <th>
                     Genre
                     <div class="dropdown">
-                        <button class="dropbtn">Genre</button>
+                        <button class="dropbtn">Select Genre <i class="fa fa-caret-down"></i></button>
                         <div class="dropdown-content">
                             <a href="{{ url_for('song.all_songs', genre='all') }}">All Genres</a>
                             <a href="{{ url_for('song.all_songs', genre='romantic') }}">Romantic</a>
@@ -29,8 +29,11 @@
                     <td>{{ song.genre }}</td>
                     <td><a href="{{ url_for('song.song_lyrics', id=song.id) }}"><i class="fas fa-eye"></i> View</a></td>
                     <td>
-                        <a href="#"><i class="fas fa-trash-alt"></i> Delete |</a>
-                        <a href="#"><i class="fas fa-flag"></i> Flag</a>
+
+                        {% set action_url = url_for('song.delete_song', id=song.id) %}
+                        <button id="delete-btn" onclick="showConfirmation('{{ action_url }}')">Delete <i class="fas fa-trash-alt"></i></button>
+
+                        <button id ="delete-btn" href="#"><i class="fas fa-flag"></i> Flag</button>
                     </td>
                 </tr>
             {% endfor %}

@@ -317,23 +317,26 @@ body{
   border-bottom: 2px solid #5c635c;
   text-decoration: none;
 }
-#delete_card {
-  font-size: 35px;    
-  color: rgb(194, 44, 10);
-  text-decoration: none;
+#delete-btn {
+  font-size: 15px;
+  color: #fff;
+  background-color: #dc3545;
+  padding: 10px 20px;
+  border: 1px solid #dc3545;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
-::-webkit-scrollbar {
-    width: 12px;
-  }
-  ::-webkit-scrollbar-track {
-    background: #f1f1f1;
-  }
-  ::-webkit-scrollbar-thumb {
-    background: #2d2c13; 
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    background: #555;
-  }
+
+#delete-btn:hover {
+  background-color: #c82333;
+  color: gold;
+}
+
+
+
+
+
   
 
 /* -----------------------------------[06]table--------------------------------------------------------------------- */
@@ -409,17 +412,18 @@ label {
   color: #ddd;
 }
 .btn-primary {
+  transition: background-color 0.3s ease;
   padding: 10px;
   margin-top: 11px;
   font-size: 16px;
   border: none;
   border-radius: 5px;
-  background-color: #1c8adb;
+  background-color: #dc5e28;
   color: #fff;
   cursor: pointer;
 }
 .btn-primary:hover {
-  background-color: #106aa1;
+  background-color: #cc4309;
 }
 @keyframes slide-in {
   to {
@@ -729,4 +733,59 @@ label {
   background-color: #3498db; /* Highlight color on hover */
 }
 
+/* --------------------------------------------dialog box ----------------------------------------------------*/
+.confirmation-dialog {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
 
+.confirmation-content {
+  transition: all 0.3s ease;
+  background: rgb(33,33,30);
+  background: linear-gradient(291deg, rgba(33,33,30,1) 0%, rgba(82,80,79,1) 82%);
+  color: gold; /* Text color */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  text-align: center;
+}
+.confirmation-content:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Box shadow on hover */
+  transform: translateY(-5px);
+}
+
+.confirm-btn,
+.cancel-btn {
+  margin: 10px;
+  padding: 10px 20px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.confirm-btn {
+  transition: background-color 0.3s ease;
+  background: #28a745; /* Green for OK button */
+  color: #fff;
+}
+.confirm-btn:hover {
+  background-color: #218838;
+}
+
+.cancel-btn {
+  transition: background-color 0.3s ease;
+  background: #dc3545; /* Red for Cancel button */
+  color: #fff;
+}
+.cancel-btn:hover {
+  background-color: #c82333;
+}
