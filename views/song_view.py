@@ -7,7 +7,7 @@ from decorators.role_decorator import creator_required
 from werkzeug.utils import secure_filename
 import os
 import random
-from models.music_model import Song, SongFile, Album, Playlist
+from models.music_model import Song, SongFile, Album, Playlist, FlaggedContent
 from models.user_model import User
 import requests
 from sqlalchemy import or_
@@ -198,12 +198,15 @@ class DeleteSongView(MethodView):
         else:
             return redirect(url_for('song.all_songs', genre='all'))
 bp_song.add_url_rule('/delete_song/<string:id>', view_func=DeleteSongView.as_view('delete_song'))
+
+# view all songs
 class AllSongsView(MethodView):
     def get(self, genre):
         if genre == 'all':
             songs = Song.query.all()
         else:
             songs = Song.query.filter_by(genre=genre).all()
+        
 
         
 
@@ -250,3 +253,42 @@ class SongSearchView(MethodView):
 
         return render_template('song_search.html', songs=songs, playlists=playlists, suggested_songs=suggested_songs, albums=albums)
 bp_song.add_url_rule('/song_search', view_func=SongSearchView.as_view('song_search'))
+
+# flag song
+class FlagSongView(MethodView):
+    def get(self, song_id):
+        # main logic
+        song_to_flag = Song.query.get(song_id)
+
+        # check if flagged
+        is_flagged = FlaggedContent.query.filter_by(song_id=song_id).first()
+        if is_flagged:
+            is_flagged = True
+        else:
+            is_flagged = False
+            
+        # songs content
+        songs = Song.query.all()
+
+        # stats
+        tot_user = User.query.filter_by(role='user').count()
+        tot_creator = User.query.filter_by(role='creator').count()
+        tot_album = Album.query.count()
+        tot_song = Song.query.count()
+        tot_playlist = Playlist.query.count()
+
+        stats_headings = ['Total Normal Users', 'Total Creators', 'Total Albums', 'Total Songs', 'Total Playlists']
+        stats_data = [{'heading': h, 'total': t} for h, t in zip(stats_headings, [tot_user, tot_creator, tot_album, tot_song, tot_playlist])]
+        return render_template('flag_song.html', song_to_flag=song_to_flag, is_flagged=is_flagged, stats_data=stats_data, songs=songs)
+    
+    def post(self, song_id):
+        reason = request.form.get('reason')
+        song_id = song_id
+        admin_id = request.form.get('admin_id')
+
+        flagged_content = FlaggedContent(song_id=song_id, reason=reason, admin_id=admin_id)
+        db.session.add(flagged_content)
+        db.session.commit()
+        flash ('Content flagged successfully!', 'success')
+        return redirect (url_for('song.all_songs', genre='all'))
+bp_song.add_url_rule('/flag_song/<song_id>', view_func=FlagSongView.as_view('flag_song'))

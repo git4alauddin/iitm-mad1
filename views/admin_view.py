@@ -1,7 +1,8 @@
 from flask import Blueprint, render_template,redirect,url_for,flash,request
 from flask.views import MethodView
 import requests
-from models.music_model import Song,Album,Playlist
+from extensions.extension import db
+from models.music_model import Song,Album,Playlist,FlaggedContent
 from models.user_model import User
 from sqlalchemy import or_
 
@@ -63,3 +64,4 @@ class AdminSearchView(MethodView):
 
         return render_template('admin_search.html', songs=songs, stats_data=stats_data)
 bp_admin.add_url_rule('/admin_search', view_func=AdminSearchView.as_view('admin_search'))
+

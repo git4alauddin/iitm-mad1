@@ -54,6 +54,7 @@
                 </div>                
                 <div class="right">
                     {% if current_user.role == 'admin' %}
+                    <a id="Creators" href="{{url_for('user.all_creators')}}"><i class="fas fa-users"></i> Creators</a>
                     <a id="Tracks" href="{{url_for('song.all_songs', genre='all')}}"><i class="fas fa-music"></i> Tracks</a>
                     <a id="Albums" href="{{url_for('album.all_albums')}}"><i class="fas fa-compact-disc"></i> Albums</a>
                     {% endif %}
@@ -133,8 +134,19 @@
                 </ul>
             {% endblock %}
 
+            <!-- flagged content section -->
+            {% block flagged_content %}
+            {% endblock %}
+
             <!-- content section -->
             {% block left_content %}
+            {% endblock %}
+
+            <!-- statistics section -->
+            {% block creator_stats %}
+            {% endblock %}
+
+            {% block admin_stats %}
             {% endblock %}
             
             <!-- form section -->
@@ -144,12 +156,7 @@
             {% block pre_login_form %}
             {% endblock %}
             
-            <!-- statistics section -->
-            {% block creator_stats %}
-            {% endblock %}
-
-            {% block admin_stats %}
-            {% endblock %}
+            
 
         </div>
 

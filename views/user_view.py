@@ -92,3 +92,23 @@ class CreatorStatsView(MethodView):
 
         return render_template('creator_stats.html', playlists=playlists, suggested_songs=suggested_songs, albums=albums, stats_data=stats_data)
 bp_user.add_url_rule('/creator_stats', view_func=CreatorStatsView.as_view('creator_stats'))
+
+# all creators
+class AllCreatorsView(MethodView):
+    def get(self):
+        # query all creators
+        creators = User.query.filter_by(role='creator').all()
+        
+        # stats
+        tot_user = User.query.filter_by(role='user').count()
+        tot_creator = User.query.filter_by(role='creator').count()
+        tot_album = Album.query.count()
+        tot_song = Song.query.count()
+        tot_playlist = Playlist.query.count()
+
+        stats_headings = ['Total Normal Users', 'Total Creators', 'Total Albums', 'Total Songs', 'Total Playlists']
+        stats_data = [{'heading': h, 'total': t} for h, t in zip(stats_headings, [tot_user, tot_creator, tot_album, tot_song, tot_playlist])]
+
+        return render_template('creators.html', creators=creators, stats_data=stats_data)
+bp_user.add_url_rule('/all_creators', view_func=AllCreatorsView.as_view('all_creators'))
+

@@ -58,6 +58,12 @@ class FlaggedContent(db.Model):
     reason = db.Column(db.String(200))
     admin_id = db.Column(db.String(36), db.ForeignKey('admin.id'), nullable=False)
 
+# flagged_creators
+class FlaggedCreator(db.Model):
+    id = db.Column(db.String(36), primary_key=True, default=generate_uuid, unique=True)
+    user_id = db.Column(db.String(36), db.ForeignKey('user.id'), nullable=False)
+    admin_id = db.Column(db.String(36), db.ForeignKey('admin.id'), nullable=False)
+
 # subscriptions
 class Subscription(db.Model):
     id = db.Column(db.Integer, primary_key=True)

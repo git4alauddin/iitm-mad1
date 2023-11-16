@@ -1,26 +1,28 @@
 {% extends 'layout.html' %}
 {% block admin_visuals %}
     <table class="data-table">
-        <h1 id="heading">ALBUMS</h1>
+        <h1 id="heading">CREATORS</h1>
         <thead>
             <tr>
-                <th>Title</th>
-                <th>Release-year</th>
+                <th>Name</th>
+                <th>Email</th>
                 
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            {% for album in albums %}
+            {% for creator in creators %}
             <tr class="data-row">
-                <td>{{ album.title }}</td>
-                <td>{{ album.release_year }}</td>
-                
+                <td>{{ creator.username }}</td>
+                <td>{{ creator.email }}</td>
                 <td>
-                    {% set action_url = url_for('album.remove_album', id=album.id) %}
-                    <button id="delete-btn" onclick="showConfirmation('{{ action_url }}')"><i class="fas fa-trash-alt"></i> Delete</button> 
+                    <a href="#" style="background-color: orangered;margin-right: 10px" id="delete-btn">
+                        <i class="fas fa-ban"></i> Blacklist
+                    </a> 
+                    <a href="#" style="background-color:#149310;" id="delete-btn">
+                        <i class="fas fa-check"></i> Whitelist
+                    </a>  
                 </td>
-                
             </tr>
             {% endfor %}
         </tbody>

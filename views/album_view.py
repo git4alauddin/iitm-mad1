@@ -60,8 +60,10 @@ class RemoveAlbumView(MethodView):
             flash('Successfully removed album!', 'success')
         else:
             flash('Error removing album!', 'danger')
-
-        return redirect(url_for('user.dashboard'))
+        if current_user.role == 'creator':
+            return redirect(url_for('user.dashboard'))
+        else:
+            return redirect(url_for('album.all_albums'))
 
 bp_album.add_url_rule('/remove_album/<string:id>/', view_func=RemoveAlbumView.as_view('remove_album'))
 
@@ -116,7 +118,6 @@ class AlbumRemoveSongsView(MethodView):
             flash('Error removing song from album!', 'danger')
 
         return redirect(url_for('album.add_songs_to_album', id=id))
-
 bp_album.add_url_rule('/album_remove_songs/<string:id>', view_func=AlbumRemoveSongsView.as_view('album_remove_songs'))
 
 class AllAlbumsView(MethodView):

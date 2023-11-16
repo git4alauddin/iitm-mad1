@@ -23,7 +23,7 @@
                         <td>
                             <form action="{{ url_for('playlist.playlist_remove_songs', id=playlist.id) }}" method="POST">
                                 <input type="hidden" name="song_id" value="{{ song.id }}">
-                                <button type="submit">Delete</button>
+                                <button id="delete-btn" type="submit">Delete <i class="fas fa-trash-alt"></i></button>
                             </form>
                         </td>
                     </tr>

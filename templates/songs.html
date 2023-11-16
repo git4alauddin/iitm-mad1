@@ -1,5 +1,5 @@
 {% extends 'layout.html' %}
-{% block admin_visuals %}
+{% block content %}
     <table class="data-table">
         <h1 id="heading">TRACKS</h1>
         <thead>
@@ -29,11 +29,10 @@
                     <td>{{ song.genre }}</td>
                     <td><a href="{{ url_for('song.song_lyrics', id=song.id) }}"><i class="fas fa-eye"></i> View</a></td>
                     <td>
-
                         {% set action_url = url_for('song.delete_song', id=song.id) %}
-                        <button id="delete-btn" onclick="showConfirmation('{{ action_url }}')">Delete <i class="fas fa-trash-alt"></i></button>
+                        <button id="delete-btn" onclick="showConfirmation('{{ action_url }}')"><i class="fas fa-trash-alt"></i> Delete</button>
 
-                        <button id ="delete-btn" href="#"><i class="fas fa-flag"></i> Flag</button>
+                        <a href="{{ url_for('song.flag_song', song_id=song.id) }}" style="background-color: orangered;" id="delete-btn"><i class="fas fa-flag"></i> Flag </a> 
                     </td>
                 </tr>
             {% endfor %}

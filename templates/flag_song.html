@@ -1,18 +1,47 @@
 {% extends 'layout.html' %}
+{% block post_login_form %}
+    <h1 id="heading">FLAG-SONG</h1>
+    <form class="upload-form" method="POST" action="{{ url_for('song.flag_song', song_id=song_to_flag.id) }}">
+        <h1 id ="heading" style="color: orangered;">{{ song_to_flag.title }}-{{ song_to_flag.artist }}</h1>
+        <div class="form-group">
+            <label for="reason">Reason</label>
+            {% if not is_flagged %}
+                <input type="text" id="reason" name="reason" placeholder="Reason" class="form-control">
+            {% else %}
+                <input type="text" id="reason" name="reason" placeholder="The song is already flagged!!" class="form-control">
+            {% endif %}
+            
 
-{% block functionality_card %}
-{% endblock %}
-{% block admin_stats %}
-{% endblock %}
-
-
-{% block left_content %}
-    <div class="lyrics-container">
-        <div class="lyrics dark-theme">
-            <h1 id="heading">{{ song.title }}</h1>
-            <p>{{ song.lyrics }}</p>
+            <!--song_id and admin_id -->
+            <input type="hidden" id="song_id" name="song_id" value="{{ song_to_flag.id }}">
+            <input type="hidden" id="admin_id" name="admin_id" value="{{ current_user.id }}">
+        
         </div>
+        {% if not is_flagged %}
+           <input type="submit" value="Flag" class="btn btn-primary"> 
+        {% endif %}
+        
+    </form>
+{% endblock %}
+
+{% block admin_stats %}
+    {% if current_user.role == 'admin' %}
+        <br>
+    <h1 id="heading">STATS GLANCE</h1>
+    <br><br><br>
+    <div class="grid-container">
+        {% for stat in stats_data %}
+            <div class="stat-container"  style="animation: none;">
+                <div class="stat_heading">
+                    <h1>{{ stat['heading'] }}</h1>
+                </div>
+                <div class="stat_data">
+                    <h1>{{ stat['total'] }}</h1>
+                </div>
+            </div>
+        {% endfor %}
     </div>
+    {% endif %}
 {% endblock %}
 
 {% block content %}
@@ -45,14 +74,15 @@
                     <td>{{ song.genre }}</td>
                     <td><a href="{{ url_for('song.song_lyrics', id=song.id) }}"><i class="fas fa-eye"></i> View</a></td>
                     <td>
+
                         {% set action_url = url_for('song.delete_song', id=song.id) %}
                         <button id="delete-btn" onclick="showConfirmation('{{ action_url }}')"><i class="fas fa-trash-alt"></i> Delete</button>
 
-                        <a href="{{ url_for('song.flag_song', song_id=song.id) }}" style="background-color: orangered;" id="delete-btn"><i class="fas fa-flag"></i> Flag </a> 
+                       
+                        <a href="{{ url_for('song.flag_song', song_id=song.id) }}" style="background-color: orangered;" id="delete-btn"><i class="fas fa-flag"></i> Flag</a>
                     </td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
 {% endblock %}
-
