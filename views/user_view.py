@@ -2,7 +2,7 @@ from flask import Blueprint, render_template,redirect,url_for,flash,request
 from flask_login import logout_user,login_required, current_user
 from flask.views import MethodView
 import requests
-from models.music_model import Playlist, Song, Album
+from models.music_model import Playlist, Song, Album, FlaggedContent
 from models.user_model import User
 
 #------------------------------------blueprint user---------------------------------------#
@@ -37,8 +37,18 @@ class DashboardView(MethodView):
         stats_headings = ['Total Normal Users', 'Total Creators', 'Total Albums', 'Total Songs', 'Total Playlists']
         stats_data = [{'heading': h, 'total': t} for h, t in zip(stats_headings, [tot_user, tot_creator, tot_album, tot_song, tot_playlist])]
 
+        # flagged_content
+        flagged_contents = FlaggedContent.query.all()
+        reasons = list()
+        flagged_songs = list()
 
-        return render_template('dashboard.html', playlists=playlists, suggested_songs=suggested_songs, albums=albums, stats_data=stats_data)
+        for content in flagged_contents:
+            flagged_song = Song.query.filter_by(id=content.song_id, creator_id=current_user.id).first()
+            if flagged_song:
+                reasons.append(content.reason)
+                flagged_songs.append(flagged_song)
+
+        return render_template('dashboard.html', playlists=playlists, suggested_songs=suggested_songs, albums=albums, stats_data=stats_data, flagged_songs=flagged_songs, reasons=reasons)
 bp_user.add_url_rule('/dashboard', view_func=DashboardView.as_view('dashboard'))
 
 # view logout

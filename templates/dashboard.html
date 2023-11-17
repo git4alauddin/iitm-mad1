@@ -40,3 +40,27 @@
     {% endif %}
 {% endblock %}
 
+{%block flagged_content %}
+    {% if current_user.role == 'creator' and flagged_songs %}
+        <h1 id="heading" style="color: red;"><i class="fas fa-ban"></i> FLAGGED SONG(S)</h1>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Artist</th>
+                    <th>Reason</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for flagged_song in flagged_songs %}
+                    <tr class="data-row">
+                        <td>{{ flagged_song.title }}</td>
+                        <td>{{ flagged_song.artist }}</td>
+                        <td>{{ reasons[loop.index0] }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{%endblock%}
+

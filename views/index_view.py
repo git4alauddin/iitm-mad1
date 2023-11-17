@@ -12,11 +12,5 @@ bp_index = Blueprint('index', __name__)
 class HomeView(MethodView):
     def get(self):
         form = RegisterForm()
-
-        # contents
-        api_url = request.url_root + 'songs/songs'
-        s_response = requests.get(api_url)
-        if s_response.status_code == 200:
-            suggested_songs = s_response.json()
-        return render_template('home.html', form=form, suggested_songs=suggested_songs)
+        return render_template('home.html', form=form)
 bp_index.add_url_rule('/home', view_func=HomeView.as_view('home'))
