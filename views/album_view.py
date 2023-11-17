@@ -34,8 +34,13 @@ class CreateAlbumView(MethodView):
         if not title:
             flash('Title is required.', 'danger')
             return redirect(url_for('album.create_album'))
+        # check if release_year is a number-year
+
         elif not release_year:
             flash('Release release_year is required.', 'danger')
+            return redirect(url_for('album.create_album'))
+        elif not release_year.isnumeric() and len(release_year) != 4:
+            flash('Release year must be a year.', 'danger')
             return redirect(url_for('album.create_album'))
         else:
             api_url = request.url_root + 'albums/albums/' + str(current_user.id)

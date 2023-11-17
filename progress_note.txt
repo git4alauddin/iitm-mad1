@@ -1,7 +1,6 @@
 to-do
 ______________________________
 - song rating system 
-- searching for songs
-- handle the data type for release year of the album
-- blacklist/whitelist and flag/unflag songs
+- searching technology for songs [FTS]
+- what to do when the user is in the blacklist
 ________________________________

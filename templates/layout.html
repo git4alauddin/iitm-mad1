@@ -37,7 +37,7 @@
                     {% if current_user.role == 'admin' %}
                         <form action="{{ url_for('admin.admin_search') }}" method="GET" class="search-form">
                             <div class="search-container">
-                                <input id="search" type="text" name="query" placeholder="Search your favorite song">
+                                <input id="search" type="text" name="query" placeholder="favorite song, artist, genre...">
                                 <button type="submit" id="search-button"><i class="fas fa-search"></i></button>
                             </div>
                         </form>
@@ -45,7 +45,7 @@
                     {% if current_user.role == 'user' or current_user.role == 'creator' %}
                         <form action="{{ url_for('song.song_search') }}" method="GET" class="search-form">
                             <div class="search-container">
-                                <input id="search" type="text" name="query" placeholder="Search your favorite song">
+                                <input id="search" type="text" name="query" placeholder="favorite song, artist, genre...">
                                 <button type="submit" id="search-button"><i class="fas fa-search"></i></button>
                             </div>
                         </form>
@@ -107,7 +107,7 @@
                             <img id="headphone" src="{{ url_for('static', filename='images/headphone.svg') }}" alt="headphone">
 
                             {% set action_url = url_for('user.creator_register') %}
-                            <a id="register_button" href="#" onclick="showConfirmation('{{ action_url }}')">Register</a>
+                            <button id="register_button" onclick="showConfirmation('{{ action_url }}')">Register</>
                         </div>
                     {% endif %} 
                 </div>
@@ -230,7 +230,8 @@
                             {% else %}
                                 {% for playlist in playlists %}
                                     <div class="card">
-                                        <img id="card_img" src="{{ url_for('static', filename='images/music_node_2.svg') }}" alt="image">                            
+                                        <img id="card_img" src="{{ url_for('static', filename='images/music_node_2.svg') }}" alt="image"> 
+
                                         <a id="card_title" href="{{ url_for('playlist.add_songs_to_playlist', id=playlist.id) }}"><b>{{ playlist.title }}</b></a>
 
                                         {% set action_url = url_for('playlist.remove_playlist', id=playlist.id) %}
@@ -301,7 +302,7 @@
             
                     <div class="site-info">
                         <p>&copy; 2023 OurMusicApp. All rights reserved.</p>
-                        <p>Developed by: <a href="https://github.com/alauddinansari">Alauddin Ansari <i style="color: red" class="fas fa-heart"></i></a></p>
+                        <p>Developed by: <a href="https://github.com/git4alauddin">Alauddin Ansari <i style="color: red" class="fas fa-heart"></i></a></p>
                     </div>
                 </footer>
             {% endblock %}

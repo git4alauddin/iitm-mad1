@@ -14,7 +14,7 @@
         <tbody>
             {% for song in songs %}
                 <tr class="data-row">
-                    <td><a class="song-link" href="{{ url_for('song.play_song', id=song.id) }}">{{ song.title }}</a></td>
+                    <td>{{ song.title }}</td>
                     <td>{{ song.artist }}</td>
                     <td>{{ song.genre }}</td>
                 </tr>
