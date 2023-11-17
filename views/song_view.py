@@ -261,11 +261,11 @@ class FlagSongView(MethodView):
         song_to_flag = Song.query.get(song_id)
 
         # check if flagged
-        # is_flagged = FlaggedContent.query.filter_by(song_id=song_id).first()
-        # if is_flagged:
-        #     is_flagged = True
-        # else:
-        #     is_flagged = False
+        is_flagged = FlaggedContent.query.filter_by(song_id=song_id).first()
+        if is_flagged:
+            is_flagged = True
+        else:
+            is_flagged = False
             
         # songs content
         songs = Song.query.all()
@@ -279,7 +279,7 @@ class FlagSongView(MethodView):
 
         stats_headings = ['Total Normal Users', 'Total Creators', 'Total Albums', 'Total Songs', 'Total Playlists']
         stats_data = [{'heading': h, 'total': t} for h, t in zip(stats_headings, [tot_user, tot_creator, tot_album, tot_song, tot_playlist])]
-        return render_template('flag_song.html', song_to_flag=song_to_flag, stats_data=stats_data, songs=songs)
+        return render_template('flag_song.html', song_to_flag=song_to_flag, is_flagged=is_flagged,stats_data=stats_data, songs=songs)
     
     def post(self, song_id):
         reason = request.form.get('reason')

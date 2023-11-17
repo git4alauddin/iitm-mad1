@@ -2,7 +2,7 @@
 {% block post_login_form %}
     <h1 id="heading">FLAG-SONG</h1>
     <form class="upload-form" method="POST" action="{{ url_for('song.flag_song', song_id=song_to_flag.id) }}">
-        <h1 id ="heading" style="color: orangered;">{{ song_to_flag.title }}-{{ song_to_flag.artist }}</h1>
+        <h1 id ="heading" style="color: orangered;">{{ song_to_flag.title }}: {{ song_to_flag.artist }}</h1>
         <div class="form-group">
             <label for="reason">Reason</label>
             {% if not is_flagged %}

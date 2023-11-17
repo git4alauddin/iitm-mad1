@@ -3,7 +3,5 @@ ______________________________
 - song rating system 
 - searching for songs
 - handle the data type for release year of the album
+- blacklist/whitelist and flag/unflag songs
 ________________________________
-
-
-

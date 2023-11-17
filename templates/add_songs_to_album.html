@@ -5,7 +5,7 @@
     <p id="heading">ALBUM: {{ album.title }}</p>
 
     {% if not songs %}
-        <h5 style="color: red;">No songs! You can add from the suggestions below!!</h5>
+        <h1 id="heading" style="color: red;">No songs! You can add from the suggestions below!!</h1>
     {% else %}
         <table class="data-table">
             <thead>
@@ -52,7 +52,7 @@
                         <td>
                             <form action="{{ url_for('album.add_songs_to_album', id=album.id) }}" method="POST">
                                 <input type="hidden" name="song_id" value="{{ song.id }}">
-                                <button id="add-btn" type="submit">Add</button>
+                                <button style="background-color: green; border-color: darkgreen" id="delete-btn" type="submit">Add <i class="fas fa-plus"></i></button>
                             </form>
                         </td>
                     </tr>
