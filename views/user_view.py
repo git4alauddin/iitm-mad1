@@ -139,3 +139,12 @@ class FlagCreatorView(MethodView):
         flash('Creator flagged successfully!', 'success')
         return redirect(url_for('user.all_creators'))
 bp_user.add_url_rule('/flag_creator/<string:creator_id>/<string:admin_id>', view_func=FlagCreatorView.as_view('flag_creator'))
+
+class UnflagCreatorView(MethodView):
+    def get(self, creator_id):
+        flagged_creator = FlaggedCreator.query.filter_by(user_id=creator_id).first()
+        db.session.delete(flagged_creator)
+        db.session.commit()
+        flash('Creator whitelisted successfully!', 'success')
+        return redirect(url_for('user.all_creators'))
+bp_user.add_url_rule('/unflag_creator/<string:creator_id>', view_func=UnflagCreatorView.as_view('unflag_creator'))

@@ -17,7 +17,7 @@
                 <td>{{ creator.email }}</td>
                 <td>
                     {% if is_flagged[loop.index0] %}
-                        <a href="#" style="background-color:#149310;" id="delete-btn">
+                        <a href="{{ url_for('user.unflag_creator', creator_id=creator.id) }}" style="background-color:#149310; border-color:darkgreen" id="delete-btn">
                             <i class="fas fa-check"></i> Whitelist
                         </a>
                     {% else %}

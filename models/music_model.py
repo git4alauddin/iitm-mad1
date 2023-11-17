@@ -57,12 +57,3 @@ class FlaggedContent(db.Model):
     song_id = db.Column(db.String(36), db.ForeignKey('song.id'), nullable=False)
     reason = db.Column(db.String(200))
     admin_id = db.Column(db.String(36), db.ForeignKey('admin.id'), nullable=False)
-
-
-# subscriptions
-class Subscription(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    subscription_type = db.Column(db.String(20), nullable=False)  # Free, Premium, etc.
-    start_date = db.Column(db.Date, nullable=False)
-    end_date = db.Column(db.Date, nullable=False)

@@ -32,7 +32,12 @@
                         {% set action_url = url_for('song.delete_song', id=song.id) %}
                         <button id="delete-btn" onclick="showConfirmation('{{ action_url }}')"><i class="fas fa-trash-alt"></i> Delete</button>
 
-                        <a href="{{ url_for('song.flag_song', song_id=song.id) }}" style="background-color: orangered;" id="delete-btn"><i class="fas fa-flag"></i> Flag </a> 
+                        {% if is_flagged[loop.index0] %}
+                            <a href="{{ url_for('song.unflag_song', song_id=song.id) }}" style="background-color: green; border-color: darkgreen" id="delete-btn"><i class="fas fa-check"></i> Unflag </a> 
+                        {% else %}
+                            <a href="{{ url_for('song.flag_song', song_id=song.id) }}" style="background-color: orangered;" id="delete-btn"><i class="fas fa-flag"></i> Flag </a> 
+                        {% endif %}
+                        
                     </td>
                 </tr>
             {% endfor %}

@@ -207,7 +207,14 @@ class AllSongsView(MethodView):
         else:
             songs = Song.query.filter_by(genre=genre).all()
         
-
+        
+        is_flagged = list()
+        for song in songs:
+            flagged_song = FlaggedContent.query.filter_by(song_id=song.id).first()
+            if flagged_song:
+                is_flagged.append(True)
+            else:
+                is_flagged.append(False)
         
 
         # stats
@@ -219,7 +226,7 @@ class AllSongsView(MethodView):
 
         stats_headings = ['Total Normal Users', 'Total Creators', 'Total Albums', 'Total Songs', 'Total Playlists']
         stats_data = [{'heading': h, 'total': t} for h, t in zip(stats_headings, [tot_user, tot_creator, tot_album, tot_song, tot_playlist])]
-        return render_template('songs.html', songs=songs, stats_data=stats_data)
+        return render_template('songs.html', songs=songs,is_flagged=is_flagged ,stats_data=stats_data)
 bp_song.add_url_rule('/all_songs/<string:genre>', view_func=AllSongsView.as_view('all_songs'))
 
 class SongSearchView(MethodView):
@@ -266,6 +273,8 @@ class FlagSongView(MethodView):
             is_flagged = True
         else:
             is_flagged = False
+
+        
             
         # songs content
         songs = Song.query.all()
@@ -292,3 +301,13 @@ class FlagSongView(MethodView):
         flash ('Content flagged successfully!', 'success')
         return redirect (url_for('song.all_songs', genre='all'))
 bp_song.add_url_rule('/flag_song/<song_id>', view_func=FlagSongView.as_view('flag_song'))
+
+class UnflagSongView(MethodView):
+    def get(self, song_id):
+        flagged_content = FlaggedContent.query.filter_by(song_id=song_id).first()
+        print(f'found song: {flagged_content.reason}')
+        db.session.delete(flagged_content)
+        db.session.commit()
+        flash ('Content unflagged successfully!', 'success')
+        return redirect (url_for('song.all_songs', genre='all'))
+bp_song.add_url_rule('/unflag_song/<song_id>', view_func=UnflagSongView.as_view('unflag_song'))
