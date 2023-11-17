@@ -16,12 +16,15 @@
                 <td>{{ creator.username }}</td>
                 <td>{{ creator.email }}</td>
                 <td>
-                    <a href="#" style="background-color: orangered;margin-right: 10px" id="delete-btn">
-                        <i class="fas fa-ban"></i> Blacklist
-                    </a> 
-                    <a href="#" style="background-color:#149310;" id="delete-btn">
-                        <i class="fas fa-check"></i> Whitelist
-                    </a>  
+                    {% if is_flagged[loop.index0] %}
+                        <a href="#" style="background-color:#149310;" id="delete-btn">
+                            <i class="fas fa-check"></i> Whitelist
+                        </a>
+                    {% else %}
+                        <a href="{{ url_for('user.flag_creator', creator_id=creator.id, admin_id=current_user.id) }}" style="background-color: orangered;margin-right: 10px" id="delete-btn">
+                            <i class="fas fa-ban"></i> Blacklist
+                        </a>
+                    {% endif %} 
                 </td>
             </tr>
             {% endfor %}

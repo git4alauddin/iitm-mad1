@@ -2,8 +2,9 @@ from flask import Blueprint, render_template,redirect,url_for,flash,request
 from flask_login import logout_user,login_required, current_user
 from flask.views import MethodView
 import requests
+from extensions.extension import db
 from models.music_model import Playlist, Song, Album, FlaggedContent
-from models.user_model import User
+from models.user_model import User, FlaggedCreator
 
 #------------------------------------blueprint user---------------------------------------#
 bp_user = Blueprint('user', __name__)
@@ -108,6 +109,13 @@ class AllCreatorsView(MethodView):
     def get(self):
         # query all creators
         creators = User.query.filter_by(role='creator').all()
+        is_flagged = list()
+        for creator in creators:
+            flagged_creator = FlaggedCreator.query.filter_by(user_id=creator.id).first()
+            if flagged_creator:
+                is_flagged.append(True)
+            else:
+                is_flagged.append(False)
         
         # stats
         tot_user = User.query.filter_by(role='user').count()
@@ -119,6 +127,15 @@ class AllCreatorsView(MethodView):
         stats_headings = ['Total Normal Users', 'Total Creators', 'Total Albums', 'Total Songs', 'Total Playlists']
         stats_data = [{'heading': h, 'total': t} for h, t in zip(stats_headings, [tot_user, tot_creator, tot_album, tot_song, tot_playlist])]
 
-        return render_template('creators.html', creators=creators, stats_data=stats_data)
+        return render_template('creators.html', creators=creators,is_flagged=is_flagged ,stats_data=stats_data)
 bp_user.add_url_rule('/all_creators', view_func=AllCreatorsView.as_view('all_creators'))
 
+# flagged_creators
+class FlagCreatorView(MethodView):
+    def get(self, creator_id, admin_id):
+        flagged_creator = FlaggedCreator(user_id=creator_id, admin_id=admin_id)
+        db.session.add(flagged_creator)
+        db.session.commit()
+        flash('Creator flagged successfully!', 'success')
+        return redirect(url_for('user.all_creators'))
+bp_user.add_url_rule('/flag_creator/<string:creator_id>/<string:admin_id>', view_func=FlagCreatorView.as_view('flag_creator'))
