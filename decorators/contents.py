@@ -16,7 +16,22 @@ def admin_stats():
     stats_data = [{'heading': h, 'total': t} for h, t in zip(stats_headings, [tot_user, tot_creator, tot_album, tot_song, tot_playlist])]
     return stats_data
 
-def general_contents():
+def admin_stats_visuals():
+    tot_user = User.query.filter_by(role='user').count()
+    tot_creator = User.query.filter_by(role='creator').count()
+    tot_album = Album.query.count()
+    tot_song = Song.query.count()
+    tot_playlist = Playlist.query.count()
+
+    stats_headings = ['Total Normal Users', 'Total Creators', 'Total Albums', 'Total Songs', 'Total Playlists']
+    stats_data = [{'heading': h, 'total': t} for h, t in zip(stats_headings, [tot_user, tot_creator, tot_album, tot_song, tot_playlist])]
+
+    labels = ['Total Normal Users', 'Total Creators', 'Total Albums', 'Total Songs', 'Total Playlists']
+    values = [tot_user, tot_creator, tot_album, tot_song, tot_playlist]
+
+    return stats_data, labels, values
+
+def user_contents():
     suggested_songs = Song.query.order_by(db.func.random()).limit(4).all()
     api_url = request.url_root + 'users/users/' + str(current_user.id) + '/playlists'
     p_response = requests.get(api_url)

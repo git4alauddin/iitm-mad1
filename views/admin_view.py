@@ -5,6 +5,7 @@ from extensions.extension import db
 from models.music_model import Song,Album,Playlist,FlaggedContent
 from models.user_model import User
 from sqlalchemy import or_
+from decorators.contents import admin_stats, user_contents, admin_stats_visuals
 
 # --------------------------------------blueprint admin--------------------------------------------------------
 bp_admin = Blueprint('admin', __name__)
@@ -13,20 +14,8 @@ bp_admin = Blueprint('admin', __name__)
 class AdminVisualsView(MethodView):
     def get(self):
         # stats
-        tot_user = User.query.filter_by(role='user').count()
-        tot_creator = User.query.filter_by(role='creator').count()
-        tot_album = Album.query.count()
-        tot_song = Song.query.count()
-        tot_playlist = Playlist.query.count()
+        stats_data, labels, values = admin_stats_visuals()
 
-        stats_headings = ['Total Normal Users', 'Total Creators', 'Total Albums', 'Total Songs', 'Total Playlists']
-        stats_data = [{'heading': h, 'total': t} for h, t in zip(stats_headings, [tot_user, tot_creator, tot_album, tot_song, tot_playlist])]
-
-        labels = ['Total Normal Users', 'Total Creators', 'Total Albums', 'Total Songs', 'Total Playlists']
-        values = [tot_user, tot_creator, tot_album, tot_song, tot_playlist]
-
-        # songs with different generes: romantic, pop, hip-hop, rock
-        # songs with different genres: romantic, pop, hip-hop, rock
         genres = ['romantic', 'pop', 'hip-hop', 'rock']
         genre_counts = [0, 0, 0, 0]
         for song in Song.query.all():
@@ -53,15 +42,7 @@ class AdminSearchView(MethodView):
             ).all()
         
         # stats
-        tot_user = User.query.filter_by(role='user').count()
-        tot_creator = User.query.filter_by(role='creator').count()
-        tot_album = Album.query.count()
-        tot_song = Song.query.count()
-        tot_playlist = Playlist.query.count()
-
-        stats_headings = ['Total Normal Users', 'Total Creators', 'Total Albums', 'Total Songs', 'Total Playlists']
-        stats_data = [{'heading': h, 'total': t} for h, t in zip(stats_headings, [tot_user, tot_creator, tot_album, tot_song, tot_playlist])]
+        stats_data = admin_stats()
 
         return render_template('admin_search.html', songs=songs, stats_data=stats_data)
 bp_admin.add_url_rule('/admin_search', view_func=AdminSearchView.as_view('admin_search'))
-

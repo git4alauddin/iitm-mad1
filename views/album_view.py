@@ -5,7 +5,7 @@ from extensions.extension import db
 from models.music_model import Song, Album, Playlist
 from models.user_model import User
 import requests
-from decorators.contents import admin_stats, general_contents
+from decorators.contents import admin_stats, user_contents
 
 # -------------------------------------------blueprint album-------------------------------------------------------------
 bp_album = Blueprint('album', __name__)
@@ -13,7 +13,7 @@ bp_album = Blueprint('album', __name__)
 class CreateAlbumView(MethodView):
     def get(self):
         #contents
-        suggested_songs, playlists, albums = general_contents()
+        suggested_songs, playlists, albums = user_contents()
         return render_template('create_album.html', albums=albums, suggested_songs=suggested_songs, playlists=playlists)
 
     def post(self):
@@ -73,7 +73,7 @@ class AlbumAddSongsView(MethodView):
             album = Album.query.get(id)
 
             #contents
-            suggested_songs, playlists, albums = general_contents()
+            suggested_songs, playlists, albums = user_contents()
             
             return render_template('add_songs_to_album.html', songs=songs, album=album, suggested_songs=suggested_songs, playlists=playlists, albums=albums)
         else:
