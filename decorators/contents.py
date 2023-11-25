@@ -31,6 +31,18 @@ def admin_stats_visuals():
 
     return stats_data, labels, values
 
+
+def user_stats():
+    stats_headings = ['Total Albums', 'Total Songs', 'Total Playlists', 'Average Rating']
+    tot_song = Song.query.filter_by(creator_id=current_user.id).count()
+    tot_album = Album.query.filter_by(user_id=current_user.id).count()
+    tot_playlist = Playlist.query.filter_by(user_id=current_user.id).count()
+    average_rating = 3.4
+
+    stats_data = [{'heading': h, 'total': t} for h, t in zip(stats_headings, [tot_album, tot_song, tot_playlist, average_rating])]
+
+    return stats_data
+
 def user_contents():
     suggested_songs = Song.query.order_by(db.func.random()).limit(4).all()
     api_url = request.url_root + 'users/users/' + str(current_user.id) + '/playlists'

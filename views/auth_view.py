@@ -17,10 +17,7 @@ class RegisterView(MethodView):
     
     def get(self):
         form = RegisterForm()
-
-        # contents
-        suggested_songs = Song.query.order_by(db.func.random()).limit(4).all()
-        return render_template('register.html', form=form, suggested_songs=suggested_songs)
+        return render_template('register.html', form=form)
     
     def post(self):
         form = RegisterForm()
@@ -45,9 +42,7 @@ class UserLoginView(MethodView):
     def get(self):
         form = LoginForm()
 
-        # contents
-        suggested_songs = Song.query.order_by(db.func.random()).limit(4).all()
-        return render_template('user_login.html', form=form, suggested_songs=suggested_songs)
+        return render_template('user_login.html', form=form)
     
     def post(self):
         form = LoginForm()
@@ -68,10 +63,7 @@ bp_auth.add_url_rule('/user_login', view_func=UserLoginView.as_view('user_login'
 class AdminLoginView(MethodView):
     def get(self):
         form = LoginForm()
-
-        # contents
-        suggested_songs = Song.query.order_by(db.func.random()).limit(4).all()
-        return render_template('admin_login.html', form=form, suggested_songs=suggested_songs)
+        return render_template('admin_login.html', form=form)
     
     def post(self):
         form = LoginForm()

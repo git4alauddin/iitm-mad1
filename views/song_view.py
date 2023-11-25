@@ -11,6 +11,7 @@ from models.music_model import Song, SongFile, Album, Playlist, FlaggedContent
 from models.user_model import User
 import requests
 from sqlalchemy import or_
+from decorators.contents import admin_stats, user_contents
 
 # --------------------------------------blueprint song--------------------------------------------------------
 bp_song = Blueprint('song', __name__)
@@ -20,16 +21,7 @@ class UploadSongView(MethodView):
         form = MusicForm()
 
         #contents
-        suggested_songs = Song.query.order_by(db.func.random()).limit(4).all()
-        api_url = request.url_root + 'users/users/' + str(current_user.id) + '/playlists'
-        p_response = requests.get(api_url)
-        api_url = request.url_root + 'users/users/' + str(current_user.id) + '/albums'
-        a_response = requests.get(api_url)
-
-        if p_response.status_code == 200:
-            playlists = p_response.json()
-        if a_response.status_code == 200:
-            albums = a_response.json()
+        suggested_songs, playlists, albums = user_contents()
         return render_template('upload_song.html', form=form, playlists=playlists, suggested_songs=suggested_songs, albums=albums)
     @creator_required
     def post(self):
@@ -112,16 +104,8 @@ class PlaySongView(MethodView):
         db.session.commit()
 
         #contents
-        suggested_songs = Song.query.order_by(db.func.random()).limit(4).all()
-        api_url = request.url_root + 'users/users/' + str(current_user.id) + '/playlists'
-        p_response = requests.get(api_url)
-        api_url = request.url_root + 'users/users/' + str(current_user.id) + '/albums'
-        a_response = requests.get(api_url)
+        suggested_songs, playlists, albums = user_contents()
 
-        if p_response.status_code == 200:
-            playlists = p_response.json()
-        if a_response.status_code == 200:
-            albums = a_response.json()
         return render_template('play_song.html', song=song, song_file=song_file, playlists=playlists, suggested_songs=suggested_songs, albums=albums)
 bp_song.add_url_rule('/play_song/<string:id>', view_func=PlaySongView.as_view('play_song'))
 
@@ -138,16 +122,7 @@ class SongLyricsView(MethodView):
         songs = songs.json()
 
         #contents
-        suggested_songs = Song.query.order_by(db.func.random()).limit(4).all()
-        api_url = request.url_root + 'users/users/' + str(current_user.id) + '/playlists'
-        p_response = requests.get(api_url)
-        api_url = request.url_root + 'users/users/' + str(current_user.id) + '/albums'
-        a_response = requests.get(api_url)
-
-        if p_response.status_code == 200:
-            playlists = p_response.json()
-        if a_response.status_code == 200:
-            albums = a_response.json()
+        suggested_songs, playlists, albums = user_contents()
 
         return render_template('song_lyrics.html', song=song, lyrics=lyrics, playlists=playlists, suggested_songs=suggested_songs, albums=albums, songs=songs)
 
@@ -160,16 +135,9 @@ class UploadedSongsView(MethodView):
         api_url = request.url_root + 'users/users/' + str(current_user.id) + '/songs'
         songs = requests.get(api_url)
         songs = songs.json()
+
         #contents
-        suggested_songs = Song.query.order_by(db.func.random()).limit(4).all()
-        api_url = request.url_root + 'users/users/' + str(current_user.id) + '/playlists'
-        p_response = requests.get(api_url)
-        api_url = request.url_root + 'users/users/' + str(current_user.id) + '/albums'
-        a_response = requests.get(api_url)
-        if p_response.status_code == 200:
-            playlists = p_response.json()
-        if a_response.status_code == 200:
-            albums = a_response.json()
+        suggested_songs, playlists, albums = user_contents()
         
         return render_template('uploaded_songs.html', songs=songs, playlists=playlists, suggested_songs=suggested_songs, albums=albums)
 bp_song.add_url_rule('/uploaded_songs', view_func=UploadedSongsView.as_view('uploaded_songs'))
@@ -208,14 +176,8 @@ class AllSongsView(MethodView):
         
 
         # stats
-        tot_user = User.query.filter_by(role='user').count()
-        tot_creator = User.query.filter_by(role='creator').count()
-        tot_album = Album.query.count()
-        tot_song = Song.query.count()
-        tot_playlist = Playlist.query.count()
+        stats_data = admin_stats()
 
-        stats_headings = ['Total Normal Users', 'Total Creators', 'Total Albums', 'Total Songs', 'Total Playlists']
-        stats_data = [{'heading': h, 'total': t} for h, t in zip(stats_headings, [tot_user, tot_creator, tot_album, tot_song, tot_playlist])]
         return render_template('songs.html', songs=songs,is_flagged=is_flagged ,stats_data=stats_data)
 bp_song.add_url_rule('/all_songs/<string:genre>', view_func=AllSongsView.as_view('all_songs'))
 
@@ -234,15 +196,7 @@ class SongSearchView(MethodView):
             ).all()
 
         # contents
-        suggested_songs = Song.query.order_by(db.func.random()).limit(4).all()
-        api_url = request.url_root + 'users/users/' + str(current_user.id) + '/playlists'
-        p_response = requests.get(api_url)
-        api_url = request.url_root + 'users/users/' + str(current_user.id) + '/albums'
-        a_response = requests.get(api_url)
-        if p_response.status_code == 200:
-            playlists = p_response.json()
-        if a_response.status_code == 200:
-            albums = a_response.json()
+        suggested_songs, playlists, albums = user_contents()
 
         return render_template('song_search.html', songs=songs, playlists=playlists, suggested_songs=suggested_songs, albums=albums)
 bp_song.add_url_rule('/song_search', view_func=SongSearchView.as_view('song_search'))
@@ -259,21 +213,13 @@ class FlagSongView(MethodView):
             is_flagged = True
         else:
             is_flagged = False
-
-        
             
         # songs content
         songs = Song.query.all()
 
         # stats
-        tot_user = User.query.filter_by(role='user').count()
-        tot_creator = User.query.filter_by(role='creator').count()
-        tot_album = Album.query.count()
-        tot_song = Song.query.count()
-        tot_playlist = Playlist.query.count()
+        stats_data = admin_stats()
 
-        stats_headings = ['Total Normal Users', 'Total Creators', 'Total Albums', 'Total Songs', 'Total Playlists']
-        stats_data = [{'heading': h, 'total': t} for h, t in zip(stats_headings, [tot_user, tot_creator, tot_album, tot_song, tot_playlist])]
         return render_template('flag_song.html', song_to_flag=song_to_flag, is_flagged=is_flagged,stats_data=stats_data, songs=songs)
     
     def post(self, song_id):

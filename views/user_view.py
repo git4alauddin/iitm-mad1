@@ -5,6 +5,7 @@ import requests
 from extensions.extension import db
 from models.music_model import Playlist, Song, Album, FlaggedContent
 from models.user_model import User, FlaggedCreator
+from decorators.contents import admin_stats, user_contents, user_stats
 
 #------------------------------------blueprint user---------------------------------------#
 bp_user = Blueprint('user', __name__)
@@ -14,26 +15,10 @@ class DashboardView(MethodView):
     @login_required
     def get(self):
         # contents
-        suggested_songs = Song.query.order_by(db.func.random()).limit(4).all()
-
-        api_url = request.url_root + 'users/users/' + str(current_user.id) + '/playlists'
-        p_response = requests.get(api_url)
-        api_url = request.url_root + 'users/users/' + str(current_user.id) + '/albums'
-        a_response = requests.get(api_url)    
-        if p_response.status_code == 200:
-            playlists = p_response.json()
-        if a_response.status_code == 200:
-            albums = a_response.json()
+        suggested_songs, playlists, albums = user_contents()
         
         # stats
-        tot_user = User.query.filter_by(role='user').count()
-        tot_creator = User.query.filter_by(role='creator').count()
-        tot_album = Album.query.count()
-        tot_song = Song.query.count()
-        tot_playlist = Playlist.query.count()
-
-        stats_headings = ['Total Normal Users', 'Total Creators', 'Total Albums', 'Total Songs', 'Total Playlists']
-        stats_data = [{'heading': h, 'total': t} for h, t in zip(stats_headings, [tot_user, tot_creator, tot_album, tot_song, tot_playlist])]
+        stats_data = admin_stats()
 
         # flagged_content
         flagged_contents = FlaggedContent.query.all()
@@ -82,26 +67,11 @@ bp_user.add_url_rule('/register/creator', view_func=CreatorRegisterView.as_view(
 class CreatorStatsView(MethodView):
     def get(self):
         #contents
-        suggested_songs = Song.query.order_by(db.func.random()).limit(4).all()
-
-        api_url = request.url_root + 'users/users/' + str(current_user.id) + '/playlists'
-        p_response = requests.get(api_url)
-        api_url = request.url_root + 'users/users/' + str(current_user.id) + '/albums'
-        a_response = requests.get(api_url)
-        if p_response.status_code == 200:
-            playlists = p_response.json()
-        if a_response.status_code == 200:
-            albums = a_response.json()
+        suggested_songs, playlists, albums = user_contents()
 
         # stats
-        stats_headings = ['Total Albums', 'Total Songs', 'Total Playlists', 'Average Rating']
-        tot_song = Song.query.filter_by(creator_id=current_user.id).count()
-        tot_album = Album.query.filter_by(user_id=current_user.id).count()
-        tot_playlist = Playlist.query.filter_by(user_id=current_user.id).count()
-        average_rating = 3.4
-
-        stats_data = [{'heading': h, 'total': t} for h, t in zip(stats_headings, [tot_album, tot_song, tot_playlist, average_rating])]
-
+        stats_data = user_stats()
+        
         return render_template('creator_stats.html', playlists=playlists, suggested_songs=suggested_songs, albums=albums, stats_data=stats_data)
 bp_user.add_url_rule('/creator_stats', view_func=CreatorStatsView.as_view('creator_stats'))
 
@@ -119,14 +89,7 @@ class AllCreatorsView(MethodView):
                 is_flagged.append(False)
         
         # stats
-        tot_user = User.query.filter_by(role='user').count()
-        tot_creator = User.query.filter_by(role='creator').count()
-        tot_album = Album.query.count()
-        tot_song = Song.query.count()
-        tot_playlist = Playlist.query.count()
-
-        stats_headings = ['Total Normal Users', 'Total Creators', 'Total Albums', 'Total Songs', 'Total Playlists']
-        stats_data = [{'heading': h, 'total': t} for h, t in zip(stats_headings, [tot_user, tot_creator, tot_album, tot_song, tot_playlist])]
+        stats_data = admin_stats()
 
         return render_template('creators.html', creators=creators,is_flagged=is_flagged ,stats_data=stats_data)
 bp_user.add_url_rule('/all_creators', view_func=AllCreatorsView.as_view('all_creators'))
