@@ -354,6 +354,23 @@ body{
   color: gold;
 }
 
+.rating {
+  display: flex;
+  margin: 8px;
+}
+
+.rating a {
+  text-decoration: none;
+  color: whitesmoke;
+  font-size: 20px;
+  transition: color 0.3s ease;
+}
+
+.rating a:hover {
+  color: gold;
+}
+
+
 /* -----------------------------------[06]table----------------------------------------------- */
 .data-table {
   width: 100%;

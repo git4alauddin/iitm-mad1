@@ -1,9 +1,10 @@
-from models.music_model import Album, Song, Playlist
+from models.music_model import Album, Song, Playlist, Rating
 from models.user_model import User
 from flask import request
 from flask_login import current_user
 from extensions.extension import db
 import requests
+from sqlalchemy.sql import func
 
 def admin_stats():
     tot_user = User.query.filter_by(role='user').count()
@@ -37,7 +38,10 @@ def user_stats():
     tot_song = Song.query.filter_by(creator_id=current_user.id).count()
     tot_album = Album.query.filter_by(user_id=current_user.id).count()
     tot_playlist = Playlist.query.filter_by(user_id=current_user.id).count()
-    average_rating = 3.4
+
+    # Calculate average rating
+    average_rating = db.session.query(func.avg(Rating.value)).join(Song).filter(Song.creator_id == current_user.id).scalar()
+    average_rating = round(average_rating, 2) if average_rating else 0.0
 
     stats_data = [{'heading': h, 'total': t} for h, t in zip(stats_headings, [tot_album, tot_song, tot_playlist, average_rating])]
 

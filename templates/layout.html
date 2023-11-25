@@ -206,9 +206,20 @@
                         <div class="card-container" id="song_card">
                             {% for suggested_song in suggested_songs %}
                                 <div class="card">
+                                    <div class="rating">
+                                        <a href="{{ url_for('song.rate_song', song_id=suggested_song.id, rating=1)}}" ><i class="fas fa-star"></i></a>
+                                        <a href="{{ url_for('song.rate_song', song_id=suggested_song.id, rating=2)}}" ><i class="fas fa-star"></i></a>
+                                        <a href="{{ url_for('song.rate_song', song_id=suggested_song.id, rating=3)}}" ><i class="fas fa-star"></i></a>
+                                        <a href="{{ url_for('song.rate_song', song_id=suggested_song.id, rating=4)}}" ><i class="fas fa-star"></i></a>
+                                        <a href="{{ url_for('song.rate_song', song_id=suggested_song.id, rating=5)}}" ><i class="fas fa-star"></i></a>
+                                        <a style="margin-left: 20px; color: coral" href="#">[ {{ suggested_song.average_rating }} ]</a>
+                                        
+                                    </div>
                                     <img id="card_img" src="{{ url_for('static', filename='images/music_node_2.svg') }}" alt="song_image">
                                     <a id="card_title" href="{{ url_for('song.play_song', id=suggested_song.id) }}"><b>{{ suggested_song.title }}: {{suggested_song.artist }}</b></a>
                                     <a id="card_title" href="{{ url_for('song.song_lyrics', id=suggested_song.id) }}"><b><i class="fas fa-file-alt"> Lyrics</i></b></a>
+                                    
+
                                 </div>
                             {% endfor %}
                         </div>

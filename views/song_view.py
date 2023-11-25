@@ -7,7 +7,7 @@ from decorators.role_decorator import creator_required
 from werkzeug.utils import secure_filename
 import os
 import random
-from models.music_model import Song, SongFile, Album, Playlist, FlaggedContent
+from models.music_model import Song, SongFile, Album, Playlist, FlaggedContent, Rating
 from models.user_model import User
 import requests
 from sqlalchemy import or_
@@ -243,3 +243,28 @@ class UnflagSongView(MethodView):
         flash ('Content unflagged successfully!', 'success')
         return redirect (url_for('song.all_songs', genre='all'))
 bp_song.add_url_rule('/unflag_song/<song_id>', view_func=UnflagSongView.as_view('unflag_song'))
+
+# rate song view
+class RateSongView(MethodView):
+    def get(self, song_id, rating):
+        user_id = current_user.id 
+
+        song = Song.query.get(song_id)
+        if song:
+            existing_rating = Rating.query.filter_by(user_id=user_id, song_id=song_id).first()
+            if existing_rating:
+                existing_rating.value = rating
+            else:
+                new_rating = Rating(user_id=user_id, song_id=song_id, value=rating)
+                db.session.add(new_rating)
+
+        song = Song.query.get(song_id)
+        if song:
+            total_ratings = sum(rating.value for rating in song.ratings)
+            avg_rating = total_ratings / len(song.ratings)
+            song.average_rating = round(avg_rating, 1)
+
+        db.session.commit()
+        flash('Rating submitted successfully!', 'success')
+        return redirect(url_for('user.dashboard'))
+bp_song.add_url_rule('/rate_song/<string:song_id>/<int:rating>', view_func=RateSongView.as_view('rate_song'))
