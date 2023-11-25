@@ -11,15 +11,11 @@ bp_playlist = Blueprint('playlist', __name__)
 class CreatePlaylistView(MethodView):
     def get(self):
         #contents
+        suggested_songs = Song.query.order_by(db.func.random()).limit(4).all()
         api_url = request.url_root + 'users/users/' + str(current_user.id) + '/playlists'
         p_response = requests.get(api_url)
-        api_url = request.url_root + 'songs/songs'
-        s_response = requests.get(api_url)
         api_url = request.url_root + 'users/users/' + str(current_user.id) + '/albums'
         a_response = requests.get(api_url)
-        
-        if s_response.status_code == 200:
-            suggested_songs = s_response.json()
         if p_response.status_code == 200:
             playlists = p_response.json()
         if a_response.status_code == 200:
@@ -76,15 +72,11 @@ class PlaylistAddSongsView(MethodView):
             suggested_songs = suggested_song_res.json()
 
             #contents
+            suggested_songs = Song.query.order_by(db.func.random()).limit(4).all()
             api_url = request.url_root + 'users/users/' + str(current_user.id) + '/playlists'
             p_response = requests.get(api_url)
-            api_url = request.url_root + 'songs/songs'
-            s_response = requests.get(api_url)
             api_url = request.url_root + 'users/users/' + str(current_user.id) + '/albums'
             a_response = requests.get(api_url)
-            
-            if s_response.status_code == 200:
-                suggested_songs = s_response.json()
             if p_response.status_code == 200:
                 playlists = p_response.json()
             if a_response.status_code == 200:

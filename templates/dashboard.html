@@ -1,6 +1,14 @@
 {% extends 'layout.html' %}
 {% block content %}
 {% endblock %}
+{% block flagged_creator %}
+    {% if is_flagged_creator %}
+    <div style="background-color: green;">
+        <p id="heading" style="color: red;">You have been blacklisted by an admin. Till then, you can listen to songs of your favourite artists.</p>
+    </div>
+        
+    {% endif %}
+{% endblock %}
 
 {% block branding %}
     {% if current_user.role == 'admin' %}

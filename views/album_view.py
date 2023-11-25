@@ -5,6 +5,7 @@ from extensions.extension import db
 from models.music_model import Song, Album, Playlist
 from models.user_model import User
 import requests
+from decorators.contents import admin_stats, general_contents
 
 # -------------------------------------------blueprint album-------------------------------------------------------------
 bp_album = Blueprint('album', __name__)
@@ -12,19 +13,7 @@ bp_album = Blueprint('album', __name__)
 class CreateAlbumView(MethodView):
     def get(self):
         #contents
-        api_url = request.url_root + 'users/users/' + str(current_user.id) + '/playlists'
-        p_response = requests.get(api_url)
-        api_url = request.url_root + 'songs/songs'
-        s_response = requests.get(api_url)
-        api_url = request.url_root + 'users/users/' + str(current_user.id) + '/albums'
-        a_response = requests.get(api_url)
-        
-        if s_response.status_code == 200:
-            suggested_songs = s_response.json()
-        if p_response.status_code == 200:
-            playlists = p_response.json()
-        if a_response.status_code == 200:
-            albums = a_response.json()
+        suggested_songs, playlists, albums = general_contents()
         return render_template('create_album.html', albums=albums, suggested_songs=suggested_songs, playlists=playlists)
 
     def post(self):
@@ -79,34 +68,16 @@ class AlbumAddSongsView(MethodView):
         api_url = request.url_root + 'albums/albums/' + str(id) + '/songs'
         album_song_res = requests.get(api_url)
 
-        # temporarily handling song suggestion to add to the album
-        api_url = request.url_root + 'songs/songs'
-        suggested_song_res = requests.get(api_url)
-
         if album_song_res.status_code == 200:
             songs = album_song_res.json()
             album = Album.query.get(id)
 
-            suggested_songs = suggested_song_res.json()
-
             #contents
-            api_url = request.url_root + 'users/users/' + str(current_user.id) + '/playlists'
-            p_response = requests.get(api_url)
-            api_url = request.url_root + 'songs/songs'
-            s_response = requests.get(api_url)
-            api_url = request.url_root + 'users/users/' + str(current_user.id) + '/albums'
-            a_response = requests.get(api_url)
+            suggested_songs, playlists, albums = general_contents()
             
-            if s_response.status_code == 200:
-                suggested_songs = s_response.json()
-            if p_response.status_code == 200:
-                playlists = p_response.json()
-            if a_response.status_code == 200:
-                albums = a_response.json()
-
             return render_template('add_songs_to_album.html', songs=songs, album=album, suggested_songs=suggested_songs, playlists=playlists, albums=albums)
         else:
-            flash('Error fetching songsSSS!', 'danger')
+            flash('Error fetching songs!', 'danger')
             return redirect(url_for('user.dashboard'))
         
     def post(self, id):
@@ -145,16 +116,9 @@ class AllAlbumsView(MethodView):
         api_url = request.url_root + 'albums/albums/' 
         response = requests.get(api_url)
         albums = response.json()
-        
+
         # stats
-        tot_user = User.query.filter_by(role='user').count()
-        tot_creator = User.query.filter_by(role='creator').count()
-        tot_album = Album.query.count()
-        tot_song = Song.query.count()
-        tot_playlist = Playlist.query.count()
-
-        stats_headings = ['Total Normal Users', 'Total Creators', 'Total Albums', 'Total Songs', 'Total Playlists']
-        stats_data = [{'heading': h, 'total': t} for h, t in zip(stats_headings, [tot_user, tot_creator, tot_album, tot_song, tot_playlist])]
-
+        stats_data = admin_stats()
+        
         return render_template('albums.html', albums=albums, stats_data=stats_data)
 bp_album.add_url_rule('/all_albums', view_func=AllAlbumsView.as_view('all_albums'))

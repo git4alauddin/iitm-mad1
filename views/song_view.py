@@ -20,15 +20,12 @@ class UploadSongView(MethodView):
         form = MusicForm()
 
         #contents
+        suggested_songs = Song.query.order_by(db.func.random()).limit(4).all()
         api_url = request.url_root + 'users/users/' + str(current_user.id) + '/playlists'
         p_response = requests.get(api_url)
-        api_url = request.url_root + 'songs/songs'
-        s_response = requests.get(api_url)
         api_url = request.url_root + 'users/users/' + str(current_user.id) + '/albums'
         a_response = requests.get(api_url)
-        
-        if s_response.status_code == 200:
-            suggested_songs = s_response.json()
+
         if p_response.status_code == 200:
             playlists = p_response.json()
         if a_response.status_code == 200:
@@ -65,6 +62,9 @@ class UploadSongView(MethodView):
                 original_filename = secure_filename(audio_file.filename)
                 file_extension = original_filename.rsplit('.', 1)[1]
                 new_file_name = f'{artist}_{title}_{random_suffix}.{file_extension}'
+
+                # override for demo
+                new_file_name ='demo.mp3'
 
                 audio_file_path = os.path.join(current_app.config['SONG_UPLOAD_FOLDER'], new_file_name)
                 audio_file.save(audio_file_path)
@@ -112,15 +112,12 @@ class PlaySongView(MethodView):
         db.session.commit()
 
         #contents
+        suggested_songs = Song.query.order_by(db.func.random()).limit(4).all()
         api_url = request.url_root + 'users/users/' + str(current_user.id) + '/playlists'
         p_response = requests.get(api_url)
-        api_url = request.url_root + 'songs/songs'
-        s_response = requests.get(api_url)
         api_url = request.url_root + 'users/users/' + str(current_user.id) + '/albums'
         a_response = requests.get(api_url)
-        
-        if s_response.status_code == 200:
-            suggested_songs = s_response.json()
+
         if p_response.status_code == 200:
             playlists = p_response.json()
         if a_response.status_code == 200:
@@ -141,15 +138,12 @@ class SongLyricsView(MethodView):
         songs = songs.json()
 
         #contents
+        suggested_songs = Song.query.order_by(db.func.random()).limit(4).all()
         api_url = request.url_root + 'users/users/' + str(current_user.id) + '/playlists'
         p_response = requests.get(api_url)
-        api_url = request.url_root + 'songs/songs'
-        s_response = requests.get(api_url)
         api_url = request.url_root + 'users/users/' + str(current_user.id) + '/albums'
         a_response = requests.get(api_url)
-        
-        if s_response.status_code == 200:
-            suggested_songs = s_response.json()
+
         if p_response.status_code == 200:
             playlists = p_response.json()
         if a_response.status_code == 200:
@@ -167,15 +161,11 @@ class UploadedSongsView(MethodView):
         songs = requests.get(api_url)
         songs = songs.json()
         #contents
+        suggested_songs = Song.query.order_by(db.func.random()).limit(4).all()
         api_url = request.url_root + 'users/users/' + str(current_user.id) + '/playlists'
         p_response = requests.get(api_url)
-        api_url = request.url_root + 'songs/songs'
-        s_response = requests.get(api_url)
         api_url = request.url_root + 'users/users/' + str(current_user.id) + '/albums'
         a_response = requests.get(api_url)
-        
-        if s_response.status_code == 200:
-            suggested_songs = s_response.json()
         if p_response.status_code == 200:
             playlists = p_response.json()
         if a_response.status_code == 200:
@@ -244,15 +234,11 @@ class SongSearchView(MethodView):
             ).all()
 
         # contents
+        suggested_songs = Song.query.order_by(db.func.random()).limit(4).all()
         api_url = request.url_root + 'users/users/' + str(current_user.id) + '/playlists'
         p_response = requests.get(api_url)
-        api_url = request.url_root + 'songs/songs'
-        s_response = requests.get(api_url)
         api_url = request.url_root + 'users/users/' + str(current_user.id) + '/albums'
         a_response = requests.get(api_url)
-        
-        if s_response.status_code == 200:
-            suggested_songs = s_response.json()
         if p_response.status_code == 200:
             playlists = p_response.json()
         if a_response.status_code == 200:

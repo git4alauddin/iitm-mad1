@@ -19,6 +19,3 @@ def load_user(user_id):
     if admin is not None:
         return admin 
     return User.query.get(str(user_id))
- 
-
-

@@ -14,20 +14,17 @@ class DashboardView(MethodView):
     @login_required
     def get(self):
         # contents
+        suggested_songs = Song.query.order_by(db.func.random()).limit(4).all()
+
         api_url = request.url_root + 'users/users/' + str(current_user.id) + '/playlists'
         p_response = requests.get(api_url)
-        api_url = request.url_root + 'songs/songs'
-        s_response = requests.get(api_url)
         api_url = request.url_root + 'users/users/' + str(current_user.id) + '/albums'
-        a_response = requests.get(api_url)
-            
-        if s_response.status_code == 200:
-            suggested_songs = s_response.json()
+        a_response = requests.get(api_url)    
         if p_response.status_code == 200:
             playlists = p_response.json()
         if a_response.status_code == 200:
             albums = a_response.json()
-
+        
         # stats
         tot_user = User.query.filter_by(role='user').count()
         tot_creator = User.query.filter_by(role='creator').count()
@@ -49,7 +46,14 @@ class DashboardView(MethodView):
                 reasons.append(content.reason)
                 flagged_songs.append(flagged_song)
 
-        return render_template('dashboard.html', playlists=playlists, suggested_songs=suggested_songs, albums=albums, stats_data=stats_data, flagged_songs=flagged_songs, reasons=reasons)
+        # check if current user is in the flagged creators
+        flagged_creator = FlaggedCreator.query.filter_by(user_id=current_user.id).first()
+        if flagged_creator:
+            is_flagged_creator = True
+        else:
+            is_flagged_creator = False
+
+        return render_template('dashboard.html', playlists=playlists, suggested_songs=suggested_songs, albums=albums, stats_data=stats_data, flagged_songs=flagged_songs, reasons=reasons, is_flagged_creator=is_flagged_creator)
 bp_user.add_url_rule('/dashboard', view_func=DashboardView.as_view('dashboard'))
 
 # view logout
@@ -78,15 +82,12 @@ bp_user.add_url_rule('/register/creator', view_func=CreatorRegisterView.as_view(
 class CreatorStatsView(MethodView):
     def get(self):
         #contents
+        suggested_songs = Song.query.order_by(db.func.random()).limit(4).all()
+
         api_url = request.url_root + 'users/users/' + str(current_user.id) + '/playlists'
         p_response = requests.get(api_url)
-        api_url = request.url_root + 'songs/songs'
-        s_response = requests.get(api_url)
         api_url = request.url_root + 'users/users/' + str(current_user.id) + '/albums'
         a_response = requests.get(api_url)
-        
-        if s_response.status_code == 200:
-            suggested_songs = s_response.json()
         if p_response.status_code == 200:
             playlists = p_response.json()
         if a_response.status_code == 200:
@@ -136,6 +137,7 @@ class FlagCreatorView(MethodView):
         flagged_creator = FlaggedCreator(user_id=creator_id, admin_id=admin_id)
         db.session.add(flagged_creator)
         db.session.commit()
+
         flash('Creator flagged successfully!', 'success')
         return redirect(url_for('user.all_creators'))
 bp_user.add_url_rule('/flag_creator/<string:creator_id>/<string:admin_id>', view_func=FlagCreatorView.as_view('flag_creator'))
@@ -145,6 +147,7 @@ class UnflagCreatorView(MethodView):
         flagged_creator = FlaggedCreator.query.filter_by(user_id=creator_id).first()
         db.session.delete(flagged_creator)
         db.session.commit()
+
         flash('Creator whitelisted successfully!', 'success')
         return redirect(url_for('user.all_creators'))
 bp_user.add_url_rule('/unflag_creator/<string:creator_id>', view_func=UnflagCreatorView.as_view('unflag_creator'))

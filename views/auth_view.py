@@ -4,6 +4,7 @@ from flask import Blueprint, render_template, redirect, url_for, flash,request
 from flask.views import MethodView
 import requests
 from models.user_model import User, Admin
+from models.music_model import Song
 from forms.auth_form import RegisterForm, LoginForm
 from flask_login import login_user, login_required, logout_user
 from extensions.extension import db, bcrypt
@@ -18,10 +19,7 @@ class RegisterView(MethodView):
         form = RegisterForm()
 
         # contents
-        api_url = request.url_root + 'songs/songs'
-        s_response = requests.get(api_url)
-        if s_response.status_code == 200:
-            suggested_songs = s_response.json()
+        suggested_songs = Song.query.order_by(db.func.random()).limit(4).all()
         return render_template('register.html', form=form, suggested_songs=suggested_songs)
     
     def post(self):
@@ -48,10 +46,7 @@ class UserLoginView(MethodView):
         form = LoginForm()
 
         # contents
-        api_url = request.url_root + 'songs/songs'
-        s_response = requests.get(api_url)
-        if s_response.status_code == 200:
-            suggested_songs = s_response.json()
+        suggested_songs = Song.query.order_by(db.func.random()).limit(4).all()
         return render_template('user_login.html', form=form, suggested_songs=suggested_songs)
     
     def post(self):
@@ -75,10 +70,7 @@ class AdminLoginView(MethodView):
         form = LoginForm()
 
         # contents
-        api_url = request.url_root + 'songs/songs'
-        s_response = requests.get(api_url)
-        if s_response.status_code == 200:
-            suggested_songs = s_response.json()
+        suggested_songs = Song.query.order_by(db.func.random()).limit(4).all()
         return render_template('admin_login.html', form=form, suggested_songs=suggested_songs)
     
     def post(self):
