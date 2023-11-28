@@ -74,8 +74,14 @@ class AlbumAddSongsView(MethodView):
 
             #contents
             suggested_songs, playlists, albums = user_contents()
+
+            api_url = request.url_root + 'users/users/' + str(current_user.id) + '/songs'
+            songs = requests.get(api_url)
+            songs = songs.json()
+            uploaded_songs = songs
             
-            return render_template('add_songs_to_album.html', songs=songs, album=album, suggested_songs=suggested_songs, playlists=playlists, albums=albums)
+            
+            return render_template('add_songs_to_album.html', songs=songs, album=album, suggested_songs=suggested_songs, playlists=playlists, albums=albums, uploaded_songs=uploaded_songs)
         else:
             flash('Error fetching songs!', 'danger')
             return redirect(url_for('user.dashboard'))

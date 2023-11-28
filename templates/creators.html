@@ -17,13 +17,16 @@
                 <td>{{ creator.email }}</td>
                 <td>
                     {% if is_flagged[loop.index0] %}
-                        <a href="{{ url_for('user.unflag_creator', creator_id=creator.id) }}" style="background-color:#149310; border-color:darkgreen" id="delete-btn">
-                            <i class="fas fa-check"></i> Whitelist
-                        </a>
+                    
+                        {% set action_url = url_for('user.unflag_creator', creator_id=creator.id) %}
+                        <button id="register_button" onclick="showConfirmation('{{ action_url }}')" style="background-color:#149310; border-color:darkgreen"><i class="fas fa-check"></i> Whitelist</button>
+
                     {% else %}
-                        <a href="{{ url_for('user.flag_creator', creator_id=creator.id, admin_id=current_user.id) }}" style="background-color: orangered;margin-right: 10px" id="delete-btn">
+
+                        {% set action_url = url_for('user.flag_creator', creator_id=creator.id, admin_id=current_user.id) %}
+                        <button onclick="showConfirmation('{{ action_url }}')" style="background-color: orangered;margin-right: 10px" id="delete-btn">
                             <i class="fas fa-ban"></i> Blacklist
-                        </a>
+                        </button>
                     {% endif %} 
                 </td>
             </tr>

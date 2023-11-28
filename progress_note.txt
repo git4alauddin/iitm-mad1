@@ -1,6 +1,0 @@
-to-do
-______________________________
-- song rating system 
-- searching technology for songs [FTS]
-- what to do when the user is in the blacklist
-________________________________
