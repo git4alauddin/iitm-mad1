@@ -51,7 +51,7 @@
 {%block flagged_content %}
     {% if current_user.role == 'creator' and flagged_songs %}
         <h1 id="heading" style="color: red;"><i class="fas fa-ban"></i> FLAGGED SONG(S)</h1>
-        <table class="data-table">
+        <table class="data-table" style="animation: none;">
             <thead>
                 <tr>
                     <th>Title</th>

@@ -4,8 +4,10 @@ from flask_login import current_user, login_required
 
 from forms.music_form import MusicForm
 from extensions.extension import db 
-from models.music_model import Song, SongFile, FlaggedContent, Rating
 from sqlalchemy import or_
+
+from models.music_model import Song, SongFile, FlaggedContent, Rating
+from models.user_model import FlaggedCreator
 
 from werkzeug.utils import secure_filename
 import os
@@ -25,12 +27,17 @@ bp_song = Blueprint('song', __name__)
 class UploadSongView(MethodView):
     @creator_required
     def get(self):
-        form = MusicForm()
+        flagged_creator = FlaggedCreator.query.filter_by(user_id=current_user.id).first()
+        if flagged_creator:
+            flash('You can not upload song now!', 'danger')
+            return redirect(url_for('user.dashboard'))
+        else:
+            form = MusicForm()
 
-        #contents
-        suggested_songs, playlists, albums = user_contents()
+            #contents
+            suggested_songs, playlists, albums = user_contents()
 
-        return render_template('upload_song.html', form=form, playlists=playlists, suggested_songs=suggested_songs, albums=albums)
+            return render_template('upload_song.html', form=form, playlists=playlists, suggested_songs=suggested_songs, albums=albums)
     @creator_required
     def post(self):
         form = MusicForm()

@@ -6,6 +6,7 @@ from decorators.contents import admin_stats, user_contents
 from decorators.role_decorator import creator_required, admin_or_creator_required, admin_required
 
 from models.music_model import Album
+from models.user_model import FlaggedCreator
 import requests
 '''
 +--------------------------------------------------------------+
@@ -18,9 +19,14 @@ bp_album = Blueprint('album', __name__)
 class CreateAlbumView(MethodView):
     @creator_required
     def get(self):
-        #contents
-        suggested_songs, playlists, albums = user_contents()
-        return render_template('create_album.html', albums=albums, suggested_songs=suggested_songs, playlists=playlists)
+        flagged_creator = FlaggedCreator.query.filter_by(user_id=current_user.id).first()
+        if flagged_creator:
+            flash('You can not create album now!', 'danger')
+            return redirect(url_for('user.dashboard'))
+        else:
+            #contents
+            suggested_songs, playlists, albums = user_contents()
+            return render_template('create_album.html', albums=albums, suggested_songs=suggested_songs, playlists=playlists)
 
     @creator_required
     def post(self):
@@ -70,26 +76,30 @@ bp_album.add_url_rule('/remove_album/<string:id>/', view_func=RemoveAlbumView.as
 class AlbumAddSongsView(MethodView):
     @creator_required
     def get(self, id): 
-        print(f'album_id: {id}')
-        api_url = request.url_root + 'albums/albums/' + str(id) + '/songs'
-        album_song_res = requests.get(api_url)
-
-        if album_song_res.status_code == 200:
-            songs = album_song_res.json()
-            album = Album.query.get(id)
-
-            #contents
-            suggested_songs, playlists, albums = user_contents()
-
-            api_url = request.url_root + 'users/users/' + str(current_user.id) + '/songs'
-            songs = requests.get(api_url)
-            songs = songs.json()
-            uploaded_songs = songs
-            
-            return render_template('add_songs_to_album.html', songs=songs, album=album, suggested_songs=suggested_songs, playlists=playlists, albums=albums, uploaded_songs=uploaded_songs)
-        else:
-            flash('Error fetching songs!', 'danger')
+        flagged_creator = FlaggedCreator.query.filter_by(user_id=current_user.id).first()
+        if flagged_creator:
+            flash('You can not upload song now!', 'danger')
             return redirect(url_for('user.dashboard'))
+        else:
+            api_url = request.url_root + 'albums/albums/' + str(id) + '/songs'
+            album_song_res = requests.get(api_url)
+
+            if album_song_res.status_code == 200:
+                songs = album_song_res.json()
+                album = Album.query.get(id)
+
+                #contents
+                suggested_songs, playlists, albums = user_contents()
+
+                api_url = request.url_root + 'users/users/' + str(current_user.id) + '/songs'
+                songs = requests.get(api_url)
+                songs = songs.json()
+                uploaded_songs = songs
+                
+                return render_template('add_songs_to_album.html', songs=songs, album=album, suggested_songs=suggested_songs, playlists=playlists, albums=albums, uploaded_songs=uploaded_songs)
+            else:
+                flash('Error fetching songs!', 'danger')
+                return redirect(url_for('user.dashboard'))
 
     @creator_required  
     def post(self, id):

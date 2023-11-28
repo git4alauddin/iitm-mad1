@@ -250,6 +250,7 @@ body{
 
 #register_button:hover {
   color:aliceblue;
+  cursor: pointer;
 }
 
 /* ----------------------------------[04]contents--------------------------------------------------- */
