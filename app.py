@@ -31,6 +31,7 @@ migrate.init_app(app, db)
 
 login_manager.init_app(app)
 login_manager.login_view = 'index.home'
+login_manager.login_message_category = 'info'
 
 # register blueprints
 app.register_blueprint(bp_index)

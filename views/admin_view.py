@@ -1,17 +1,21 @@
-from flask import Blueprint, render_template,redirect,url_for,flash,request
+from flask import Blueprint, render_template, request
 from flask.views import MethodView
-import requests
-from extensions.extension import db
-from models.music_model import Song,Album,Playlist,FlaggedContent
-from models.user_model import User
-from sqlalchemy import or_
-from decorators.contents import admin_stats, user_contents, admin_stats_visuals
 
-# --------------------------------------blueprint admin--------------------------------------------------------
+from decorators.contents import admin_stats, admin_stats_visuals
+from decorators.role_decorator import admin_required
+
+from models.music_model import Song
+from sqlalchemy import or_
+'''
++--------------------------------------------------------------+
+|                         blueprint admin                      |
++--------------------------------------------------------------+
+'''
 bp_admin = Blueprint('admin', __name__)
 
-# view admin_visuals
+#------------------------------------admin_visuals---------------------------------#
 class AdminVisualsView(MethodView):
+    @admin_required
     def get(self):
         # stats
         stats_data, labels, values = admin_stats_visuals()
@@ -28,6 +32,7 @@ bp_admin.add_url_rule('/admin_visuals', view_func=AdminVisualsView.as_view('admi
 
 
 class AdminSearchView(MethodView):
+    @admin_required
     def get(self):
       
         query = request.args.get('query')

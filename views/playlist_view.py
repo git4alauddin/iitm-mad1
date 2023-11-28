@@ -1,21 +1,28 @@
 from flask import render_template, redirect, url_for, flash, request, Blueprint
 from flask.views import MethodView
-from flask_login import current_user
-from extensions.extension import db
-from models.music_model import Song, Playlist
-import requests
-from decorators.contents import admin_stats, user_contents
+from flask_login import current_user, login_required
 
-# --------------------------------------blueprint playlist--------------------------------------------------------
+from models.music_model import Playlist
+
+from decorators.contents import user_contents
+import requests
+'''
++--------------------------------------------------------------+
+|                         blueprint playlist                   |
++--------------------------------------------------------------+
+'''
 bp_playlist = Blueprint('playlist', __name__)
 
+#------------------------------------create_playlist----------------------------#
 class CreatePlaylistView(MethodView):
+    @login_required
     def get(self):
         #contents
         suggested_songs, playlists, albums = user_contents()
 
         return render_template('create_playlist.html', playlists=playlists, suggested_songs=suggested_songs, albums=albums)
 
+    @login_required
     def post(self):
         title = request.form.get('title')
 
@@ -34,8 +41,9 @@ class CreatePlaylistView(MethodView):
         
 bp_playlist.add_url_rule('/create_playlist/', view_func=CreatePlaylistView.as_view('create_playlist'))
 
-# view remove playlist
+#------------------------------------remove_playlist----------------------------#
 class RemovePlaylistView(MethodView):
+    @login_required
     def get(self, id):
         api_url = request.url_root + 'playlists/playlists/' + str(id)
         response = requests.delete(api_url)
@@ -46,11 +54,11 @@ class RemovePlaylistView(MethodView):
             flash('Error removing playlist!', 'danger')
 
         return redirect(url_for('user.dashboard'))
-
 bp_playlist.add_url_rule('/remove_playlist/<string:id>/', view_func=RemovePlaylistView.as_view('remove_playlist'))
 
-# view add_songs_to_playlist
+#------------------------------------add_songs_to_playlist----------------------------#
 class PlaylistAddSongsView(MethodView):
+    @login_required
     def get(self, id):
         api_url = request.url_root + 'playlists/playlists/' + str(id) + '/songs'
         playlist_song_res = requests.get(api_url)
@@ -67,6 +75,7 @@ class PlaylistAddSongsView(MethodView):
             flash('Error fetching songs!', 'danger')
             return redirect(url_for('user.dashboard'))
         
+    @login_required
     def post(self, id):
         song_id = request.form.get('song_id')
         print(f'song_id: {song_id}')
@@ -82,8 +91,9 @@ class PlaylistAddSongsView(MethodView):
         return redirect(url_for('playlist.add_songs_to_playlist', id=id))
 bp_playlist.add_url_rule('/add_songs_to_playlist/<string:id>', view_func=PlaylistAddSongsView.as_view('add_songs_to_playlist'))
 
-# view remove songs of a playlist
+#------------------------------------upload_song----------------------------#
 class PlaylistRemoveSongsView(MethodView):
+    @login_required
     def post(self, id):
         song_id = request.form.get('song_id')
         api_url = request.url_root + 'playlists/playlists/' + str(id) + '/songs/' + str(song_id)

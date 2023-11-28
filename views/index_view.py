@@ -1,14 +1,14 @@
 from flask import Blueprint, render_template
 from flask.views import MethodView
-from flask import request
-import requests
 from forms.auth_form import RegisterForm
-
-#-----------------------------blueprint_index-------------------------------#
+'''
++--------------------------------------------------------------+
+|                         blueprint index                      |
++--------------------------------------------------------------+
+'''
 bp_index = Blueprint('index', __name__)                       
 
-
-# view home
+#------------------------------------home----------------------------#
 class HomeView(MethodView):
     def get(self):
         form = RegisterForm()

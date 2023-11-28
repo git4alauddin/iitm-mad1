@@ -121,7 +121,7 @@
 }
 
 /* -------------------------------------[02]flash_message --------------------------------------------------------*/
-.alert-success, .alert-danger {
+.alert-success, .alert-danger, .alert-info {
   border-radius: 10px;
   padding: 12px;
   text-align: center;
@@ -139,6 +139,12 @@
   border: 2px solid #FF6347;
   background-color: #F8E0E0;
   color: #FF6347;
+}
+
+.alert-info {
+  border: 2px solid rgb(254, 218, 15);
+  background-color: rgb(250, 238, 171);
+  color: rgb(160, 137, 4);
 }
 
 @keyframes fadeOut {

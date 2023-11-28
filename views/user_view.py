@@ -1,22 +1,29 @@
 from flask import Blueprint, render_template,redirect,url_for,flash,request
 from flask_login import logout_user,login_required, current_user
 from flask.views import MethodView
-import requests
-from extensions.extension import db
-from models.music_model import Playlist, Song, Album, FlaggedContent
-from models.user_model import User, FlaggedCreator
-from decorators.contents import admin_stats, user_contents, user_stats
 
-#------------------------------------blueprint user---------------------------------------#
+from models.music_model import Song, FlaggedContent
+from models.user_model import User, FlaggedCreator
+
+from decorators.contents import admin_stats, user_contents, user_stats
+from decorators.role_decorator import user_required, creator_required, admin_required
+
+from extensions.extension import db
+import requests
+'''
++--------------------------------------------------------------+
+|                         blueprint user                       |
++--------------------------------------------------------------+
+'''
 bp_user = Blueprint('user', __name__)
 
-# view dashboard
+#------------------------------------dashboard----------------------------#
 class DashboardView(MethodView):
     @login_required
     def get(self):
         # contents
         suggested_songs, playlists, albums = user_contents()
-        
+
         # stats
         stats_data = admin_stats()
 
@@ -41,16 +48,19 @@ class DashboardView(MethodView):
         return render_template('dashboard.html', playlists=playlists, suggested_songs=suggested_songs, albums=albums, stats_data=stats_data, flagged_songs=flagged_songs, reasons=reasons, is_flagged_creator=is_flagged_creator)
 bp_user.add_url_rule('/dashboard', view_func=DashboardView.as_view('dashboard'))
 
-# view logout
+#------------------------------------logout----------------------------#
 class LogoutView(MethodView):
+    @login_required
     def get(self):
         logout_user()
         flash('logged out!', 'success')
+
         return redirect(url_for('index.home'))
 bp_user.add_url_rule('/logout', view_func=LogoutView.as_view('logout'))
 
-# view register as creator
+#------------------------------------creator_register----------------------------#
 class CreatorRegisterView(MethodView):
+    @user_required
     def get(self):
         api_url = request.url_root + 'users/users/' + str(current_user.id)
         response = requests.put(api_url, json={'id': current_user.id})
@@ -60,25 +70,27 @@ class CreatorRegisterView(MethodView):
             return redirect(url_for('user.dashboard'))
         else:
             flash('Error registering as creator!', 'danger')
+
             return redirect(url_for('user.dashboard'))
 bp_user.add_url_rule('/register/creator', view_func=CreatorRegisterView.as_view('creator_register'))
 
-# view creator_stats
+#------------------------------------creator_stats----------------------------#
 class CreatorStatsView(MethodView):
+    @creator_required
     def get(self):
         #contents
         suggested_songs, playlists, albums = user_contents()
 
         # stats
         stats_data = user_stats()
-        
+
         return render_template('creator_stats.html', playlists=playlists, suggested_songs=suggested_songs, albums=albums, stats_data=stats_data)
 bp_user.add_url_rule('/creator_stats', view_func=CreatorStatsView.as_view('creator_stats'))
 
-# all creators
+#------------------------------------all_creators----------------------------#
 class AllCreatorsView(MethodView):
+    @admin_required
     def get(self):
-        # query all creators
         creators = User.query.filter_by(role='creator').all()
         is_flagged = list()
         for creator in creators:
@@ -87,15 +99,15 @@ class AllCreatorsView(MethodView):
                 is_flagged.append(True)
             else:
                 is_flagged.append(False)
-        
         # stats
         stats_data = admin_stats()
 
         return render_template('creators.html', creators=creators,is_flagged=is_flagged ,stats_data=stats_data)
 bp_user.add_url_rule('/all_creators', view_func=AllCreatorsView.as_view('all_creators'))
 
-# flagged_creators
+#------------------------------------flag_creator----------------------------#
 class FlagCreatorView(MethodView):
+    @admin_required
     def get(self, creator_id, admin_id):
         flagged_creator = FlaggedCreator(user_id=creator_id, admin_id=admin_id)
         db.session.add(flagged_creator)
@@ -108,7 +120,9 @@ class FlagCreatorView(MethodView):
         return redirect(url_for('user.all_creators'))
 bp_user.add_url_rule('/flag_creator/<string:creator_id>/<string:admin_id>', view_func=FlagCreatorView.as_view('flag_creator'))
 
+#------------------------------------unflag_creator----------------------------#
 class UnflagCreatorView(MethodView):
+    @admin_required
     def get(self, creator_id):
         flagged_creator = FlaggedCreator.query.filter_by(user_id=creator_id).first()
         db.session.delete(flagged_creator)
@@ -117,5 +131,6 @@ class UnflagCreatorView(MethodView):
         db.session.commit()
 
         flash('Creator whitelisted successfully!', 'success')
+
         return redirect(url_for('user.all_creators'))
 bp_user.add_url_rule('/unflag_creator/<string:creator_id>', view_func=UnflagCreatorView.as_view('unflag_creator'))

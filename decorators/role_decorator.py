@@ -35,6 +35,18 @@ def admin_required(func):
         if current_user.is_authenticated and current_user.role == 'admin':
             return func(*args, **kwargs)
         else:
-            flash('[admin]Sorry! Access denied', 'danger')
+            flash('Access denied', 'danger')
             return redirect(url_for('user.dashboard'))
     return decoreated_view
+
+# admin or creator
+def admin_or_creator_required(func):
+    @wraps(func)
+    @login_required
+    def decorated_view(*args, **kwargs):
+        if current_user.is_authenticated and (current_user.role == 'admin' or current_user.role == 'creator'):
+            return func(*args, **kwargs)
+        else:
+            flash('Access denied', 'danger')
+            return redirect(url_for('user.dashboard'))
+    return decorated_view

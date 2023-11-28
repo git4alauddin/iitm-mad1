@@ -2,7 +2,7 @@ from flask_restx import Resource, Namespace
 from models.music_model import Song, SongFile
 from api.api_models import song_model
 from extensions.extension import db
-from decorators.role_decorator import admin_required
+from decorators.role_decorator import admin_or_creator_required
 import os
 from flask import current_app
 

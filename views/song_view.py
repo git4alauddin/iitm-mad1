@@ -1,27 +1,35 @@
 from flask import Blueprint, render_template,redirect,url_for,flash,request, current_app
 from flask.views import MethodView
+from flask_login import current_user, login_required
+
 from forms.music_form import MusicForm
-from flask_login import current_user
 from extensions.extension import db 
-from decorators.role_decorator import creator_required
+from models.music_model import Song, SongFile, FlaggedContent, Rating
+from sqlalchemy import or_
+
 from werkzeug.utils import secure_filename
 import os
 import random
-from models.music_model import Song, SongFile, Album, Playlist, FlaggedContent, Rating
-from models.user_model import User
 import requests
-from sqlalchemy import or_
-from decorators.contents import admin_stats, user_contents
 
-# --------------------------------------blueprint song--------------------------------------------------------
+from decorators.contents import admin_stats, user_contents
+from decorators.role_decorator import creator_required, admin_or_creator_required, admin_required
+'''
++--------------------------------------------------------------+
+|                         blueprint song                       |
++--------------------------------------------------------------+
+'''
 bp_song = Blueprint('song', __name__)
-# view song_upload
+
+#------------------------------------upload_song----------------------------#
 class UploadSongView(MethodView):
+    @creator_required
     def get(self):
         form = MusicForm()
 
         #contents
         suggested_songs, playlists, albums = user_contents()
+
         return render_template('upload_song.html', form=form, playlists=playlists, suggested_songs=suggested_songs, albums=albums)
     @creator_required
     def post(self):
@@ -55,13 +63,13 @@ class UploadSongView(MethodView):
                 file_extension = original_filename.rsplit('.', 1)[1]
                 new_file_name = f'{artist}_{title}_{random_suffix}.{file_extension}'
 
-                # override for demo
+                # for demo purpose
                 new_file_name ='demo.mp3'
 
                 audio_file_path = os.path.join(current_app.config['SONG_UPLOAD_FOLDER'], new_file_name)
                 audio_file.save(audio_file_path)
 
-                # create song object to insert into the table
+                # song object
                 song = Song(
                     title=title,
                     artist=artist,
@@ -91,13 +99,14 @@ class UploadSongView(MethodView):
                 return redirect(url_for('song.upload_song'))
         else:
             flash('All fields are required', 'danger')
+
             return redirect(url_for('song.upload_song'))
 bp_song.add_url_rule('/upload_song', view_func=UploadSongView.as_view('upload_song'))
 
-# view play_song
+#------------------------------------play_song----------------------------#
 class PlaySongView(MethodView):
+    @login_required
     def get(self, id):
-        # main logic
         song = Song.query.get(id)
         song_file = SongFile.query.filter_by(song_id=id).first()
         song.hits += 1
@@ -109,14 +118,14 @@ class PlaySongView(MethodView):
         return render_template('play_song.html', song=song, song_file=song_file, playlists=playlists, suggested_songs=suggested_songs, albums=albums)
 bp_song.add_url_rule('/play_song/<string:id>', view_func=PlaySongView.as_view('play_song'))
 
-# song lyrics view
+#------------------------------------song_lyrics----------------------------#
 class SongLyricsView(MethodView):
+    @login_required
     def get(self, id):
-        # main logic to retrieve song lyrics
         song = Song.query.get(id)
         lyrics = song.lyrics
 
-        # admin content
+        # admin
         api_url = request.url_root + 'songs/songs'
         songs = requests.get(api_url)
         songs = songs.json()
@@ -125,12 +134,12 @@ class SongLyricsView(MethodView):
         suggested_songs, playlists, albums = user_contents()
 
         return render_template('song_lyrics.html', song=song, lyrics=lyrics, playlists=playlists, suggested_songs=suggested_songs, albums=albums, songs=songs)
-
 bp_song.add_url_rule('/song_lyrics/<string:id>', view_func=SongLyricsView.as_view('song_lyrics'))
 
 
-# view uploaded_songs
+#------------------------------------uploaded_songs----------------------------#
 class UploadedSongsView(MethodView):
+    @admin_or_creator_required
     def get(self):
         api_url = request.url_root + 'users/users/' + str(current_user.id) + '/songs'
         songs = requests.get(api_url)
@@ -142,8 +151,9 @@ class UploadedSongsView(MethodView):
         return render_template('uploaded_songs.html', songs=songs, playlists=playlists, suggested_songs=suggested_songs, albums=albums)
 bp_song.add_url_rule('/uploaded_songs', view_func=UploadedSongsView.as_view('uploaded_songs'))
 
-# view delete a song
+#------------------------------------delete_song----------------------------#
 class DeleteSongView(MethodView):
+    @admin_or_creator_required
     def get(self, id):
         api_url = request.url_root + 'songs/songs/' + str(id)
         response = requests.delete(api_url)
@@ -157,14 +167,14 @@ class DeleteSongView(MethodView):
             return redirect(url_for('song.all_songs', genre='all'))
 bp_song.add_url_rule('/delete_song/<string:id>', view_func=DeleteSongView.as_view('delete_song'))
 
-# view all songs
+#------------------------------------all_songs----------------------------#
 class AllSongsView(MethodView):
+    @admin_required
     def get(self, genre):
         if genre == 'all':
             songs = Song.query.all()
         else:
             songs = Song.query.filter_by(genre=genre).all()
-        
         
         is_flagged = list()
         for song in songs:
@@ -174,16 +184,16 @@ class AllSongsView(MethodView):
             else:
                 is_flagged.append(False)
         
-
         # stats
         stats_data = admin_stats()
 
         return render_template('songs.html', songs=songs,is_flagged=is_flagged ,stats_data=stats_data)
 bp_song.add_url_rule('/all_songs/<string:genre>', view_func=AllSongsView.as_view('all_songs'))
 
+#------------------------------------song_search----------------------------#
 class SongSearchView(MethodView):
+    @login_required
     def get(self):
-      
         query = request.args.get('query')
         query = f"%{query}%"
     
@@ -201,20 +211,19 @@ class SongSearchView(MethodView):
         return render_template('song_search.html', songs=songs, playlists=playlists, suggested_songs=suggested_songs, albums=albums)
 bp_song.add_url_rule('/song_search', view_func=SongSearchView.as_view('song_search'))
 
-# flag song
+#------------------------------------flag_song----------------------------#
 class FlagSongView(MethodView):
+    @admin_required
     def get(self, song_id):
-        # main logic
         song_to_flag = Song.query.get(song_id)
 
-        # check if flagged
         is_flagged = FlaggedContent.query.filter_by(song_id=song_id).first()
         if is_flagged:
             is_flagged = True
         else:
             is_flagged = False
             
-        # songs content
+        # songs
         songs = Song.query.all()
 
         # stats
@@ -222,6 +231,7 @@ class FlagSongView(MethodView):
 
         return render_template('flag_song.html', song_to_flag=song_to_flag, is_flagged=is_flagged,stats_data=stats_data, songs=songs)
     
+    @admin_required
     def post(self, song_id):
         reason = request.form.get('reason')
         song_id = song_id
@@ -234,7 +244,9 @@ class FlagSongView(MethodView):
         return redirect (url_for('song.all_songs', genre='all'))
 bp_song.add_url_rule('/flag_song/<song_id>', view_func=FlagSongView.as_view('flag_song'))
 
+#------------------------------------unflag_song----------------------------#
 class UnflagSongView(MethodView):
+    @admin_required
     def get(self, song_id):
         flagged_content = FlaggedContent.query.filter_by(song_id=song_id).first()
         print(f'found song: {flagged_content.reason}')
@@ -244,8 +256,9 @@ class UnflagSongView(MethodView):
         return redirect (url_for('song.all_songs', genre='all'))
 bp_song.add_url_rule('/unflag_song/<song_id>', view_func=UnflagSongView.as_view('unflag_song'))
 
-# rate song view
+#------------------------------------rate_song----------------------------#
 class RateSongView(MethodView):
+    @login_required
     def get(self, song_id, rating):
         user_id = current_user.id 
 

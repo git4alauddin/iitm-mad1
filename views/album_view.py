@@ -1,21 +1,28 @@
 from flask import render_template, redirect, url_for, flash, request, Blueprint
 from flask.views import MethodView
 from flask_login import current_user
-from extensions.extension import db
-from models.music_model import Song, Album, Playlist
-from models.user_model import User
-import requests
-from decorators.contents import admin_stats, user_contents
 
-# -------------------------------------------blueprint album-------------------------------------------------------------
+from decorators.contents import admin_stats, user_contents
+from decorators.role_decorator import creator_required, admin_or_creator_required, admin_required
+
+from models.music_model import Album
+import requests
+'''
++--------------------------------------------------------------+
+|                         blueprint album                      |
++--------------------------------------------------------------+
+'''
 bp_album = Blueprint('album', __name__)
 
+#------------------------------------create_album---------------------------------#
 class CreateAlbumView(MethodView):
+    @creator_required
     def get(self):
         #contents
         suggested_songs, playlists, albums = user_contents()
         return render_template('create_album.html', albums=albums, suggested_songs=suggested_songs, playlists=playlists)
 
+    @creator_required
     def post(self):
         title = request.form.get('title')
         release_year = request.form.get('release_year')
@@ -23,8 +30,6 @@ class CreateAlbumView(MethodView):
         if not title:
             flash('Title is required.', 'danger')
             return redirect(url_for('album.create_album'))
-        # check if release_year is a number-year
-
         elif not release_year:
             flash('Release release_year is required.', 'danger')
             return redirect(url_for('album.create_album'))
@@ -35,7 +40,6 @@ class CreateAlbumView(MethodView):
             api_url = request.url_root + 'albums/albums/' + str(current_user.id)
             response = requests.post(api_url, json={'title': title, 'release_year': release_year})
 
-
             if response.status_code == 201:
                 flash('Successfully created album!', 'success')
             else:
@@ -44,8 +48,9 @@ class CreateAlbumView(MethodView):
         
 bp_album.add_url_rule('/create_album', view_func=CreateAlbumView.as_view('create_album'))
 
-# view remove album
+#--------------------------------------remove_album---------------------------------#
 class RemoveAlbumView(MethodView):
+    @admin_or_creator_required
     def get(self, id):
         api_url = request.url_root + 'albums/albums/' + str(id)
         response = requests.delete(api_url)
@@ -61,8 +66,9 @@ class RemoveAlbumView(MethodView):
 
 bp_album.add_url_rule('/remove_album/<string:id>/', view_func=RemoveAlbumView.as_view('remove_album'))
 
-# view add_songs_to_album
+#---------------------------------------add_songs_to_album----------------------------#
 class AlbumAddSongsView(MethodView):
+    @creator_required
     def get(self, id): 
         print(f'album_id: {id}')
         api_url = request.url_root + 'albums/albums/' + str(id) + '/songs'
@@ -80,12 +86,12 @@ class AlbumAddSongsView(MethodView):
             songs = songs.json()
             uploaded_songs = songs
             
-            
             return render_template('add_songs_to_album.html', songs=songs, album=album, suggested_songs=suggested_songs, playlists=playlists, albums=albums, uploaded_songs=uploaded_songs)
         else:
             flash('Error fetching songs!', 'danger')
             return redirect(url_for('user.dashboard'))
-        
+
+    @creator_required  
     def post(self, id):
         song_id = request.form.get('song_id')
         print(f'song_id: {song_id}')
@@ -101,8 +107,9 @@ class AlbumAddSongsView(MethodView):
         return redirect(url_for('album.add_songs_to_album', id=id))
 bp_album.add_url_rule('/add_songs_to_album/<string:id>', view_func=AlbumAddSongsView.as_view('add_songs_to_album'))
 
-# view remove songs of a album
+#---------------------------------------remove_songs_from_album----------------------------#
 class AlbumRemoveSongsView(MethodView):
+    @creator_required
     def post(self, id):
         song_id = request.form.get('song_id')
         api_url = request.url_root + 'albums/albums/' + str(id) + '/songs/' + str(song_id)
@@ -117,7 +124,9 @@ class AlbumRemoveSongsView(MethodView):
         return redirect(url_for('album.add_songs_to_album', id=id))
 bp_album.add_url_rule('/album_remove_songs/<string:id>', view_func=AlbumRemoveSongsView.as_view('album_remove_songs'))
 
+#---------------------------------------all_albums------------------------------------#
 class AllAlbumsView(MethodView):
+    @admin_required
     def get(self):
         api_url = request.url_root + 'albums/albums/' 
         response = requests.get(api_url)

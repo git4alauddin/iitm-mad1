@@ -1,20 +1,21 @@
-# imports
-from sqlalchemy.exc import IntegrityError
-from flask import Blueprint, render_template, redirect, url_for, flash,request
+from flask import Blueprint, render_template, redirect, url_for, flash
 from flask.views import MethodView
-import requests
-from models.user_model import User, Admin
-from models.music_model import Song
-from forms.auth_form import RegisterForm, LoginForm
-from flask_login import login_user, login_required, logout_user
-from extensions.extension import db, bcrypt
+from flask_login import login_user
 
-#------------------------------------blueprint_auth---------------------------------------#
+from models.user_model import User, Admin
+
+from forms.auth_form import RegisterForm, LoginForm
+from extensions.extension import db, bcrypt
+from sqlalchemy.exc import IntegrityError
+'''
++--------------------------------------------------------------+
+|                         blueprint auth                       |
++--------------------------------------------------------------+
+'''
 bp_auth = Blueprint('auth', __name__)
 
-# view register
+#------------------------------------register----------------------------#
 class RegisterView(MethodView):
-    
     def get(self):
         form = RegisterForm()
         return render_template('register.html', form=form)
@@ -37,11 +38,10 @@ class RegisterView(MethodView):
         return redirect(url_for('auth.register'))
 bp_auth.add_url_rule('/register', view_func=RegisterView.as_view('register'))
 
-# view user_login
+#------------------------------------user_login------------------------------#
 class UserLoginView(MethodView):
     def get(self):
         form = LoginForm()
-
         return render_template('user_login.html', form=form)
     
     def post(self):
@@ -49,7 +49,6 @@ class UserLoginView(MethodView):
         if form.validate_on_submit():
             user = User.query.filter_by(email=form.email.data).first()
             if user and bcrypt.check_password_hash(user.password, form.password.data):
-                
                 login_user(user)
                 return redirect(url_for('user.dashboard'))
             else:
@@ -58,8 +57,7 @@ class UserLoginView(MethodView):
         return redirect(url_for('auth.user_login'))  
 bp_auth.add_url_rule('/user_login', view_func=UserLoginView.as_view('user_login'))
 
-
-# view admin_login
+#------------------------------------admin_login----------------------------#
 class AdminLoginView(MethodView):
     def get(self):
         form = LoginForm()
