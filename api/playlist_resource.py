@@ -1,14 +1,16 @@
 from flask_restx import Namespace, Resource
+from flask import request
 from models.music_model import Playlist, Song
-from flask import request, redirect, url_for, flash, render_template
-from flask_login import current_user
 from extensions.extension import db
 from api.api_models import playlist_model, song_model, playlist_input_model
-
-#----------------------namespace_playlist---------------#
+'''
++--------------------------------------------------------------+
+|                         namespace playlists                  |
++--------------------------------------------------------------+
+'''
 ns_playlists = Namespace('playlists')
 
-# for particular playlist
+#---------------------------------/playlists/<string:id>-------------------------------#
 @ns_playlists.route('/playlists/<string:id>')
 class PlaylistApi(Resource):
     @ns_playlists.marshal_with(playlist_model)
@@ -16,7 +18,6 @@ class PlaylistApi(Resource):
         playlist = Playlist.query.get(id)
         return playlist, 200
     
-    # create playlist with the given title for the current user
     @ns_playlists.expect(playlist_input_model)
     @ns_playlists.marshal_with(playlist_model)
     def post(self, id):
@@ -33,7 +34,7 @@ class PlaylistApi(Resource):
         db.session.commit()
         return Playlist.query.get(id), 204
 
-# songs associated to a playlist
+#----------------------------------/playlists/<string:id>/songs-------------------------------#
 @ns_playlists.route('/playlists/<string:id>/songs')
 class PlaylistSongsApi(Resource):
     @ns_playlists.marshal_with(song_model)
@@ -44,7 +45,7 @@ class PlaylistSongsApi(Resource):
         songs = playlist.songs
         return songs, 200
 
-# single song associated to a playlist
+#-----------------------------/playlists/<string:id>/songs/<string:song_id-----------------------------#
 @ns_playlists.route('/playlists/<string:id>/songs/<string:song_id>')
 class PlaylistSongApi(Resource):
     @ns_playlists.marshal_with(song_model)
@@ -52,9 +53,6 @@ class PlaylistSongApi(Resource):
         playlist = Playlist.query.get(id)
         if not playlist:
             return {'error': 'Playlist not found'}, 404
-        
-        # get method use nhi kr skte sql-alch relationship me 
-        # ye dict like obj k liye hota h tmhare pas list like obj h
         
         song = None 
         for s in playlist.songs:
@@ -70,7 +68,7 @@ class PlaylistSongApi(Resource):
         playlist = Playlist.query.get(id)
         if not playlist:
             return {'error': 'Playlist not found'}, 404
-        # now append the song to the playlist
+        
         song = Song.query.get(song_id)
         if not song:
             return {'error': 'Song not found'}, 404
@@ -79,7 +77,6 @@ class PlaylistSongApi(Resource):
         db.session.commit()
 
         return song, 201
-        
         
     def delete(self, id, song_id):
         playlist = Playlist.query.get(id)
@@ -92,13 +89,12 @@ class PlaylistSongApi(Resource):
                 song = s
         if song:
             playlist.songs.remove(song)
-            # db.session.delete(song) pura song object ko hi delete kr deta h bhaii... bach k
             db.session.commit()
             return {"message": "Song deleted"}, 204
         else:
             return {"message": "Song not found"}, 404
 
-# all playlists
+#----------------------------------/playlists/-----------------------------------#
 @ns_playlists.route('/playlists/')
 class PlaylistsListApi(Resource):
     @ns_playlists.marshal_with(playlist_model)

@@ -6,6 +6,7 @@ from extensions.extension import db
 import requests
 from sqlalchemy.sql import func
 
+# admin_stats
 def admin_stats():
     tot_user = User.query.filter_by(role='user').count()
     tot_creator = User.query.filter_by(role='creator').count()
@@ -17,6 +18,7 @@ def admin_stats():
     stats_data = [{'heading': h, 'total': t} for h, t in zip(stats_headings, [tot_user, tot_creator, tot_album, tot_song, tot_playlist])]
     return stats_data
 
+# admin_stats_visuals
 def admin_stats_visuals():
     tot_user = User.query.filter_by(role='user').count()
     tot_creator = User.query.filter_by(role='creator').count()
@@ -32,7 +34,7 @@ def admin_stats_visuals():
 
     return stats_data, labels, values
 
-
+# user_stats
 def user_stats():
     stats_headings = ['Total Albums', 'Total Songs', 'Total Playlists', 'Average Rating']
     tot_song = Song.query.filter_by(creator_id=current_user.id).count()
@@ -47,6 +49,7 @@ def user_stats():
 
     return stats_data
 
+# user_contents
 def user_contents():
     suggested_songs = Song.query.order_by(db.func.random()).limit(4).all()
     api_url = request.url_root + 'users/users/' + str(current_user.id) + '/playlists'

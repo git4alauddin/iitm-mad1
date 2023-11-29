@@ -1,13 +1,17 @@
 from flask_restx import Resource, Namespace
+from flask import current_app
 from models.music_model import Song, SongFile
 from api.api_models import song_model
 from extensions.extension import db
-from decorators.role_decorator import admin_or_creator_required
 import os
-from flask import current_app
-
+'''
++--------------------------------------------------------------+
+|                         namespace songs                      |
++--------------------------------------------------------------+
+'''
 ns_songs = Namespace('songs')
 
+#---------------------------------/songs/<string:id>-------------------------------#
 @ns_songs.route('/songs/<string:id>')
 class SongApi(Resource):
     @ns_songs.marshal_with(song_model)
@@ -31,6 +35,7 @@ class SongApi(Resource):
         db.session.commit()
         return {'message': 'Song deleted'}, 204
 
+#---------------------------------/songs-------------------------------#
 @ns_songs.route('/songs')
 class SongsListApi(Resource):
     @ns_songs.marshal_with(song_model)

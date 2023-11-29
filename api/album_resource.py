@@ -1,15 +1,16 @@
-
 from flask_restx import Namespace, Resource
+from flask import request
 from models.music_model import Album, Song
-from flask import request, redirect, url_for, flash, render_template
-from flask_login import current_user
 from extensions.extension import db
 from api.api_models import album_model, song_model, album_input_model
-
-#----------------------namespace_playlist---------------#
+'''
++--------------------------------------------------------------+
+|                         namespace albums                     |
++--------------------------------------------------------------+
+'''
 ns_albums = Namespace('albums')
 
-# for particular album
+#------------------------------------/albums/<string:id>---------------------------------#
 @ns_albums.route('/albums/<string:id>')
 class AlbumApi(Resource):
     @ns_albums.marshal_with(album_model)
@@ -17,7 +18,6 @@ class AlbumApi(Resource):
         album = Album.query.get(id)
         return album, 200
     
-    # create album with the given title and release date for the current user
     @ns_albums.expect(album_input_model)
     @ns_albums.marshal_with(album_model)
     def post(self, id):
@@ -35,7 +35,7 @@ class AlbumApi(Resource):
         db.session.commit()
         return Album.query.get(id), 204
 
-# songs associated to a album
+#------------------------------------/albums/<string:id>/songs---------------------------------#
 @ns_albums.route('/albums/<string:id>/songs')
 class AlbumSongsApi(Resource):
     @ns_albums.marshal_with(song_model)
@@ -46,7 +46,7 @@ class AlbumSongsApi(Resource):
         songs = album.songs
         return songs, 200
 
-# single song associated to a album
+#-------------------------/albums/<string:id>/songs/<string:song_id>--------------------------#
 @ns_albums.route('/albums/<string:id>/songs/<string:song_id>')
 class AlbumSongApi(Resource):
     @ns_albums.marshal_with(song_model)
@@ -72,7 +72,7 @@ class AlbumSongApi(Resource):
         album = Album.query.get(id)
         if not album:
             return {'error': 'Album not found'}, 404
-        # now append the song to the album
+        
         song = Song.query.get(song_id)
         if not song:
             return {'error': 'Song not found'}, 404
@@ -81,7 +81,6 @@ class AlbumSongApi(Resource):
         db.session.commit()
 
         return song, 201
-        
         
     def delete(self, id, song_id):
         album = Album.query.get(id)
@@ -102,7 +101,7 @@ class AlbumSongApi(Resource):
             print('now in the api delete method not found the song...')
             return {"message": "Song not found"}, 404
 
-# all albums
+#------------------------------------/albums/-------------------------------------#
 @ns_albums.route('/albums/')
 class AlbumsListApi(Resource):
     @ns_albums.marshal_with(album_model)

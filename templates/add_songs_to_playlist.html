@@ -1,9 +1,7 @@
 {% extends 'layout.html' %}
 {% block content %}
     
-    <!-- playlist songs -->
     <p id="heading">PLAYLIST: {{ playlist.title }}</p>
-
     {% if not songs %}
         <h1 id="heading" style="color: red;">No songs! You can add from the suggestions below!!</h1>
     {% else %}
@@ -32,9 +30,7 @@
         </table>
     {% endif %}
 
-    <!-- suggested songs -->
     <p id="heading">SUGGESTED-SONGS</p>
-
     {% if suggested_songs %}
         <table class="data-table">
             <thead>

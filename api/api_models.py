@@ -1,7 +1,7 @@
 from extensions.extension import api 
 from flask_restx import fields
 
-#-----------------------user---------------#
+# user
 user_model = api.model("User", {
     "id": fields.String,
     "username": fields.String,
@@ -12,7 +12,7 @@ user_input_model = api.model("UserInput", {
     "id": fields.String(required=True, description="User ID")
 })
 
-#-----------------------song---------------#
+# song
 song_model = api.model("Song", {
     "id": fields.String,
     "creator_id": fields.String,
@@ -22,7 +22,7 @@ song_model = api.model("Song", {
 })
 
 
-#-----------------------playlist---------------#
+# playlist
 playlist_model = api.model("Playlist", {
     "id": fields.String,
     "title": fields.String,
@@ -34,7 +34,7 @@ playlist_input_model = api.model("PlaylistInput", {
     "title": fields.String
 })
 
-#-----------------------album---------------#
+# album
 album_model = api.model("Album", {
     "id": fields.String,
     "title": fields.String,
