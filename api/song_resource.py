@@ -27,6 +27,7 @@ class SongApi(Resource):
         file_name = song_file.file_name
         song_file_path = os.path.join(current_app.config['SONG_UPLOAD_FOLDER'], file_name)
         if os.path.exists(song_file_path):
+            print(f'{song_file_path} exists')
             os.remove(song_file_path)
         
         # delete song_metadata
